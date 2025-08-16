@@ -25,7 +25,7 @@ struct Personal_Finance_TrackerApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            FTTabView()
         }
         .modelContainer(sharedModelContainer)
     }
