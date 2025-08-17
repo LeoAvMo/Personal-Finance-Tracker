@@ -38,12 +38,12 @@ struct AccountsView: View {
                 }
                 
                 Section(header: Text("Cash")) {
-                    CashCapsuleView(cash: cash)
+                    CashCapsuleView(cash: cash, selectedCurrency: selectedCurrency)
                 }
                 
                 Section(header: Text("Cards")) {
                     ForEach(mockData.mockAccounts){ acc in
-                        AccountCapsuleView(account: acc)
+                        AccountCapsuleView(account: acc, selectedCurrency: selectedCurrency)
                     }
                     
 
@@ -62,8 +62,31 @@ struct AccountsView: View {
     AccountsView()
 }
 
+struct CashCapsuleView: View {
+    public var cash: Double
+    public var selectedCurrency: String
+    var body: some View {
+        HStack {
+            Image(systemName: "dollarsign.ring")
+                .resizable()
+                .scaledToFit()
+                .foregroundStyle(.green)
+                .frame(width: 35, height: 35)
+            VStack(alignment: .leading){
+                Text("Balance:")
+                    .foregroundStyle(.green)
+                    .fontWeight(.semibold)
+            }
+            Spacer()
+            Text("$\(cash, specifier: "%.2f") \(selectedCurrency)")
+                .fontWeight(.semibold)
+        }
+    }
+}
+
 struct AccountCapsuleView: View {
-    @State public var account: Account
+    public var account: Account
+    public var selectedCurrency: String
     var body: some View {
         HStack {
             Image(systemName: "creditcard.fill")
@@ -80,29 +103,10 @@ struct AccountCapsuleView: View {
                     .foregroundStyle(.secondary)
             }
             Spacer()
-            Text("$\(account.balance, specifier: "%.2f")")
+            Text("$\(account.balance, specifier: "%.2f") \(selectedCurrency)")
                 .fontWeight(.semibold)
         }
     }
 }
 
-struct CashCapsuleView: View {
-    @State public var cash: Double
-    var body: some View {
-        HStack {
-            Image(systemName: "dollarsign.ring")
-                .resizable()
-                .scaledToFit()
-                .foregroundStyle(.green)
-                .frame(width: 35, height: 35)
-            VStack(alignment: .leading){
-                Text("Balance:")
-                    .foregroundStyle(.green)
-                    .fontWeight(.semibold)
-            }
-            Spacer()
-            Text("$\(cash, specifier: "%.2f")")
-                .fontWeight(.semibold)
-        }
-    }
-}
+
