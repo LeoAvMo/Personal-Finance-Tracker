@@ -14,13 +14,19 @@ struct FTTabView: View {
                 TransactionsView()
             }
             
-            Tab("Accounts", systemImage: "creditcard") {
+            Tab("Accounts", systemImage: "person.badge.key") {
                 AccountsView()
+            }
+            
+            Tab("Credit", systemImage: "creditcard"){
+                CreditView()
             }
             
             Tab("Summary", systemImage: "chart.bar.xaxis") {
                 SummaryView()
             }
+            
+            
         }
         
     }

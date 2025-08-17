@@ -11,7 +11,6 @@ struct TransactionsView: View {
     var body: some View {
         NavigationStack{
             List{
-                Text("Hello")
                 NavigationLink {
                     AddTransactionView()
                 } label: {
