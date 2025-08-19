@@ -10,33 +10,42 @@ import SwiftUI
 struct AccountsView: View {
     @State private var selectedCurrency: String = "MXN"
     @State private var cash: Double = 1000
-    @State private var mockData = MockData()
     @State private var totalBalance: Double = 0
+    @State private var mockData = MockData()
     var body: some View {
         
         NavigationStack {
             Form{
-                
-                HStack{
-                    Text("Total Balance:")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                    Picker(selection: /*@START_MENU_TOKEN@*/.constant(1)/*@END_MENU_TOKEN@*/, label: Text("")) {
-                        Text("MXN").tag(1)
-                        Text("EUR").tag(2)
-                        Text("USD").tag(3)
+                Section(header: Text("Currency")) {
+                    HStack {
+                        Text("Base currency:")
+                        Picker(selection: /*@START_MENU_TOKEN@*/.constant(1)/*@END_MENU_TOKEN@*/, label: Text("")) {
+                            Text("MXN 🇲🇽").tag(1)
+                            Text("EUR 🇪🇺").tag(2)
+                            Text("USD 🇺🇸").tag(3)
+                        }
+                        .pickerStyle(.navigationLink)
                     }
-                    .pickerStyle(.automatic)
+                    
                 }
                 
-                HStack{
-                    Spacer()
-                    Text("$\(totalBalance, specifier: "%.2f") \(selectedCurrency)")
-                        .font(.largeTitle)
-                        .bold()
-                    Spacer()
+                Section (header: Text("Total balance")) {
+                    Picker(selection: .constant(1), label: Text("Picker")) {
+                        Text("MXN 🇲🇽").tag(1)
+                        Text("USD 🇺🇸").tag(2)
+                        Text("EUR 🇪🇺").tag(3)
+                    }
+                    .pickerStyle(.segmented)
+                    HStack{
+                        Spacer()
+                        Text("$\(totalBalance, specifier: "%.2f") \(selectedCurrency)")
+                            .font(.largeTitle)
+                            .bold()
+                        Spacer()
+                    }
+                    
                 }
-                
+
                 Section(header: Text("Cash")) {
                     CashCapsuleView(cash: cash, selectedCurrency: selectedCurrency)
                 }
@@ -45,8 +54,6 @@ struct AccountsView: View {
                     ForEach(mockData.mockAccounts){ acc in
                         AccountCapsuleView(account: acc, selectedCurrency: selectedCurrency)
                     }
-                    
-
                 }
             }
             .onAppear{
@@ -70,11 +77,11 @@ struct CashCapsuleView: View {
             Image(systemName: "dollarsign.ring")
                 .resizable()
                 .scaledToFit()
-                .foregroundStyle(.green)
+                .foregroundStyle(Color("cashColor"))
                 .frame(width: 35, height: 35)
             VStack(alignment: .leading){
                 Text("Balance:")
-                    .foregroundStyle(.green)
+                    .foregroundStyle(Color("cashColor"))
                     .fontWeight(.semibold)
             }
             Spacer()
