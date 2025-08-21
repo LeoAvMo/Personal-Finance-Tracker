@@ -10,6 +10,9 @@ import SwiftUI
 struct AddTransactionView: View {
     @State private var label: String = ""
     @State private var amount: Float = 0
+    @State private var selectedCurrency: String = "MXN"
+    @State private var selectedDate: Date = Date()
+    // @State private var selectedTCategory: Category = Category(id: "1", name: "Groceries")
     var body: some View {
         NavigationStack{
             Form{
@@ -21,13 +24,36 @@ struct AddTransactionView: View {
                 }
                 
                 //Add error if amount is not a numerical value
-                TextField("Amount", value: $amount, format: .number)
-                    .keyboardType(.decimalPad)
+                HStack{
+                    Text("Amount")
+                    Spacer()
+                    
+                    TextField("$", value: $amount, format: .number)
+                        .keyboardType(.decimalPad)
+                        .multilineTextAlignment(.trailing)
+                    Text(selectedCurrency)
+                }
                 
-                // Date field
-                Text("Date")
+                //Date
+                DatePicker(selection: $selectedDate, displayedComponents: .date, label: { Text("Date") })
+                    
                 // Transaction type
-                Text("Category")
+                VStack(alignment: .leading){
+                    Text("Category")
+                    ScrollView(.horizontal, showsIndicators: true){
+                        HStack{
+                            Button {
+                                
+                            } label: {
+                                CategoryIconView(categoryName: "Accesories", iconColor: .pink, iconImageName: "bag", showLabel: true, isSelected: false)
+                            }
+                            
+                            
+                        }
+                    }
+
+                }
+                
                 // Target account
                 Text("Account")
             }
@@ -40,3 +66,5 @@ struct AddTransactionView: View {
 #Preview {
     AddTransactionView()
 }
+
+
