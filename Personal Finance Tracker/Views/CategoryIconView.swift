@@ -13,12 +13,16 @@ struct CategoryIconView: View {
     var iconImageName: String
     var showLabel: Bool = true
     var isSelected: Bool = true
+    
     var body: some View {
         VStack{
             ZStack(alignment: .center){
-                Circle()
-                    .frame(width: 58, height: 58)
-                    .foregroundStyle(iconColor)
+                if isSelected {
+                    Circle()
+                        .frame(width: 58, height: 58)
+                        .foregroundStyle(iconColor)
+                }
+                
                 Circle()
                     .frame(width: 54, height: 54)
                     .foregroundStyle(.background)

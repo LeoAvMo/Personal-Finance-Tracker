@@ -17,13 +17,14 @@ struct AddTransactionView: View {
         NavigationStack{
             Form{
                 TextField("Label", text: $label)
+                
                 //
                 Picker(selection: /*@START_MENU_TOKEN@*/.constant(1)/*@END_MENU_TOKEN@*/, label: Text("Transaction type")) {
                     Text("Income 📈").tag(1)
                     Text("Expense 📉").tag(2)
                 }
                 
-                //Add error if amount is not a numerical value
+                //MAKE REGEX TO VALIDATE AMOUNT. Add error if amount is not a numerical value
                 HStack{
                     Text("Amount")
                     Spacer()
