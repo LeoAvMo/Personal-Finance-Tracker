@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+enum TransactionType : String, CaseIterable, Identifiable {
+    case income, expense
+    var id: Self { self }
+}
 struct AddTransactionView: View {
     @State private var label: String = ""
     @State private var amount: Float = 0
@@ -42,12 +46,18 @@ struct AddTransactionView: View {
                 VStack(alignment: .leading){
                     Text("Category")
                     ScrollView(.horizontal, showsIndicators: true){
-                        HStack{
+                        HStack {
                             Button {
                                 
                             } label: {
                                 CategoryIconView(categoryName: "Accesories", iconColor: .pink, iconImageName: "bag", showLabel: true, isSelected: false)
                             }
+                            NavigationLink{
+                                CreateCategoryView()
+                            } label: {
+                                CategoryIconView(categoryName: "Add", iconColor: Color(red: 0/255, green: 209/255, blue: 255/255), iconImageName: "plus", showLabel: true, isSelected: false)
+                            }
+                            
                             
                             
                         }
@@ -67,5 +77,4 @@ struct AddTransactionView: View {
 #Preview {
     AddTransactionView()
 }
-
 

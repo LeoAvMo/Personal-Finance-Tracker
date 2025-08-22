@@ -17,8 +17,28 @@ struct TransactionsView: View {
                 }
                 Section(header: Text("Transactions")){
                     HStack{
-                        Image(systemName: "leaf")
-                        Text("Example transaction")
+                        CategoryIconView(categoryName: "Shopping", iconColor: .blue, iconImageName: "bag.fill", showLabel: false, isSelected: false)
+                        VStack(alignment: .leading){
+                            Text("Magic Keyboard")
+                                .font(.title2)
+                            Text("10/10/2025")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                            Divider()
+                            Text("Débito Santander")
+                                .font(.body)
+                                .foregroundStyle(.primary)
+                            HStack{
+                                Text("$1,000,599.00 MXN")
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(.red)
+                                Image(systemName: "chart.line.downtrend.xyaxis")
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(.red)
+                            }
+
+                        }
+                        .padding(.leading)
                     }
                 }
             }
