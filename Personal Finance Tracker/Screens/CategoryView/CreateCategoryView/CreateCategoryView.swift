@@ -19,6 +19,7 @@ struct CreateCategoryView: View {
     @State private var editSetting: EditSettings = .color
     let columnLayout = Array(repeating: GridItem(), count: 4)
     let allColors: [Color] = [.pink, .red, .orange, .yellow, .green, .mint, .teal,.cyan, .blue, .indigo, .purple, .gray]
+    let icons: [String] = ["dollarsign","bag.fill", "leaf.fill", "pencil", "ellipsis","cart.fill", "hammer.fill", "dumbbell.fill", "gift.fill","airplane","music.note","music.microphone","book.fill", "gamecontroller.fill", "arcade.stick.console.fill", "fork.knife", "birthday.cake.fill", "cup.and.saucer.fill", "coat.fill", "hat.cap.fill", "house.fill", "sofa.fill","cat.fill","dog.fill", "pawprint.fill","pills.fill", "car.fill", "keyboard.fill", "desktopcomputer", "laptopcomputer", "smartphone", "computermouse.fill", "bus.fill", "shippingbox.fill", "stethoscope", "bolt.fill", "drop.fill", "wifi" , "graduationcap.fill", "backpack.fill", "gearshape.2.fill", "basket.fill", "theatermasks.fill", "chevron.left.forwardslash.chevron.right", "popcorn.fill", "stroller.fill", "hanger", "exclamationmark.triangle.fill", "figure", "flame.fill", "paintbrush.pointed.fill", "heart.fill", "list.bullet.clipboard.fill", "ellipsis.curlybraces", "star.fill", "asterisk"]
     let rainbow = LinearGradient(colors: [.red, .orange, .yellow, .green, .blue, .indigo, .purple], startPoint: .topLeading, endPoint: .bottomTrailing)
     
     var body: some View {
@@ -69,19 +70,35 @@ struct CreateCategoryView: View {
                                 .padding(.vertical)
                             }
                             
-                        
-                        
+                            
                         LazyVGrid(columns: columnLayout) {
                             ForEach(allColors.indices, id: \.self){ index in
-                                Circle()
-                                    .aspectRatio(1.0, contentMode: ContentMode.fit)
-                                    .foregroundStyle(allColors[index])
-                                    .onTapGesture {categoryColor = allColors[index]}
+                                ZStack{
+                                    Circle()
+                                        .aspectRatio(1.0, contentMode: ContentMode.fit)
+                                        .foregroundStyle(allColors[index])
+                                    Circle()
+                                        .padding(2)
+                                        .foregroundStyle(.background)
+                                    Circle()
+                                        .padding(4)
+                                        .foregroundStyle(allColors[index])
+                                }
+                                .onTapGesture {categoryColor = allColors[index]}
                             }
                         }
                             
                         case .icon:
-                            Text("Images")
+                            LazyVGrid(columns: columnLayout) {
+                                ForEach(icons.indices, id: \.self){ index in
+                                    Image(systemName: icons[index])
+                                        .font(.system(size: 50))
+                                        .aspectRatio(1.0, contentMode: ContentMode.fit)
+                                        .foregroundStyle(.primary)
+                                        .onTapGesture {categoryIcon = icons[index]}
+                                        .padding(.vertical)
+                                }
+                            }
                     }
                 }
                 
