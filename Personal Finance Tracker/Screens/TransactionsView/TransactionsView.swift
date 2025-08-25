@@ -29,7 +29,7 @@ struct TransactionsView: View {
                                 .font(.body)
                                 .foregroundStyle(.primary)
                             HStack{
-                                Text("$1,000,599.00 MXN")
+                                Text("-$1,000,599.00 MXN")
                                     .fontWeight(.semibold)
                                     .foregroundStyle(.red)
                                 Image(systemName: "chart.line.downtrend.xyaxis")
@@ -43,7 +43,7 @@ struct TransactionsView: View {
                 }
             }
             .sheet(isPresented: $showAddTransactionView){
-                AddTransactionView()
+                AddTransactionView(isShowingAddTransactionView: $showAddTransactionView)
             }
             .navigationTitle("Transactions")
             .toolbar {
