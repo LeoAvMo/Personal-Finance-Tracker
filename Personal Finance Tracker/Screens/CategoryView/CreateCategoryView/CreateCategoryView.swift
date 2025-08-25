@@ -14,17 +14,61 @@ enum EditSettings : String, CaseIterable, Identifiable {
 
 struct CreateCategoryView: View {
     @State private var categoryName: String = ""
-    @State private var categoryIcon: String = "leaf.fill"
-    @State private var categoryColor: Color = .blue
+    @State private var categoryIcon: String = "dollarsign"
+    @State private var categoryColor: Color = .pink
     @State private var editSetting: EditSettings = .color
     let columnLayout = Array(repeating: GridItem(), count: 4)
     let allColors: [Color] = [.pink, .red, .orange, .yellow, .green, .mint, .teal,.cyan, .blue, .indigo, .purple, .gray]
-    let icons: [String] = ["dollarsign","bag.fill", "leaf.fill", "pencil", "ellipsis","cart.fill", "hammer.fill", "dumbbell.fill", "gift.fill","airplane","music.note","music.microphone","book.fill", "gamecontroller.fill", "arcade.stick.console.fill", "fork.knife", "birthday.cake.fill", "cup.and.saucer.fill", "coat.fill", "hat.cap.fill", "house.fill", "sofa.fill","cat.fill","dog.fill", "pawprint.fill","pills.fill", "car.fill", "keyboard.fill", "desktopcomputer", "laptopcomputer", "smartphone", "computermouse.fill", "bus.fill", "shippingbox.fill", "stethoscope", "bolt.fill", "drop.fill", "wifi" , "graduationcap.fill", "backpack.fill", "gearshape.2.fill", "basket.fill", "theatermasks.fill", "chevron.left.forwardslash.chevron.right", "popcorn.fill", "stroller.fill", "hanger", "exclamationmark.triangle.fill", "figure", "flame.fill", "paintbrush.pointed.fill", "heart.fill", "list.bullet.clipboard.fill", "ellipsis.curlybraces", "star.fill", "asterisk"]
+    let icons: [String] = [
+        // 💰 Money & Commerce
+        "dollarsign", "bag.fill", "cart.fill", "gift.fill", "shippingbox.fill", "basket.fill",
+        
+        // 🌿 Nature & Elements
+        "leaf.fill", "flame.fill", "bolt.fill", "drop.fill",
+        
+        // ✏️ Tools & Work
+        "pencil", "paintbrush.pointed.fill", "hammer.fill", "gearshape.2.fill",
+        
+        // 🎓 School & Learning
+        "book.fill", "graduationcap.fill", "backpack.fill", "list.bullet.clipboard.fill",
+        
+        // 🎭 Entertainment & Arts
+        "music.note", "music.microphone", "gamecontroller.fill", "arcade.stick.console.fill",
+        "theatermasks.fill", "popcorn.fill", "star.fill",
+        
+        // 🍴 Food & Drink
+        "fork.knife", "birthday.cake.fill", "cup.and.saucer.fill",
+        
+        // 👕 Clothing & Fashion
+        "coat.fill", "hat.cap.fill", "hanger",
+        
+        // 🏠 Home & Living
+        "house.fill", "sofa.fill",
+        
+        // 🐾 Animals & Pets
+        "cat.fill", "dog.fill", "pawprint.fill",
+        
+        // 🩺 Health, Safety & Fitness
+        "pills.fill", "stethoscope", "exclamationmark.triangle.fill", "heart.fill", "asterisk", "dumbbell.fill",
+        
+        // 🚗 Transportation
+        "car.fill", "bus.fill", "airplane",
+        
+        // 💻 Technology
+        "keyboard.fill", "desktopcomputer", "laptopcomputer", "smartphone", "computermouse.fill", "wifi",
+        
+        // 👶 Family & People
+        "stroller.fill", "figure",
+        
+        // 🔣 Symbols & Misc
+        "chevron.left.forwardslash.chevron.right", "ellipsis.curlybraces", "ellipsis"
+    ]
     let rainbow = LinearGradient(colors: [.red, .orange, .yellow, .green, .blue, .indigo, .purple], startPoint: .topLeading, endPoint: .bottomTrailing)
     
     var body: some View {
         NavigationStack{
             VStack(alignment: .center){
+                
                 Spacer()
                 ZStack{
                     Circle()
@@ -54,6 +98,7 @@ struct CreateCategoryView: View {
                 .foregroundStyle(.accent)
                 
                 ScrollView {
+                    HStack{Spacer()}
                     switch editSetting {
                         case .color:
                             ZStack{
@@ -74,12 +119,15 @@ struct CreateCategoryView: View {
                         LazyVGrid(columns: columnLayout) {
                             ForEach(allColors.indices, id: \.self){ index in
                                 ZStack{
-                                    Circle()
-                                        .aspectRatio(1.0, contentMode: ContentMode.fit)
-                                        .foregroundStyle(allColors[index])
-                                    Circle()
-                                        .padding(2)
-                                        .foregroundStyle(.background)
+                                    if categoryColor == allColors[index] {
+                                        Circle()
+                                            .aspectRatio(1.0, contentMode: ContentMode.fit)
+                                            .foregroundStyle(allColors[index])
+                                        Circle()
+                                            .padding(2)
+                                            .foregroundStyle(.background)
+                                    }
+
                                     Circle()
                                         .padding(4)
                                         .foregroundStyle(allColors[index])
@@ -91,12 +139,23 @@ struct CreateCategoryView: View {
                         case .icon:
                             LazyVGrid(columns: columnLayout) {
                                 ForEach(icons.indices, id: \.self){ index in
-                                    Image(systemName: icons[index])
-                                        .font(.system(size: 50))
-                                        .aspectRatio(1.0, contentMode: ContentMode.fit)
-                                        .foregroundStyle(.primary)
-                                        .onTapGesture {categoryIcon = icons[index]}
-                                        .padding(.vertical)
+                                    ZStack{
+                                        
+                                        Image(systemName: icons[index])
+                                            .font(.system(size: 50))
+                                            .foregroundStyle(.primary)
+                                            .frame(width: 80, height: 80)
+                                    }
+                                    .onTapGesture {categoryIcon = icons[index]}
+                                    .overlay(
+                                        ZStack{
+                                            Image(systemName: categoryIcon == icons[index] ? "checkmark.circle.fill" : "")
+                                                .frame(width: 20, height: 20)
+                                                .foregroundStyle(.accent)
+                                        }
+                                        ,
+                                        alignment: .bottomTrailing)
+                                    .padding(.vertical)
                                 }
                             }
                     }
@@ -112,6 +171,7 @@ struct CreateCategoryView: View {
             .ignoresSafeArea(.all, edges: .horizontal)
             .navigationTitle("Create Category")
         }
+        
         
     }
 }

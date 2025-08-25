@@ -50,16 +50,13 @@ struct AddTransactionView: View {
                             Button {
                                 
                             } label: {
-                                CategoryIconView(categoryName: "Accesories", iconColor: .pink, iconImageName: "bag", showLabel: true, isSelected: false)
+                                CategoryIconView(categoryName: "Accesories", iconColor: .pink, iconImageName: "bag", showLabel: true, isSelected: true)
                             }
                             NavigationLink{
                                 CreateCategoryView()
                             } label: {
                                 CategoryIconView(categoryName: "Add", iconColor: Color(red: 0/255, green: 209/255, blue: 255/255), iconImageName: "plus", showLabel: true, isSelected: false)
                             }
-                            
-                            
-                            
                         }
                     }
 
