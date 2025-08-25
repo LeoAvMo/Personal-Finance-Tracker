@@ -17,6 +17,7 @@ struct CreateCategoryView: View {
     @State private var categoryIcon: String = "dollarsign"
     @State private var categoryColor: Color = .pink
     @State private var editSetting: EditSettings = .color
+    @Binding var isPresented: Bool
     let columnLayout = Array(repeating: GridItem(), count: 4)
     let allColors: [Color] = [.pink, .red, .orange, .yellow, .green, .mint, .teal,.cyan, .blue, .indigo, .purple, .gray]
     let icons: [String] = [
@@ -97,7 +98,7 @@ struct CreateCategoryView: View {
                 .pickerStyle(.segmented)
                 .foregroundStyle(.accent)
                 
-                ScrollView {
+                ScrollView(showsIndicators: false) {
                     HStack{Spacer()}
                     switch editSetting {
                         case .color:
@@ -107,34 +108,34 @@ struct CreateCategoryView: View {
                                     .glassEffect(.regular)
                                 VStack{
                                     ColorPicker("Custom Color", selection: $categoryColor)
-                                    .font(.title)
-                                    .padding(.horizontal)
-                                    .frame(maxWidth: .infinity)
-                                    .foregroundStyle(.white)
+                                        .font(.title)
+                                        .padding(.horizontal)
+                                        .frame(maxWidth: .infinity)
+                                        .foregroundStyle(.white)
                                 }
                                 .padding(.vertical)
                             }
                             
                             
-                        LazyVGrid(columns: columnLayout) {
-                            ForEach(allColors.indices, id: \.self){ index in
-                                ZStack{
-                                    if categoryColor == allColors[index] {
+                            LazyVGrid(columns: columnLayout) {
+                                ForEach(allColors.indices, id: \.self){ index in
+                                    ZStack{
+                                        if categoryColor == allColors[index] {
+                                            Circle()
+                                                .aspectRatio(1.0, contentMode: ContentMode.fit)
+                                                .foregroundStyle(allColors[index])
+                                            Circle()
+                                                .padding(2)
+                                                .foregroundStyle(.background)
+                                        }
+                                        
                                         Circle()
-                                            .aspectRatio(1.0, contentMode: ContentMode.fit)
+                                            .padding(4)
                                             .foregroundStyle(allColors[index])
-                                        Circle()
-                                            .padding(2)
-                                            .foregroundStyle(.background)
                                     }
-
-                                    Circle()
-                                        .padding(4)
-                                        .foregroundStyle(allColors[index])
+                                    .onTapGesture {categoryColor = allColors[index]}
                                 }
-                                .onTapGesture {categoryColor = allColors[index]}
                             }
-                        }
                             
                         case .icon:
                             LazyVGrid(columns: columnLayout) {
@@ -160,22 +161,20 @@ struct CreateCategoryView: View {
                             }
                     }
                 }
-                
-                
-                
-                
             }
             
             .padding()
             .ignoresSafeArea(.all, edges: .bottom)
             .ignoresSafeArea(.all, edges: .horizontal)
             .navigationTitle("Create Category")
+            .background(.background)
+            
         }
-        
-        
+        .overlay(GeneralDismissButton(isShowingDetail: $isPresented), alignment: .topLeading)
+        .overlay(AcceptButton(isPresented: $isPresented), alignment: .topTrailing)
     }
 }
 
 #Preview {
-    CreateCategoryView()
+    CreateCategoryView(isPresented: .constant(true))
 }

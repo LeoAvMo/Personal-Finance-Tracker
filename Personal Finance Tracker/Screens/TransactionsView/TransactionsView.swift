@@ -42,14 +42,11 @@ struct TransactionsView: View {
                     }
                 }
             }
-            .sheet(isPresented: $showAddTransactionView){
-                AddTransactionView(isShowingAddTransactionView: $showAddTransactionView)
-            }
             .navigationTitle("Transactions")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing){
-                    Button{
-                        showAddTransactionView.toggle()
+                    NavigationLink{
+                        AddTransactionView()
                     } label: {
                         Image(systemName: "plus")
                             .font(.headline)

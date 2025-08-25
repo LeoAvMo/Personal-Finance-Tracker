@@ -16,7 +16,7 @@ struct AddTransactionView: View {
     @State private var amount: Float = 0
     @State private var selectedCurrency: String = "MXN"
     @State private var selectedDate: Date = Date()
-    @Binding public var isShowingAddTransactionView: Bool
+    @State private var isShowingCreateCategoryView: Bool = false
     // @State private var selectedTCategory: Category = Category(id: "1", name: "Groceries")
     var body: some View {
         NavigationStack{
@@ -54,8 +54,8 @@ struct AddTransactionView: View {
                                 } label: {
                                     CategoryIconView(categoryName: "Accesories", iconColor: .pink, iconImageName: "bag", showLabel: true, isSelected: true)
                                 }
-                                NavigationLink{
-                                    CreateCategoryView()
+                                Button{
+                                    isShowingCreateCategoryView.toggle()
                                 } label: {
                                     CategoryIconView(categoryName: "Add", iconColor: Color(red: 0/255, green: 209/255, blue: 255/255), iconImageName: "plus", showLabel: true, isSelected: false)
                                 }
@@ -70,7 +70,7 @@ struct AddTransactionView: View {
                 }
                 
                 Button{
-                    isShowingAddTransactionView.toggle()
+                   print("Transaction Added!")
                 } label: {
                     Text("Add Transaction")
                         .frame(maxWidth: .infinity, maxHeight: 50)
@@ -79,32 +79,19 @@ struct AddTransactionView: View {
                         .foregroundStyle(.white)
                 }
                 .glassEffect(.regular.tint(.accent.opacity(0.9)).interactive())
-                
                 .padding(.horizontal)
+                .padding(.bottom, 25)
             }
             .background(.background)
+            .sheet(isPresented: $isShowingCreateCategoryView, content: {
+                CreateCategoryView(isPresented: $isShowingCreateCategoryView)
+            })
             .navigationTitle("Add transaction")
         }
-        .overlay(GeneralDismissButton(isShowingDetail: $isShowingAddTransactionView), alignment: .topTrailing)
+        
     }
 }
 
 #Preview {
-    AddTransactionView(isShowingAddTransactionView: .constant(true))
+    AddTransactionView()
 }
-
-struct GeneralDismissButton: View {
-    @Binding var isShowingDetail: Bool
-    var body: some View {
-        Button{
-            isShowingDetail = false
-        } label: {
-            Image(systemName: "xmark")
-                .foregroundStyle(.accent)
-                .frame(width: 20, height: 30)
-        }
-        .buttonStyle(.glass)
-        .padding()
-    }
-}
-
