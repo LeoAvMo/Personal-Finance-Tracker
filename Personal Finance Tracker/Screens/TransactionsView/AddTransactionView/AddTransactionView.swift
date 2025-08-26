@@ -13,8 +13,8 @@ enum TransactionType : String, CaseIterable, Identifiable {
 }
 struct AddTransactionView: View {
     @State private var transactionLabel: String = ""
-    @State private var amount: Float = 0
-    @State private var selectedCurrency: String = "MXN"
+    @State private var amount: Double = 0.0
+    @State private var selectedCurrency: String = "USD"
     @State private var selectedDate: Date = Date()
     @State private var isShowingCreateCategoryView: Bool = false
     // @State private var selectedTCategory: Category = Category(id: "1", name: "Groceries")
@@ -31,15 +31,23 @@ struct AddTransactionView: View {
                     }
                     
                     //MAKE REGEX TO VALIDATE AMOUNT. Add error if amount is not a numerical value
+                    Picker(selection: .constant(1), label: Text("Currency")) {
+                        Text("MXN 🇲🇽").tag(1)
+                        Text("USD 🇺🇸").tag(2)
+                        Text("EUR 🇪🇺").tag(3)
+                    }
+                    
                     HStack{
                         Text("Amount")
                         Spacer()
                         
-                        TextField("$", value: $amount, format: .number)
+                        TextField("$", value: $amount, format: .currency(code: "MXN"))
                             .keyboardType(.decimalPad)
                             .multilineTextAlignment(.trailing)
                         Text(selectedCurrency)
                     }
+                    
+                   
                     
                     //Date
                     DatePicker(selection: $selectedDate, displayedComponents: .date, label: { Text("Date") })
@@ -61,6 +69,7 @@ struct AddTransactionView: View {
                                 }
                             }
                         }
+                        
 
                     }
                     
@@ -94,4 +103,10 @@ struct AddTransactionView: View {
 
 #Preview {
     AddTransactionView()
+}
+
+struct CategorySelectorView: View {
+    var body: some View {
+       
+    }
 }

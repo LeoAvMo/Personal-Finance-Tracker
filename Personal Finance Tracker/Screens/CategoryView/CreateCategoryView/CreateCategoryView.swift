@@ -7,64 +7,22 @@
 
 import SwiftUI
 
-enum EditSettings : String, CaseIterable, Identifiable {
-    case color, icon
-    var id : Self { self }
-}
+
 
 struct CreateCategoryView: View {
-    @State private var categoryName: String = ""
-    @State private var categoryIcon: String = "dollarsign"
-    @State private var categoryColor: Color = .pink
+    @State private var placeholderCategory: Category = .init(id: UUID(), name: "", color: .pink, iconName: "dollarsign")
     @State private var editSetting: EditSettings = .color
+    @State private var columnLayout = Array(repeating: GridItem(), count: 4)
     @Binding var isPresented: Bool
-    let columnLayout = Array(repeating: GridItem(), count: 4)
-    let allColors: [Color] = [.pink, .red, .orange, .yellow, .green, .mint, .teal,.cyan, .blue, .indigo, .purple, .gray]
-    let icons: [String] = [
-        // 💰 Money & Commerce
-        "dollarsign", "bag.fill", "cart.fill", "gift.fill", "shippingbox.fill", "basket.fill",
-        
-        // 🌿 Nature & Elements
-        "leaf.fill", "flame.fill", "bolt.fill", "drop.fill",
-        
-        // ✏️ Tools & Work
-        "pencil", "paintbrush.pointed.fill", "hammer.fill", "gearshape.2.fill",
-        
-        // 🎓 School & Learning
-        "book.fill", "graduationcap.fill", "backpack.fill", "list.bullet.clipboard.fill",
-        
-        // 🎭 Entertainment & Arts
-        "music.note", "music.microphone", "gamecontroller.fill", "arcade.stick.console.fill",
-        "theatermasks.fill", "popcorn.fill", "star.fill",
-        
-        // 🍴 Food & Drink
-        "fork.knife", "birthday.cake.fill", "cup.and.saucer.fill",
-        
-        // 👕 Clothing & Fashion
-        "coat.fill", "hat.cap.fill", "hanger",
-        
-        // 🏠 Home & Living
-        "house.fill", "sofa.fill",
-        
-        // 🐾 Animals & Pets
-        "cat.fill", "dog.fill", "pawprint.fill",
-        
-        // 🩺 Health, Safety & Fitness
-        "pills.fill", "stethoscope", "exclamationmark.triangle.fill", "heart.fill", "asterisk", "dumbbell.fill",
-        
-        // 🚗 Transportation
-        "car.fill", "bus.fill", "airplane",
-        
-        // 💻 Technology
-        "keyboard.fill", "desktopcomputer", "laptopcomputer", "smartphone", "computermouse.fill", "wifi",
-        
-        // 👶 Family & People
-        "stroller.fill", "figure",
-        
-        // 🔣 Symbols & Misc
-        "chevron.left.forwardslash.chevron.right", "ellipsis.curlybraces", "ellipsis"
-    ]
-    let rainbow = LinearGradient(colors: [.red, .orange, .yellow, .green, .blue, .indigo, .purple], startPoint: .topLeading, endPoint: .bottomTrailing)
+    
+    enum EditSettings : String, CaseIterable, Identifiable {
+        case color, icon
+        var id : Self { self }
+    }
+    
+    
+    
+    
     
     var body: some View {
         NavigationStack{
@@ -73,17 +31,17 @@ struct CreateCategoryView: View {
                 Spacer()
                 ZStack{
                     Circle()
-                        .foregroundStyle(categoryColor)
+                        .foregroundStyle(placeholderCategory.color)
                         .frame(width: 250, height: 250)
                         .glassEffect()
-                    Image(systemName: categoryIcon)
+                    Image(systemName: placeholderCategory.iconName)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 140, height: 140)
                         .foregroundStyle(.white)
                 }
                 
-                TextField("Name", text: $categoryName)
+                TextField("Name", text: $placeholderCategory.name)
                     .font(.largeTitle)
                     .fontWeight(.semibold)
                     .multilineTextAlignment(.center)
@@ -107,7 +65,7 @@ struct CreateCategoryView: View {
                                     .foregroundStyle(rainbow)
                                     .glassEffect(.regular)
                                 VStack{
-                                    ColorPicker("Custom Color", selection: $categoryColor)
+                                    ColorPicker("Custom Color", selection: $placeholderCategory.color)
                                         .font(.title)
                                         .padding(.horizontal)
                                         .frame(maxWidth: .infinity)
@@ -120,7 +78,7 @@ struct CreateCategoryView: View {
                             LazyVGrid(columns: columnLayout) {
                                 ForEach(allColors.indices, id: \.self){ index in
                                     ZStack{
-                                        if categoryColor == allColors[index] {
+                                        if placeholderCategory.color == allColors[index] {
                                             Circle()
                                                 .aspectRatio(1.0, contentMode: ContentMode.fit)
                                                 .foregroundStyle(allColors[index])
@@ -133,7 +91,7 @@ struct CreateCategoryView: View {
                                             .padding(4)
                                             .foregroundStyle(allColors[index])
                                     }
-                                    .onTapGesture {categoryColor = allColors[index]}
+                                    .onTapGesture {placeholderCategory.color = allColors[index]}
                                 }
                             }
                             
@@ -147,10 +105,10 @@ struct CreateCategoryView: View {
                                             .foregroundStyle(.primary)
                                             .frame(width: 80, height: 80)
                                     }
-                                    .onTapGesture {categoryIcon = icons[index]}
+                                    .onTapGesture {placeholderCategory.iconName = icons[index]}
                                     .overlay(
                                         ZStack{
-                                            Image(systemName: categoryIcon == icons[index] ? "checkmark.circle.fill" : "")
+                                            Image(systemName: placeholderCategory.iconName == icons[index] ? "checkmark.circle.fill" : "")
                                                 .frame(width: 20, height: 20)
                                                 .foregroundStyle(.accent)
                                         }
@@ -165,7 +123,6 @@ struct CreateCategoryView: View {
             
             .padding()
             .ignoresSafeArea(.all, edges: .bottom)
-            .ignoresSafeArea(.all, edges: .horizontal)
             .navigationTitle("Create Category")
             .background(.background)
             
@@ -178,3 +135,4 @@ struct CreateCategoryView: View {
 #Preview {
     CreateCategoryView(isPresented: .constant(true))
 }
+
