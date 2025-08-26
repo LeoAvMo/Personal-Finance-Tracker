@@ -12,7 +12,6 @@ import SwiftUI
 struct CreateCategoryView: View {
     @State private var placeholderCategory: Category = .init(id: UUID(), name: "", color: .pink, iconName: "dollarsign")
     @State private var editSetting: EditSettings = .color
-    @State private var columnLayout = Array(repeating: GridItem(), count: 4)
     @Binding var isPresented: Bool
     
     enum EditSettings : String, CaseIterable, Identifiable {
@@ -20,26 +19,12 @@ struct CreateCategoryView: View {
         var id : Self { self }
     }
     
-    
-    
-    
-    
     var body: some View {
         NavigationStack{
             VStack(alignment: .center){
                 
-                Spacer()
-                ZStack{
-                    Circle()
-                        .foregroundStyle(placeholderCategory.color)
-                        .frame(width: 250, height: 250)
-                        .glassEffect()
-                    Image(systemName: placeholderCategory.iconName)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 140, height: 140)
-                        .foregroundStyle(.white)
-                }
+                // Category Circle
+                BigCategoryIconPreviewView(placeholderCategory: $placeholderCategory)
                 
                 TextField("Name", text: $placeholderCategory.name)
                     .font(.largeTitle)
@@ -48,8 +33,7 @@ struct CreateCategoryView: View {
                     .textFieldStyle(.roundedBorder)
                     .padding()
                 
-                Spacer()
-                Picker(selection: $editSetting, label: Text("Picker")) {
+                Picker("", selection: $editSetting) {
                     Text("Color").tag(EditSettings.color)
                     Text("Icon").tag(EditSettings.icon)
                 }
@@ -57,76 +41,19 @@ struct CreateCategoryView: View {
                 .foregroundStyle(.accent)
                 
                 ScrollView(showsIndicators: false) {
-                    HStack{Spacer()}
                     switch editSetting {
                         case .color:
-                            ZStack{
-                                Capsule()
-                                    .foregroundStyle(rainbow)
-                                    .glassEffect(.regular)
-                                VStack{
-                                    ColorPicker("Custom Color", selection: $placeholderCategory.color)
-                                        .font(.title)
-                                        .padding(.horizontal)
-                                        .frame(maxWidth: .infinity)
-                                        .foregroundStyle(.white)
-                                }
-                                .padding(.vertical)
-                            }
-                            
-                            
-                            LazyVGrid(columns: columnLayout) {
-                                ForEach(allColors.indices, id: \.self){ index in
-                                    ZStack{
-                                        if placeholderCategory.color == allColors[index] {
-                                            Circle()
-                                                .aspectRatio(1.0, contentMode: ContentMode.fit)
-                                                .foregroundStyle(allColors[index])
-                                            Circle()
-                                                .padding(2)
-                                                .foregroundStyle(.background)
-                                        }
-                                        
-                                        Circle()
-                                            .padding(4)
-                                            .foregroundStyle(allColors[index])
-                                    }
-                                    .onTapGesture {placeholderCategory.color = allColors[index]}
-                                }
-                            }
-                            
+                            ColorSelectorView(placeholderCategory: $placeholderCategory)
+                                                        
                         case .icon:
-                            LazyVGrid(columns: columnLayout) {
-                                ForEach(icons.indices, id: \.self){ index in
-                                    ZStack{
-                                        
-                                        Image(systemName: icons[index])
-                                            .font(.system(size: 50))
-                                            .foregroundStyle(.primary)
-                                            .frame(width: 80, height: 80)
-                                    }
-                                    .onTapGesture {placeholderCategory.iconName = icons[index]}
-                                    .overlay(
-                                        ZStack{
-                                            Image(systemName: placeholderCategory.iconName == icons[index] ? "checkmark.circle.fill" : "")
-                                                .frame(width: 20, height: 20)
-                                                .foregroundStyle(.accent)
-                                        }
-                                        ,
-                                        alignment: .bottomTrailing)
-                                    .padding(.vertical)
-                                }
-                            }
+                            IconSelectorView(placeholderCategory: $placeholderCategory)
+
                     }
                 }
             }
-            
-            .padding()
-            .ignoresSafeArea(.all, edges: .bottom)
             .navigationTitle("Create Category")
-            .background(.background)
-            
         }
+        .background(.background)
         .overlay(GeneralDismissButton(isShowingDetail: $isPresented), alignment: .topLeading)
         .overlay(AcceptButton(isPresented: $isPresented), alignment: .topTrailing)
     }
@@ -136,3 +63,100 @@ struct CreateCategoryView: View {
     CreateCategoryView(isPresented: .constant(true))
 }
 
+struct BigCategoryIconPreviewView: View {
+    @Binding var placeholderCategory: Category
+    
+    var body: some View {
+        ZStack{
+            Circle()
+                .foregroundStyle(placeholderCategory.color)
+                .frame(width: 250, height: 250)
+                .glassEffect()
+            Image(systemName: placeholderCategory.iconName)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 140, height: 140)
+                .foregroundStyle(.white)
+                .symbolEffect(.pulse, options: .repeat(.continuous))
+        }
+    }
+}
+
+struct ColorSelectorView: View {
+    @Binding var placeholderCategory: Category
+    @State private var columnLayout = Array(repeating: GridItem(), count: 4)
+    
+    var body: some View {
+        ZStack{
+            Capsule()
+                .foregroundStyle(rainbow)
+                .glassEffect(.regular)
+            VStack{
+                ColorPicker("Custom Color", selection: $placeholderCategory.color)
+                    .font(.title)
+                    .padding(.horizontal)
+                    .frame(maxWidth: .infinity)
+                    .foregroundStyle(.white)
+            }
+            .padding(.vertical)
+        }
+        .padding(.vertical, 5)
+        .padding(.horizontal)
+        
+        LazyVGrid(columns: columnLayout) {
+            ForEach(allColors.indices, id: \.self){ index in
+                Button{
+                    placeholderCategory.color = allColors[index]
+                } label:{
+                    ZStack{
+                        if placeholderCategory.color == allColors[index] {
+                            Circle()
+                                .aspectRatio(1.0, contentMode: ContentMode.fit)
+                                .foregroundStyle(allColors[index])
+                            Circle()
+                                .padding(2)
+                                .foregroundStyle(.background)
+                        }
+                        Circle()
+                            .padding(4)
+                            .foregroundStyle(allColors[index])
+                    }
+                }
+            }
+        }
+        .padding(.horizontal)
+        
+    }
+}
+
+struct IconSelectorView: View {
+    @Environment(\.colorScheme) var colorScheme
+    @State private var columnLayout = Array(repeating: GridItem(), count: 4)
+    @Binding var placeholderCategory: Category
+    
+    var body: some View {
+        LazyVGrid(columns: columnLayout) {
+            ForEach(icons.indices, id: \.self){ index in
+                Button {
+                    placeholderCategory.iconName = icons[index]
+                } label: {
+                    ZStack{
+                        Image(systemName: icons[index])
+                            .font(.system(size: 50))
+                            .foregroundStyle(colorScheme == .dark ? .white : .black)
+                            .frame(width: 80, height: 80)
+                    }
+                }
+                .overlay(
+                    ZStack{
+                        Image(systemName: placeholderCategory.iconName == icons[index] ? "checkmark.circle.fill" : "")
+                            .frame(width: 20, height: 20)
+                            .foregroundStyle(.accent)
+                    }
+                    ,
+                    alignment: .bottomTrailing)
+                .padding(.vertical)
+            }
+        }
+    }
+}
