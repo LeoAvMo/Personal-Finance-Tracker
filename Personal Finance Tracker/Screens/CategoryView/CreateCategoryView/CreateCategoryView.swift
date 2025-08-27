@@ -24,8 +24,9 @@ struct CreateCategoryView: View {
             VStack(alignment: .center){
                 
                 // Category Circle
-                BigCategoryIconPreviewView(placeholderCategory: $placeholderCategory)
+                BigCategoryIconView(placeholderCategory: $placeholderCategory)
                 
+                // Category Name Text Field
                 TextField("Name", text: $placeholderCategory.name)
                     .font(.largeTitle)
                     .fontWeight(.semibold)
@@ -33,23 +34,24 @@ struct CreateCategoryView: View {
                     .textFieldStyle(.roundedBorder)
                     .padding()
                 
+                // Picker to display icon or color selector
                 Picker("", selection: $editSetting) {
                     Text("Color").tag(EditSettings.color)
                     Text("Icon").tag(EditSettings.icon)
                 }
                 .pickerStyle(.segmented)
-                .foregroundStyle(.accent)
                 
+                // Editor screen
                 ScrollView(showsIndicators: false) {
                     switch editSetting {
                         case .color:
                             ColorSelectorView(placeholderCategory: $placeholderCategory)
-                                                        
+                            
                         case .icon:
                             IconSelectorView(placeholderCategory: $placeholderCategory)
-
                     }
                 }
+                
             }
             .navigationTitle("Create Category")
         }
@@ -63,21 +65,30 @@ struct CreateCategoryView: View {
     CreateCategoryView(isPresented: .constant(true))
 }
 
-struct BigCategoryIconPreviewView: View {
+struct BigCategoryIconView: View {
     @Binding var placeholderCategory: Category
     
     var body: some View {
-        ZStack{
-            Circle()
-                .foregroundStyle(placeholderCategory.color)
-                .frame(width: 250, height: 250)
-                .glassEffect()
-            Image(systemName: placeholderCategory.iconName)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 140, height: 140)
-                .foregroundStyle(.white)
-                .symbolEffect(.pulse, options: .repeat(.continuous))
+        VStack {
+            ZStack{
+                Circle()
+                    .foregroundStyle(placeholderCategory.color)
+                    .transition(.opacity)
+                    .frame(width: 250, height: 250)
+                    .glassEffect()
+                
+
+                if !placeholderCategory.iconName.isEmpty {
+                    Image(systemName: placeholderCategory.iconName)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 140, height: 140)
+                        .foregroundStyle(.white)
+                        .symbolEffect(.pulse, options: .repeat(.continuous))
+                        .id(placeholderCategory.iconName)
+                        .transition(.opacity)
+                }
+            }
         }
     }
 }
@@ -160,3 +171,4 @@ struct IconSelectorView: View {
         }
     }
 }
+
