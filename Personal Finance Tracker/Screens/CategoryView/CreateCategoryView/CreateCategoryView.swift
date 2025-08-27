@@ -76,18 +76,15 @@ struct BigCategoryIconView: View {
                     .transition(.opacity)
                     .frame(width: 250, height: 250)
                     .glassEffect()
-                
+                    .animation(.easeInOut(duration: 0.3), value: placeholderCategory.color)
 
-                if !placeholderCategory.iconName.isEmpty {
                     Image(systemName: placeholderCategory.iconName)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 140, height: 140)
                         .foregroundStyle(.white)
                         .symbolEffect(.pulse, options: .repeat(.continuous))
-                        .id(placeholderCategory.iconName)
-                        .transition(.opacity)
-                }
+                        
             }
         }
     }
