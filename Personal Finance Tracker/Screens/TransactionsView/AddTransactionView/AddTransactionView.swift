@@ -13,22 +13,34 @@ enum TransactionType : String, CaseIterable, Identifiable {
 }
 struct AddTransactionView: View {
     @State private var transactionLabel: String = ""
+    @State private var transactionType: TransactionType = .income
     @State private var amount: Double = 0.0
+    @State private var currencies: [Currency] = []  // Make this an environment var
     @State private var selectedCurrency: String = "USD"
     @State private var selectedDate: Date = Date()
     @State private var isShowingCreateCategoryView: Bool = false
+    
     // @State private var selectedTCategory: Category = Category(id: "1", name: "Groceries")
+    
+    enum TransactionType : String, CaseIterable, Identifiable {
+        case income, expense
+        var id : Self { self }
+    }
+    
     var body: some View {
         NavigationStack{
             VStack {
                 Form{
+                    
+                    // Transaction name
                     TextField("Label", text: $transactionLabel)
                     
-                    //
-                    Picker(selection: /*@START_MENU_TOKEN@*/.constant(1)/*@END_MENU_TOKEN@*/, label: Text("Transaction type")) {
-                        Text("Income 📈").tag(1)
-                        Text("Expense 📉").tag(2)
+                    // Select if transaction is an income or an expense
+                    Picker(selection: $transactionType, label: Text("Transaction Type")) {
+                        Text("Income 📈").tag(TransactionType.income)
+                        Text("Expense 📉").tag(TransactionType.expense)
                     }
+                    .pickerStyle(.menu)
                     
                     //MAKE REGEX TO VALIDATE AMOUNT. Add error if amount is not a numerical value
                     Picker(selection: .constant(1), label: Text("Currency")) {
@@ -36,20 +48,18 @@ struct AddTransactionView: View {
                         Text("USD 🇺🇸").tag(2)
                         Text("EUR 🇪🇺").tag(3)
                     }
+                    .pickerStyle(.menu)
                     
+                    // Amount
                     HStack{
                         Text("Amount")
                         Spacer()
-                        
                         TextField("$", value: $amount, format: .currency(code: "MXN"))
                             .keyboardType(.decimalPad)
                             .multilineTextAlignment(.trailing)
-                        Text(selectedCurrency)
                     }
                     
-                   
-                    
-                    //Date
+                    // Transaction date
                     DatePicker(selection: $selectedDate, displayedComponents: .date, label: { Text("Date") })
                         
                     // Transaction type
