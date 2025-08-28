@@ -21,11 +21,10 @@ struct CategoryIconView: View {
                     Circle()
                         .frame(width: 58, height: 58)
                         .foregroundStyle(iconColor)
+                    Circle()
+                        .frame(width: 54, height: 54)
+                        .foregroundStyle(.background)
                 }
-                
-                Circle()
-                    .frame(width: 54, height: 54)
-                    .foregroundStyle(.background)
                 
                 Circle()
                     .frame(width: 50, height: 50)

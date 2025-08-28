@@ -69,8 +69,7 @@ struct BigCategoryIconView: View {
     @Binding var placeholderCategory: Category
     
     var body: some View {
-        VStack {
-            ZStack{
+        ZStack{
                 Circle()
                     .foregroundStyle(placeholderCategory.color)
                     .transition(.opacity)
@@ -83,10 +82,9 @@ struct BigCategoryIconView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 140, height: 140)
                         .foregroundStyle(.white)
-                        .symbolEffect(.pulse, options: .repeat(.continuous))
                         
-            }
         }
+    
     }
 }
 
