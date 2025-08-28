@@ -11,12 +11,13 @@ enum TransactionType : String, CaseIterable, Identifiable {
     case income, expense
     var id: Self { self }
 }
+
 struct AddTransactionView: View {
     @State private var transactionLabel: String = ""
     @State private var transactionType: TransactionType = .income
     @State private var amount: Double = 0.0
-    @State private var currencies: [Currency] = []  // Make this an environment var
-    @State private var selectedCurrency: String = "USD"
+    @State private var currencies: [Currency] = MockData().mockCurrencies  // Make this an environment var
+    @State private var selectedCurrency: Currency = MockData().mockCurrencies.first!   // Make this the user's default currency
     @State private var selectedDate: Date = Date()
     @State private var isShowingCreateCategoryView: Bool = false
     
@@ -28,6 +29,7 @@ struct AddTransactionView: View {
     }
     
     var body: some View {
+
         NavigationStack{
             VStack {
                 Form{
@@ -42,21 +44,30 @@ struct AddTransactionView: View {
                     }
                     .pickerStyle(.menu)
                     
-                    //MAKE REGEX TO VALIDATE AMOUNT. Add error if amount is not a numerical value
-                    Picker(selection: .constant(1), label: Text("Currency")) {
-                        Text("MXN 🇲🇽").tag(1)
-                        Text("USD 🇺🇸").tag(2)
-                        Text("EUR 🇪🇺").tag(3)
+                    // Select currency
+                    Picker(selection: $selectedCurrency, label: Text("Currency")) {
+                        ForEach(currencies, id: \.self) { currency in
+                            Text(currency.code + currency.flag).tag(currency)
+                        }
                     }
                     .pickerStyle(.menu)
                     
                     // Amount
                     HStack{
+                        var amountColor: Color {
+                            switch transactionType {
+                                case .income:
+                                        .green
+                                case .expense:
+                                        .red
+                            }
+                        }
                         Text("Amount")
                         Spacer()
-                        TextField("$", value: $amount, format: .currency(code: "MXN"))
+                        TextField("$", value: $amount, format: .currency(code: selectedCurrency.code))
                             .keyboardType(.decimalPad)
                             .multilineTextAlignment(.trailing)
+                            .foregroundStyle(amountColor)
                     }
                     
                     // Transaction date
@@ -105,6 +116,9 @@ struct AddTransactionView: View {
             .sheet(isPresented: $isShowingCreateCategoryView, content: {
                 CreateCategoryView(isPresented: $isShowingCreateCategoryView)
             })
+            .onAppear {
+                selectedCurrency = currencies.first!
+            }
             .navigationTitle("Add transaction")
         }
         

@@ -21,7 +21,3 @@ struct Account: Identifiable {
     }
 }
 
-struct MockData {
-    let mockAccounts: [Account] = [Account(id: 1, name: "Banamex", balance: 550.20, color: Color(red: 0, green: 0.5, blue: 0.9)),
-                                   Account(id: 2, name: "Santander", balance: 250.20, color: Color(red: 0.95, green: 0.2, blue: 0.2))]
-}
