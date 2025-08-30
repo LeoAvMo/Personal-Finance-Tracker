@@ -15,5 +15,10 @@ struct MockData {
     let mockCurrencies: [Currency] = [Currency(name: "Mexican Peso", code: "MXN", flag: "🇲🇽", value: 1.0),
                                       Currency(name: "US Dollar", code: "USD", flag: "🇺🇸", value: 18.65),
                                       Currency(name: "Euro", code: "EUR", flag: "🇪🇺", value: 21.79)]
+    
+    let mockCategories: [Category] = [Category(id: UUID(), name: "Transportation", color: .gray, iconName: "car.fill"),
+                                      Category(id: UUID(), name: "Food", color: .orange, iconName: "fork.knife"),
+                                      Category(id: UUID(), name: "Coffeee", color: .brown, iconName: "mug.fill"),
+                                      Category(id: UUID(), name: "Expenses", color: .green, iconName: "dollarsign")]
 }
 

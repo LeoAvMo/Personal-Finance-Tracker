@@ -13,11 +13,6 @@ struct Account: Identifiable {
     var balance: Double
     var color: Color
     
-    init(id: Int, name: String, balance: Double, color: Color) {
-        self.id = id
-        self.name = name
-        self.balance = balance
-        self.color = color
-    }
+    
 }
 

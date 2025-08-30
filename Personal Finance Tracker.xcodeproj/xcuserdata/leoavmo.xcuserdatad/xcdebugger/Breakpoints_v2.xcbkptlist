@@ -14,10 +14,68 @@
             filePath = "Personal Finance Tracker/Screens/CategoryView/CreateCategoryView/CreateCategoryView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
             landmarkName = "body"
             landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "A98079AD-35A4-4BA6-89FE-3E24CA5071CD - f729158a2334ca77"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Personal_Finance_Tracker.ColorSelectorView.placeholderCategory.getter : Personal_Finance_Tracker.Category"
+                  moduleName = "Personal Finance Tracker.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/leoavmo/Documents/Coding/Personal%20Finance%20Tracker/%3Cstdin%3E"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0">
+               </Location>
+               <Location
+                  uuid = "A98079AD-35A4-4BA6-89FE-3E24CA5071CD - 1bce2e53c42af27b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Personal_Finance_Tracker.ColorSelectorView.placeholderCategory.setter : Personal_Finance_Tracker.Category"
+                  moduleName = "Personal Finance Tracker.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/leoavmo/Documents/Coding/Personal%20Finance%20Tracker/%3Cstdin%3E"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0">
+               </Location>
+               <Location
+                  uuid = "A98079AD-35A4-4BA6-89FE-3E24CA5071CD - b24ef484654f8141"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Personal_Finance_Tracker.ColorSelectorView.placeholderCategory.modify : Personal_Finance_Tracker.Category"
+                  moduleName = "Personal Finance Tracker.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/leoavmo/Documents/Coding/Personal%20Finance%20Tracker/%3Cstdin%3E"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0">
+               </Location>
+               <Location
+                  uuid = "A98079AD-35A4-4BA6-89FE-3E24CA5071CD - f37d3bbd82725634"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Personal_Finance_Tracker.ColorSelectorView.$placeholderCategory.getter : SwiftUI.Binding&lt;Personal_Finance_Tracker.Category&gt;"
+                  moduleName = "Personal Finance Tracker.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/leoavmo/Documents/Coding/Personal%20Finance%20Tracker/Personal%20Finance%20Tracker/Screens/CategoryView/CreateCategoryView/CreateCategoryView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "92"
+                  endingLineNumber = "92">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

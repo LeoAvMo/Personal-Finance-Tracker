@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TransactionsView: View {
     @State private var showAddTransactionView: Bool = false
+    @State private var placeholderCategory: Category = Category(id: UUID(), name: "Expenses", color: .green, iconName: "dollarsign")
     var body: some View {
         NavigationStack{
             List{
@@ -17,7 +18,7 @@ struct TransactionsView: View {
                 }
                 Section(header: Text("Transactions")){
                     HStack{
-                        CategoryIconView(categoryName: "Shopping", iconColor: .blue, iconImageName: "bag.fill", showLabel: false, isSelected: false)
+                        CategoryIconView(category: placeholderCategory, showLabel: false, isSelected: false)
                         VStack(alignment: .leading){
                             Text("Magic Keyboard")
                                 .font(.title2)

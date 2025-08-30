@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct CategoryIconView: View {
-    var categoryName: String
-    var iconColor: Color
-    var iconImageName: String
+    var category: Category
     var showLabel: Bool = true
     var isSelected: Bool = true
     
@@ -20,7 +18,7 @@ struct CategoryIconView: View {
                 if isSelected {
                     Circle()
                         .frame(width: 58, height: 58)
-                        .foregroundStyle(iconColor)
+                        .foregroundStyle(category.color)
                     Circle()
                         .frame(width: 54, height: 54)
                         .foregroundStyle(.background)
@@ -28,17 +26,18 @@ struct CategoryIconView: View {
                 
                 Circle()
                     .frame(width: 50, height: 50)
-                    .foregroundStyle(iconColor)
-                Image(systemName: iconImageName)
+                    .foregroundStyle(category.color)
+                Image(systemName: category.iconName)
                     .foregroundColor(.white)
                     .font(.title)
                 
             }
             //.overlay(CheckmarkIconView(),alignment: .topTrailing)
             if showLabel {
-                Text(categoryName)
+                // Put "..." string and only 5 characters for categories with a larger name of 8 chars
+                Text(category.name)
                     .font(.caption)
-                    .foregroundStyle(iconColor)
+                    .foregroundStyle(category.color)
             }
         }
             
@@ -46,7 +45,7 @@ struct CategoryIconView: View {
 }
 
 #Preview {
-    CategoryIconView(categoryName: "Food", iconColor: .orange, iconImageName: "fork.knife", showLabel: true, isSelected: true)
+    CategoryIconView(category: Category(id: UUID(), name: "Expenses", color: .green, iconName: "dollarsign"), showLabel: true, isSelected: true)
 }
 
 /*

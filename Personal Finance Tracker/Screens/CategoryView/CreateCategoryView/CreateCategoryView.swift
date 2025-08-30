@@ -12,7 +12,10 @@ import SwiftUI
 struct CreateCategoryView: View {
     @State private var placeholderCategory: Category = .init(id: UUID(), name: "", color: .pink, iconName: "dollarsign")
     @State private var editSetting: EditSettings = .color
+    @State private var showAlert: Bool = false
+    @State private var categoryAlertItem: CategoryAlertItem?
     @Binding var isPresented: Bool
+    
     
     enum EditSettings : String, CaseIterable, Identifiable {
         case color, icon
@@ -53,11 +56,23 @@ struct CreateCategoryView: View {
                 }
                 
             }
+            .alert(isPresented: $showAlert) {
+                Alert(title: categoryAlertItem!.alertTitle,
+                      message: categoryAlertItem!.alertMessage,
+                      dismissButton: categoryAlertItem!.alertDismissButton)
+            }
             .navigationTitle("Create Category")
         }
         .background(.background)
         .overlay(GeneralDismissButton(isShowingDetail: $isPresented), alignment: .topLeading)
-        .overlay(AcceptButton(isPresented: $isPresented), alignment: .topTrailing)
+        .overlay(Button {
+            if placeholderCategory.name.isEmpty {
+                categoryAlertItem = AlertContext.categoryNameIsRequired
+                showAlert.toggle()
+            } else {
+                isPresented.toggle()
+            }
+        } label: {AcceptButton()}, alignment: .topTrailing)
     }
 }
 

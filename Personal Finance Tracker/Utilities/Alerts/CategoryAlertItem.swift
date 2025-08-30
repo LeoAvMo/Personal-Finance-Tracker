@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-struct AlertItem: Identifiable {
+struct CategoryAlertItem: Identifiable {
     var id: UUID = UUID()
-    var title: Text
-    var message: Text
-    var dismissButton: Text
+    var alertTitle: Text
+    var alertMessage: Text
+    var alertDismissButton: Alert.Button
 }
 
 struct AlertContext {
-    static let categoryNameIsRequired: AlertItem = AlertItem(title: Text("Could not create category"),
-                                                             message: Text("Category name is required"),
-                                                             dismissButton: Text("OK"))
+    static let categoryNameIsRequired: CategoryAlertItem = CategoryAlertItem(alertTitle: Text("Could not create category"),
+                                                                             alertMessage: Text("Category name is required"),
+                                                                             alertDismissButton: .default(Text("OK")))
 }

@@ -17,12 +17,12 @@ struct AddTransactionView: View {
     @State private var transactionType: TransactionType = .income
     @State private var amount: Double = 0.0
     @State private var currencies: [Currency] = MockData().mockCurrencies  // Make this an environment var
-    @State private var selectedCurrency: Currency = MockData().mockCurrencies.first!   // Make this the user's default currency
+    @State private var selectedCurrency: Currency?
     @State private var selectedDate: Date = Date()
+    @State private var categories: [Category] = MockData().mockCategories  // Turn this to envirnment var for all of the user's categories
+    @State private var selectedCategory: Category?
+    
     @State private var isShowingCreateCategoryView: Bool = false
-    
-    // @State private var selectedTCategory: Category = Category(id: "1", name: "Groceries")
-    
     enum TransactionType : String, CaseIterable, Identifiable {
         case income, expense
         var id : Self { self }
@@ -64,9 +64,10 @@ struct AddTransactionView: View {
                         }
                         Text("Amount")
                         Spacer()
-                        TextField("$", value: $amount, format: .currency(code: selectedCurrency.code))
+                        TextField("$", value: $amount, format: .currency(code: selectedCurrency?.code ?? "USD"))
                             .keyboardType(.decimalPad)
                             .multilineTextAlignment(.trailing)
+                            .fontWeight(.semibold)
                             .foregroundStyle(amountColor)
                     }
                     
@@ -77,21 +78,23 @@ struct AddTransactionView: View {
                     VStack(alignment: .leading){
                         Text("Category")
                         ScrollView(.horizontal, showsIndicators: true){
+                            
                             HStack {
-                                Button {
-                                    
-                                } label: {
-                                    CategoryIconView(categoryName: "Accesories", iconColor: .pink, iconImageName: "bag", showLabel: true, isSelected: true)
+                                ForEach(categories, id: \.self) { category in
+                                    Button {
+                                        selectedCategory = category
+                                    } label: {
+                                        CategoryIconView(category: category, showLabel: true, isSelected: category == selectedCategory)
+                                    }
                                 }
                                 Button{
                                     isShowingCreateCategoryView.toggle()
                                 } label: {
-                                    CategoryIconView(categoryName: "Add", iconColor: Color(red: 0/255, green: 209/255, blue: 255/255), iconImageName: "plus", showLabel: true, isSelected: false)
+                                    // Replace for custom add button
+                                    CategoryIconView(category: Category(id: UUID(), name: "Add", color: .accent, iconName: "plus"), showLabel: true, isSelected: false).glassEffect(.regular.interactive())
                                 }
                             }
                         }
-                        
-
                     }
                     
                     // Target account
@@ -117,6 +120,7 @@ struct AddTransactionView: View {
                 CreateCategoryView(isPresented: $isShowingCreateCategoryView)
             })
             .onAppear {
+                selectedCategory = categories.first!
                 selectedCurrency = currencies.first!
             }
             .navigationTitle("Add transaction")
