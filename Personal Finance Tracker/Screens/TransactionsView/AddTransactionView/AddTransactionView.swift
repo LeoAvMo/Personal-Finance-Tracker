@@ -73,7 +73,7 @@ struct AddTransactionView: View {
                     
                     // Transaction date
                     DatePicker(selection: $selectedDate, displayedComponents: .date, label: { Text("Date") })
-                        
+                    
                     // Transaction type
                     VStack(alignment: .leading){
                         Text("Category")
@@ -90,8 +90,7 @@ struct AddTransactionView: View {
                                 Button{
                                     isShowingCreateCategoryView.toggle()
                                 } label: {
-                                    // Replace for custom add button
-                                    CategoryIconView(category: Category(id: UUID(), name: "Add", color: .accent, iconName: "plus"), showLabel: true, isSelected: false).glassEffect(.regular.interactive())
+                                    AddButton(showLabel: true)
                                 }
                             }
                         }

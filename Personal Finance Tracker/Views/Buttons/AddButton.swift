@@ -1,3 +1,4 @@
+
 //
 //  CategoryIconView.swift
 //  Personal Finance Tracker
@@ -7,45 +8,29 @@
 
 import SwiftUI
 
-struct CategoryIconView: View {
-    var category: Category
+struct AddButton: View {
+    
     var showLabel: Bool = true
-    var isSelected: Bool = true
+    
     
     var body: some View {
-        var displayedName: String {
-            if category.name.count > 8 {
-                return category.name.summarizeString(length: 5)
-            }
-            else {
-                return category.name
-            }
-        }
+        
         VStack{
             ZStack(alignment: .center){
-                if isSelected {
-                    Circle()
-                        .frame(width: 58, height: 58)
-                        .foregroundStyle(category.color)
-                    Circle()
-                        .frame(width: 54, height: 54)
-                        .foregroundStyle(.background)
-                }
-                
                 Circle()
                     .frame(width: 50, height: 50)
-                    .foregroundStyle(category.color)
-                Image(systemName: category.iconName)
+                    .foregroundStyle(.accent)
+                Image(systemName: "plus")
                     .foregroundColor(.white)
                     .font(.title)
-                
             }
+            .glassEffect(.regular.interactive())
             //.overlay(CheckmarkIconView(),alignment: .topTrailing)
             if showLabel {
                 // Put "..." string and only 5 characters for categories with a larger name of 8 chars
-                Text(displayedName)
+                Text("Add")
                     .font(.caption)
-                    .foregroundStyle(category.color)
+                    .foregroundStyle(.accent)
             }
         }
             
@@ -53,7 +38,7 @@ struct CategoryIconView: View {
 }
 
 #Preview {
-    CategoryIconView(category: Category(id: UUID(), name: "Expenses", color: .green, iconName: "dollarsign"), showLabel: true, isSelected: true)
+    AddButton(showLabel: true)
 }
 
 /*
