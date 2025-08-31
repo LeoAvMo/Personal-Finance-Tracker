@@ -51,13 +51,13 @@ struct AccountsView: View {
                 }
                 
                 Section(header: Text("Cards")) {
-                    ForEach(mockData.mockAccounts){ acc in
+                    ForEach(MockData.mockAccounts){ acc in
                         AccountCapsuleView(account: acc, selectedCurrency: selectedCurrency)
                     }
                 }
             }
             .onAppear{
-                totalBalance = cash + mockData.mockAccounts.reduce(0){ $0 + $1.balance}
+                totalBalance = cash + MockData.mockAccounts.reduce(0){ $0 + $1.balance}
             }
             .navigationTitle("Accounts")
         }

@@ -13,16 +13,23 @@ enum TransactionType : String, CaseIterable, Identifiable {
 }
 
 struct AddTransactionView: View {
+    //Private
     @State private var transactionLabel: String = ""
     @State private var transactionType: TransactionType = .income
-    @State private var amount: Double = 0.0
-    @State private var currencies: [Currency] = MockData().mockCurrencies  // Make this an environment var
     @State private var selectedCurrency: Currency?
+    @State private var amount: Double = 0.0
     @State private var selectedDate: Date = Date()
-    @State private var categories: [Category] = MockData().mockCategories  // Turn this to envirnment var for all of the user's categories
     @State private var selectedCategory: Category?
+    @State private var selectedAccount: Account?
     
+    // Turn these to ENVIRONMENT variables for all of the user's data
+    @State private var currencies: [Currency] = MockData.mockCurrencies
+    @State private var categories: [Category] = MockData.mockCategories
+    @State private var accounts: [Account] = MockData.mockAccounts
+    
+    // Used for create Category view toggle
     @State private var isShowingCreateCategoryView: Bool = false
+    
     enum TransactionType : String, CaseIterable, Identifiable {
         case income, expense
         var id : Self { self }
@@ -97,8 +104,11 @@ struct AddTransactionView: View {
                     }
                     
                     // Target account
-                    Text("Account")
-                    
+                    Picker(selection: .constant(1), label: Text("Account")) {
+                        /*@START_MENU_TOKEN@*/Text("1").tag(1)/*@END_MENU_TOKEN@*/
+                        /*@START_MENU_TOKEN@*/Text("2").tag(2)/*@END_MENU_TOKEN@*/
+                    }
+                    .pickerStyle(.navigationLink)
                 }
                 
                 Button{

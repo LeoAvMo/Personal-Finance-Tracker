@@ -18,7 +18,7 @@ struct TransactionsView: View {
                 }
                 Section(header: Text("Transactions")){
                     HStack{
-                        CategoryIconView(category: placeholderCategory, showLabel: false, isSelected: false)
+                        CategoryIconView(category: placeholderCategory, showLabel: true, isSelected: false)
                         VStack(alignment: .leading){
                             Text("Magic Keyboard")
                                 .font(.title2)

@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct Account: Identifiable {
-    var id: Int     //Change to UUID later
+    var id: UUID = UUID()
     var name: String
     var balance: Double
     var color: Color
-    
-    
+    var currency: Currency
 }
 

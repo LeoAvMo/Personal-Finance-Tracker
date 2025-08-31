@@ -8,7 +8,6 @@
 import Foundation
 
 struct Currency: Codable, Identifiable, Hashable{
-    // UUID
     var id: UUID = UUID()
     var name: String
     var code: String

@@ -12,6 +12,4 @@ struct Category: Identifiable, Hashable {
     var name: String
     var color: Color
     var iconName: String
-    
-    
 }
