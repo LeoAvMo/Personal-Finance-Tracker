@@ -21,15 +21,23 @@ struct MockData {
     
     static let mockAccounts: [Account] = [
                                         Account(id: UUID(),
+                                                  name: "Mexican Pesos",
+                                                  balance: 1500,
+                                                  color: Color(red: 0, green: 0.8, blue: 0.9),
+                                                  currency: MockData.mockCurrencyMXN,
+                                                  isCash: true),
+                                        Account(id: UUID(),
                                                   name: "Banamex",
                                                   balance: 550.20,
                                                   color: Color(red: 0, green: 0.5, blue: 0.9),
-                                                  currency: MockData.mockCurrencyMXN),
+                                                  currency: MockData.mockCurrencyMXN,
+                                                  isCash: false),
                                          Account(id: UUID(),
                                                  name: "Santander",
                                                  balance: 250.20,
                                                  color: Color(red: 0.95, green: 0.2, blue: 0.2),
-                                                 currency: MockData.mockCurrencyUSD)
+                                                 currency: MockData.mockCurrencyUSD,
+                                                 isCash: false)
                                           ]
     
     static let mockCurrencies: [Currency] = [

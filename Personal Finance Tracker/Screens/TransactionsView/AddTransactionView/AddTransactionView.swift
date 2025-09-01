@@ -83,13 +83,14 @@ struct AddTransactionView: View {
                     
                     // Target account
                     NavigationLink {
-                        Text("Hello")
+                        SelectAccountView(selectedAccount: $selectedAccount)
                     } label: {
                         HStack{
                             Text("Account")
                             Spacer()
                             Text(selectedAccount?.name ?? "Select Account")
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(selectedAccount == nil ? .secondary : selectedAccount?.color ?? .secondary)
+                                .fontWeight(.semibold)
                         }
                     }
                 }

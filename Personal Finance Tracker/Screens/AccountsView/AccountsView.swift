@@ -16,20 +16,7 @@ struct AccountsView: View {
         
         NavigationStack {
             Form{
-                /*
-                Section(header: Text("Currency")) {
-                    HStack {
-                        Text("Base currency:")
-                        Picker(selection: /*@START_MENU_TOKEN@*/.constant(1)/*@END_MENU_TOKEN@*/, label: Text("")) {
-                            Text("MXN 🇲🇽").tag(1)
-                            Text("EUR 🇪🇺").tag(2)
-                            Text("USD 🇺🇸").tag(3)
-                        }
-                        .pickerStyle(.navigationLink)
-                    }
-                    
-                }
-                */
+                
                 Section (header: Text("Total balance")) {
                     Picker(selection: .constant(1), label: Text("Picker")) {
                         Text("MXN 🇲🇽").tag(1)
@@ -48,12 +35,18 @@ struct AccountsView: View {
                 }
 
                 Section(header: Text("Cash")) {
-                    CashCapsuleView(cash: cash, selectedCurrency: selectedCurrency)
+                    ForEach(MockData.mockAccounts) { acc in
+                        if acc.isCash{
+                            AccountCapsuleView(account: acc)
+                        }
+                    }
                 }
                 
                 Section(header: Text("Cards")) {
                     ForEach(MockData.mockAccounts){ acc in
-                        AccountCapsuleView(account: acc)
+                        if !acc.isCash{
+                            AccountCapsuleView(account: acc)
+                        }
                     }
                 }
             }

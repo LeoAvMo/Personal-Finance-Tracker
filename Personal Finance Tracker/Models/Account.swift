@@ -13,5 +13,7 @@ struct Account: Identifiable, Hashable {
     var balance: Double
     var color: Color
     var currency: Currency
+    var isCash: Bool
 }
+
 
