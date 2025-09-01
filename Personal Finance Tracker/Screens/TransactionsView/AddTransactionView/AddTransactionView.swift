@@ -30,9 +30,13 @@ struct AddTransactionView: View {
     // Used for create Category view toggle
     @State private var isShowingCreateCategoryView: Bool = false
     
-    enum TransactionType : String, CaseIterable, Identifiable {
-        case income, expense
-        var id : Self { self }
+    private var amountColor: Color {
+        switch transactionType {
+            case .income:
+                return .green
+            case .expense:
+                return .red
+        }
     }
     
     var body: some View {
@@ -44,7 +48,7 @@ struct AddTransactionView: View {
                     // Transaction name
                     TextField("Label", text: $transactionLabel)
                     
-                    // Select if transaction is an income or an expense
+                    // Transaction type. Select if transaction is an income or an expense
                     Picker(selection: $transactionType, label: Text("Transaction Type")) {
                         Text("Income 📈").tag(TransactionType.income)
                         Text("Expense 📉").tag(TransactionType.expense)
@@ -61,14 +65,6 @@ struct AddTransactionView: View {
                     
                     // Amount
                     HStack{
-                        var amountColor: Color {
-                            switch transactionType {
-                                case .income:
-                                        .green
-                                case .expense:
-                                        .red
-                            }
-                        }
                         Text("Amount")
                         Spacer()
                         TextField("$", value: $amount, format: .currency(code: selectedCurrency?.code ?? "USD"))
@@ -81,34 +77,21 @@ struct AddTransactionView: View {
                     // Transaction date
                     DatePicker(selection: $selectedDate, displayedComponents: .date, label: { Text("Date") })
                     
-                    // Transaction type
-                    VStack(alignment: .leading){
-                        Text("Category")
-                        ScrollView(.horizontal, showsIndicators: true){
-                            
-                            HStack {
-                                ForEach(categories, id: \.self) { category in
-                                    Button {
-                                        selectedCategory = category
-                                    } label: {
-                                        CategoryIconView(category: category, showLabel: true, isSelected: category == selectedCategory)
-                                    }
-                                }
-                                Button{
-                                    isShowingCreateCategoryView.toggle()
-                                } label: {
-                                    AddButton(showLabel: true)
-                                }
-                            }
-                        }
-                    }
+                    
+                    // Transaction category
+                    CategorySelectorView(categories: categories, selectedCategory: $selectedCategory, isShowingCreateCategoryView: $isShowingCreateCategoryView)
                     
                     // Target account
-                    Picker(selection: .constant(1), label: Text("Account")) {
-                        /*@START_MENU_TOKEN@*/Text("1").tag(1)/*@END_MENU_TOKEN@*/
-                        /*@START_MENU_TOKEN@*/Text("2").tag(2)/*@END_MENU_TOKEN@*/
+                    NavigationLink {
+                        Text("Hello")
+                    } label: {
+                        HStack{
+                            Text("Account")
+                            Spacer()
+                            Text(selectedAccount?.name ?? "Select Account")
+                                .foregroundStyle(.secondary)
+                        }
                     }
-                    .pickerStyle(.navigationLink)
                 }
                 
                 Button{
@@ -143,7 +126,29 @@ struct AddTransactionView: View {
 }
 
 struct CategorySelectorView: View {
+    var categories: [Category]
+    @Binding var selectedCategory: Category?
+    @Binding var isShowingCreateCategoryView: Bool
     var body: some View {
-       
+        VStack(alignment: .leading){
+            Text("Category")
+            ScrollView(.horizontal, showsIndicators: true){
+                HStack {
+                    ForEach(categories, id: \.self) { category in
+                        Button {
+                            selectedCategory = category
+                        } label: {
+                            CategoryIconView(category: category, showLabel: true, isSelected: category == selectedCategory)
+                        }
+                    }
+                    Button{
+                        isShowingCreateCategoryView.toggle()
+                    } label: {
+                        AddButton(showLabel: true)
+                    }
+                }
+            }
+        }
     }
 }
+

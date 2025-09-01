@@ -16,6 +16,7 @@ struct AccountsView: View {
         
         NavigationStack {
             Form{
+                /*
                 Section(header: Text("Currency")) {
                     HStack {
                         Text("Base currency:")
@@ -28,7 +29,7 @@ struct AccountsView: View {
                     }
                     
                 }
-                
+                */
                 Section (header: Text("Total balance")) {
                     Picker(selection: .constant(1), label: Text("Picker")) {
                         Text("MXN 🇲🇽").tag(1)
@@ -52,7 +53,7 @@ struct AccountsView: View {
                 
                 Section(header: Text("Cards")) {
                     ForEach(MockData.mockAccounts){ acc in
-                        AccountCapsuleView(account: acc, selectedCurrency: selectedCurrency)
+                        AccountCapsuleView(account: acc)
                     }
                 }
             }
@@ -85,35 +86,13 @@ struct CashCapsuleView: View {
                     .fontWeight(.semibold)
             }
             Spacer()
-            Text("$\(cash, specifier: "%.2f") \(selectedCurrency)")
+            Text(cash, format: .currency(code: selectedCurrency))
                 .fontWeight(.semibold)
+                .foregroundStyle(.primary)
         }
     }
 }
 
-struct AccountCapsuleView: View {
-    public var account: Account
-    public var selectedCurrency: String
-    var body: some View {
-        HStack {
-            Image(systemName: "creditcard.fill")
-                .resizable()
-                .scaledToFit()
-                .foregroundStyle(account.color)
-                .frame(width: 35, height: 35)
-            VStack(alignment: .leading){
-                Text("Balance:")
-                    .foregroundStyle(account.color)
-                    .fontWeight(.semibold)
-                Text("\(account.name)")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-            Spacer()
-            Text("$\(account.balance, specifier: "%.2f") \(selectedCurrency)")
-                .fontWeight(.semibold)
-        }
-    }
-}
+
 
 
