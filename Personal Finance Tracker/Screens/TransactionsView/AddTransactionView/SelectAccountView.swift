@@ -12,6 +12,8 @@ struct SelectAccountView: View {
     @State private var accounts: [Account] = MockData.mockAccounts  //Turn this to environment variable
     @State private var columnLayout = Array(repeating: GridItem(), count: 2)
     
+    var mockAccount: Account = MockData.mockAccount
+    
     var body: some View {
         NavigationStack{
             ScrollView {
@@ -22,20 +24,48 @@ struct SelectAccountView: View {
                         .font(.title2)
                     
                     LazyVGrid(columns: columnLayout){
-                        ZStack{
-                            Capsule()
-                                .foregroundStyle(.red)
-                            Circle()
-                                .frame(width: 40, height: 40)
+                        
+                        Button {
+                            
+                        } label : {
+                            ZStack{
+                                RoundedRectangle(cornerRadius: 50)
+                                    .foregroundStyle(mockAccount.color)
+                                    .frame(height: 200)
+                                
+                                VStack{
+                                    Spacer()
+                                    ZStack{
+                                        Circle()
+                                            .frame(width: 60, height: 60)
+                                            .foregroundStyle(.white)
+                                        
+                                        Image(systemName: "dollarsign")
+                                            .foregroundStyle(mockAccount.color)
+                                            .font(.system(size: 35))
+                                    }
+                                    
+                                    Spacer()
+                                    Text(mockAccount.balance, format: .currency(code: mockAccount.currency.code))
+                                        .bold()
+                                        .foregroundStyle(.white)
+                                    Text(mockAccount.name)
+                                        .foregroundStyle(.white)
+                                        .font(.footnote)
+                                    
+                                }
+                                .padding()
+                            }
+                            
                         }
+                        
+                        
+                        
                     }
                     Text("Accounts")
                         .foregroundStyle(.secondary)
                         .font(.title2)
                     
-                    Text("Credit Cards")
-                        .foregroundStyle(.secondary)
-                        .font(.title2)
                 }
                 
                 ForEach(accounts, id: \.self){ account in
@@ -56,4 +86,10 @@ struct SelectAccountView: View {
 
 #Preview {
     SelectAccountView(selectedAccount: .constant(nil))
+}
+
+struct AccountCardView: View {
+    var body: some View {
+        Text("Hello, World!")
+    }
 }

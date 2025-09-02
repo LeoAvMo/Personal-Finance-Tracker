@@ -19,6 +19,8 @@ struct MockData {
                                                     flag: "🇺🇸",
                                                     value: 18.65)
     
+    static let mockAccount: Account = Account(name: "Mexican Peso", balance: 15000, color: .green, currency: MockData.mockCurrencyMXN, isCash: true)
+    
     static let mockAccounts: [Account] = [
                                         Account(id: UUID(),
                                                   name: "Mexican Pesos",
