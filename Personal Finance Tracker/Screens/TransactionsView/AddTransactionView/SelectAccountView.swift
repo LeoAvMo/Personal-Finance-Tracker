@@ -11,7 +11,6 @@ struct SelectAccountView: View {
     @Binding var selectedAccount: Account?
     @State private var accounts: [Account] = MockData.mockAccounts  //Turn this to environment variable
     @State private var columnLayout = Array(repeating: GridItem(), count: 2)
-    
     var mockAccount: Account = MockData.mockAccount
     
     var body: some View {
@@ -24,58 +23,33 @@ struct SelectAccountView: View {
                         .font(.title2)
                     
                     LazyVGrid(columns: columnLayout){
-                        
-                        Button {
-                            
-                        } label : {
-                            ZStack{
-                                RoundedRectangle(cornerRadius: 50)
-                                    .foregroundStyle(mockAccount.color)
-                                    .frame(height: 200)
-                                
-                                VStack{
-                                    Spacer()
-                                    ZStack{
-                                        Circle()
-                                            .frame(width: 60, height: 60)
-                                            .foregroundStyle(.white)
-                                        
-                                        Image(systemName: "dollarsign")
-                                            .foregroundStyle(mockAccount.color)
-                                            .font(.system(size: 35))
-                                    }
-                                    
-                                    Spacer()
-                                    Text(mockAccount.balance, format: .currency(code: mockAccount.currency.code))
-                                        .bold()
-                                        .foregroundStyle(.white)
-                                    Text(mockAccount.name)
-                                        .foregroundStyle(.white)
-                                        .font(.footnote)
-                                    
+                        ForEach(accounts, id: \.self){ account in
+                            if account.isCash {
+                                Button{
+                                    selectedAccount = account
+                                } label: {
+                                    AccountCardView(account: account, isSelected: selectedAccount?.id == account.id)
                                 }
-                                .padding()
                             }
-                            
                         }
-                        
-                        
-                        
                     }
+                    
                     Text("Accounts")
                         .foregroundStyle(.secondary)
                         .font(.title2)
                     
-                }
-                
-                ForEach(accounts, id: \.self){ account in
-                    Button{
-                        selectedAccount = account
-                    } label: {
-                        AccountCapsuleView(account: account)
+                    LazyVGrid(columns: columnLayout){
+                        ForEach(accounts, id: \.self){ account in
+                            if !account.isCash {
+                                Button{
+                                    selectedAccount = account
+                                } label: {
+                                    AccountCardView(account: account, isSelected: selectedAccount == account)
+                                }
+                            }
+                        }
                     }
                 }
-                
             }
             .padding(.horizontal)
             .navigationBarTitle("Select Account")
@@ -89,7 +63,46 @@ struct SelectAccountView: View {
 }
 
 struct AccountCardView: View {
+    
+    var account: Account
+    var isSelected: Bool
+    
     var body: some View {
-        Text("Hello, World!")
+        ZStack{
+            RoundedRectangle(cornerRadius: 50)
+                .foregroundStyle(account.color)
+                .frame(height: 200)
+            
+            VStack{
+                Spacer()
+                ZStack{
+                    Circle()
+                        .frame(width: 70, height: 70)
+                        .foregroundStyle(.white)
+                    
+                    Image(systemName: account.isCash ? "dollarsign" : "creditcard")
+                        .foregroundStyle(account.color)
+                        .font(.system(size: 35))
+                }
+                
+                Spacer()
+                Text(account.balance, format: .currency(code: account.currency.code))
+                    .bold()
+                    .foregroundStyle(.white)
+                Text(account.name)
+                    .foregroundStyle(.white)
+                    .font(.footnote)
+                
+            }
+            .padding()
+        }
+        .overlay(alignment: .topTrailing){
+            if isSelected {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.title)
+                    .padding(18)
+                    .foregroundStyle(.white)
+            }
+        }
     }
 }
