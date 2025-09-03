@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Category: Identifiable, Hashable {
+struct Category: Identifiable, Hashable, Equatable {
     var id: UUID
     var name: String
     var color: Color

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Account: Identifiable, Hashable {
+struct Account: Identifiable, Hashable, Equatable {
     var id: UUID = UUID()
     var name: String
     var balance: Double

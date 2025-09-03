@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Transaction: Identifiable, Hashable {
+struct Transaction: Identifiable, Hashable, Equatable {
     var id: UUID = UUID()
     var transactionLabel: String
     var transactionCurrency: Currency?

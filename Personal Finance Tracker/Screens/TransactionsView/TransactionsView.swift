@@ -8,8 +8,12 @@
 import SwiftUI
 
 struct TransactionsView: View {
-    @State private var showAddTransactionView: Bool = false
+    
     @State private var placeholderCategory: Category = Category(id: UUID(), name: "Expenses", color: .green, iconName: "dollarsign")
+    
+    @State private var allTransactions: [Transaction] = []
+    @State private var transaction: Transaction?
+    
     var body: some View {
         NavigationStack{
             List{
@@ -18,24 +22,26 @@ struct TransactionsView: View {
                 }
                 Section(header: Text("Transactions")){
                     HStack{
-                        CategoryIconView(category: placeholderCategory, showLabel: true, isSelected: false)
+                        let isIncome = transaction?.transactionAmount ?? 0 > 0
+                        CategoryIconView(category: transaction?.transactionCategory ?? MockData.mockCategory, showLabel: true, isSelected: false)
                         VStack(alignment: .leading){
-                            Text("Magic Keyboard")
+                            Text(transaction?.transactionLabel ?? "Transaction")
                                 .font(.title2)
-                            Text("10/10/2025")
+                            Text(transaction?.transactionDate ?? Date(), format: .dateTime.day().month().year())
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                             Divider()
-                            Text("Débito Santander")
+                            Text(transaction?.transactionAccount?.name ?? "Account")
                                 .font(.body)
                                 .foregroundStyle(.primary)
                             HStack{
-                                Text("-$1,000,599.00 MXN")
+                                Text(transaction?.transactionAmount ?? 0.0, format: .currency(code: transaction?.transactionCurrency?.code ?? "USD"))
+                                    .bold()
                                     .fontWeight(.semibold)
-                                    .foregroundStyle(.red)
+                                    .foregroundStyle(isIncome ? .green : .red)
                                 Image(systemName: "chart.line.downtrend.xyaxis")
                                     .fontWeight(.semibold)
-                                    .foregroundStyle(.red)
+                                    .foregroundStyle(isIncome ? .green : .red)
                             }
 
                         }

@@ -9,6 +9,8 @@ import SwiftUI
 
 struct MockData {
     
+    static let mockCategory: Category = Category(id: UUID(), name: "Expenses", color: .green, iconName: "dollarsign")
+    
     static let mockCurrencyMXN: Currency = Currency(name: "Mexican Peso",
                                                     code: "MXN",
                                                     flag: "🇲🇽",
