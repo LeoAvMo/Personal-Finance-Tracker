@@ -10,9 +10,9 @@ import Foundation
 struct Transaction: Identifiable, Hashable {
     var id: UUID = UUID()
     var transactionLabel: String
-    var transactionCurrency: Currency
+    var transactionCurrency: Currency?
     var transactionAmount: Double
     var transactionDate: Date
-    var transactionCategory: Category
-    var transactionAccount: Account
+    var transactionCategory: Category?
+    var transactionAccount: Account?
 }

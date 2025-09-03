@@ -14,13 +14,13 @@ enum TransactionType : String, CaseIterable, Identifiable {
 
 struct AddTransactionView: View {
     //Private
-    @State private var transactionLabel: String = ""
+    @State private var transaction = Transaction(transactionLabel: "",
+                                                 transactionCurrency: nil,
+                                                 transactionAmount: 0.0,
+                                                 transactionDate: Date(),
+                                                 transactionCategory: nil,
+                                                 transactionAccount: nil)
     @State private var transactionType: TransactionType = .income
-    @State private var selectedCurrency: Currency?
-    @State private var amount: Double = 0.0
-    @State private var selectedDate: Date = Date()
-    @State private var selectedCategory: Category?
-    @State private var selectedAccount: Account?
     
     // Turn these to ENVIRONMENT variables for all of the user's data
     @State private var currencies: [Currency] = MockData.mockCurrencies
@@ -46,7 +46,7 @@ struct AddTransactionView: View {
                 Form{
                     
                     // Transaction name
-                    TextField("Label", text: $transactionLabel)
+                    TextField("Label", text: $transaction.transactionLabel)
                     
                     // Transaction type. Select if transaction is an income or an expense
                     Picker(selection: $transactionType, label: Text("Transaction Type")) {
@@ -56,7 +56,7 @@ struct AddTransactionView: View {
                     .pickerStyle(.menu)
                     
                     // Select currency
-                    Picker(selection: $selectedCurrency, label: Text("Currency")) {
+                    Picker(selection: $transaction.transactionCurrency, label: Text("Currency")) {
                         ForEach(currencies, id: \.self) { currency in
                             Text(currency.code + currency.flag).tag(currency)
                         }
@@ -67,7 +67,7 @@ struct AddTransactionView: View {
                     HStack{
                         Text("Amount")
                         Spacer()
-                        TextField("$", value: $amount, format: .currency(code: selectedCurrency?.code ?? "USD"))
+                        TextField("$", value: $transaction.transactionAmount, format: .currency(code: transaction.transactionCurrency?.code ?? "USD"))
                             .keyboardType(.decimalPad)
                             .multilineTextAlignment(.trailing)
                             .fontWeight(.semibold)
@@ -75,28 +75,27 @@ struct AddTransactionView: View {
                     }
                     
                     // Transaction date
-                    DatePicker(selection: $selectedDate, displayedComponents: .date, label: { Text("Date") })
-                    
+                    DatePicker(selection: $transaction.transactionDate, displayedComponents: .date, label: { Text("Date") })
                     
                     // Transaction category
-                    CategorySelectorView(categories: categories, selectedCategory: $selectedCategory, isShowingCreateCategoryView: $isShowingCreateCategoryView)
+                    CategorySelectorView(categories: categories, selectedCategory: $transaction.transactionCategory, isShowingCreateCategoryView: $isShowingCreateCategoryView)
                     
                     // Target account
                     NavigationLink {
-                        SelectAccountView(selectedAccount: $selectedAccount)
+                        SelectAccountView(selectedAccount: $transaction.transactionAccount)
                     } label: {
                         HStack{
                             Text("Account")
                             Spacer()
-                            Text(selectedAccount?.name ?? "Select Account")
-                                .foregroundStyle(selectedAccount == nil ? .secondary : selectedAccount?.color ?? .secondary)
+                            Text(transaction.transactionAccount?.name ?? "Select Account")
+                                .foregroundStyle(transaction.transactionAccount == nil ? .secondary : transaction.transactionAccount?.color ?? .secondary)
                                 .fontWeight(.semibold)
                         }
                     }
                 }
                 
                 Button{
-                   print("Transaction Added!")
+                   print(transaction)
                 } label: {
                     Text("Add Transaction")
                         .frame(maxWidth: .infinity, maxHeight: 50)
@@ -113,8 +112,8 @@ struct AddTransactionView: View {
                 CreateCategoryView(isPresented: $isShowingCreateCategoryView)
             })
             .onAppear {
-                selectedCategory = categories.first!
-                selectedCurrency = currencies.first!
+                transaction.transactionCurrency = currencies.first!
+                transaction.transactionCategory = categories.first!
             }
             .navigationTitle("Add transaction")
         }
