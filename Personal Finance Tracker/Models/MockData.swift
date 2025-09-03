@@ -76,4 +76,27 @@ struct MockData {
                                                       color: .green,
                                                       iconName: "dollarsign")
                                             ]
+    
+    static let mockTransactions: [Transaction] = [Transaction(id: UUID(),
+                                                             transactionLabel: "Magic Keyboard",
+                                                             transactionCurrency: MockData.mockCurrencyMXN,
+                                                             transactionAmount: -4699,
+                                                             transactionDate: Date(),
+                                                             transactionCategory: MockData.mockCategories[0],
+                                                             transactionAccount: MockData.mockAccount),
+                                                  Transaction(id: UUID(),
+                                                           transactionLabel: "iPad Mini",
+                                                           transactionCurrency: MockData.mockCurrencyUSD,
+                                                           transactionAmount: -599,
+                                                           transactionDate: Date(),
+                                                           transactionCategory: MockData.mockCategories[1],
+                                                           transactionAccount: MockData.mockAccounts[0]),
+                                                  Transaction(id: UUID(),
+                                                           transactionLabel: "September deposit",
+                                                           transactionCurrency: MockData.mockCurrencyMXN,
+                                                           transactionAmount: 9500,
+                                                           transactionDate: Date(),
+                                                           transactionCategory: MockData.mockCategory,
+                                                           transactionAccount: MockData.mockAccount)
+    ]
 }

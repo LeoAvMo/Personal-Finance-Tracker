@@ -9,10 +9,7 @@ import SwiftUI
 
 struct TransactionsView: View {
     
-    @State private var placeholderCategory: Category = Category(id: UUID(), name: "Expenses", color: .green, iconName: "dollarsign")
-    
-    @State private var allTransactions: [Transaction] = []
-    @State private var transaction: Transaction?
+    @State private var allTransactions: [Transaction] = MockData.mockTransactions   // Turn this into environment variable
     
     var body: some View {
         NavigationStack{
@@ -21,31 +18,8 @@ struct TransactionsView: View {
                     
                 }
                 Section(header: Text("Transactions")){
-                    HStack{
-                        let isIncome = transaction?.transactionAmount ?? 0 > 0
-                        CategoryIconView(category: transaction?.transactionCategory ?? MockData.mockCategory, showLabel: true, isSelected: false)
-                        VStack(alignment: .leading){
-                            Text(transaction?.transactionLabel ?? "Transaction")
-                                .font(.title2)
-                            Text(transaction?.transactionDate ?? Date(), format: .dateTime.day().month().year())
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                            Divider()
-                            Text(transaction?.transactionAccount?.name ?? "Account")
-                                .font(.body)
-                                .foregroundStyle(.primary)
-                            HStack{
-                                Text(transaction?.transactionAmount ?? 0.0, format: .currency(code: transaction?.transactionCurrency?.code ?? "USD"))
-                                    .bold()
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(isIncome ? .green : .red)
-                                Image(systemName: "chart.line.downtrend.xyaxis")
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(isIncome ? .green : .red)
-                            }
-
-                        }
-                        .padding(.leading)
+                    ForEach(allTransactions, id: \.self){ transaction in
+                        IndividualTransactionView(transaction: transaction)
                     }
                 }
             }
@@ -69,4 +43,37 @@ struct TransactionsView: View {
 
 #Preview {
     TransactionsView()
+}
+
+struct IndividualTransactionView: View {
+    var transaction: Transaction?
+    
+    var body: some View {
+        HStack{
+            let isIncome = transaction?.transactionAmount ?? 0 > 0
+            CategoryIconView(category: transaction?.transactionCategory ?? MockData.mockCategory, showLabel: true, isSelected: false)
+            VStack(alignment: .leading){
+                Text(transaction?.transactionLabel ?? "Transaction")
+                    .font(.title2)
+                Text(transaction?.transactionDate ?? Date(), format: .dateTime.day().month().year())
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Divider()
+                Text(transaction?.transactionAccount?.name ?? "Account")
+                    .font(.body)
+                    .foregroundStyle(.primary)
+                HStack{
+                    Text(transaction?.transactionAmount ?? 0.0, format: .currency(code: transaction?.transactionCurrency?.code ?? "USD"))
+                        .bold()
+                        .fontWeight(.semibold)
+                        .foregroundStyle(isIncome ? .green : .red)
+                    Image(systemName: isIncome ? "chart.line.uptrend.xyaxis" : "chart.line.downtrend.xyaxis")
+                        .fontWeight(.semibold)
+                        .foregroundStyle(isIncome ? .green : .red)
+                }
+
+            }
+            .padding(.leading)
+        }
+    }
 }
