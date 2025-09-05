@@ -21,7 +21,8 @@ struct AddTransactionView: View {
                                                  transactionCategory: nil,
                                                  transactionAccount: nil)
     @State private var transactionType: TransactionType = .income
-    
+    @State private var alertItem: TrackerAlertItem?
+    @State private var showAlert: Bool = false
     // Turn these to ENVIRONMENT variables for all of the user's data
     @State private var currencies: [Currency] = MockData.mockCurrencies
     @State private var categories: [Category] = MockData.mockCategories
@@ -98,22 +99,40 @@ struct AddTransactionView: View {
                     
                     // MARK: Error cheking
                     
-                    //Transaction label is empty
+                    
                     if transaction.transactionLabel.isEmpty{
-                        print("Transaction not added")
+                        alertItem = TrackerAlertContext.transactionLabelIsEmpty
+                        showAlert.toggle()
+                        return
                     }
                     
-                    // Transaction type is not selected
-                    
                     //Currency is nil
+                    if transaction.transactionCurrency == nil{
+                        alertItem = TrackerAlertContext.currencyIsEmpty
+                        showAlert.toggle()
+                        return
+                    }
                     
-                    // amount is less or equal to zero
-                    
-                    // Date is nil
+                    // amount is less or equal to zero, not a number or is infinite
+                    if transaction.transactionAmount <= 0 || transaction.transactionAmount.isNaN || transaction.transactionAmount.isInfinite {
+                        alertItem = TrackerAlertContext.invalidAmount
+                        showAlert.toggle()
+                        return
+                    }
                     
                     // Category is nil
+                    if transaction.transactionCategory == nil{
+                        alertItem = TrackerAlertContext.categoryIsEmpty
+                        showAlert.toggle()
+                        return
+                    }
                     
                     // Account is nil
+                    if transaction.transactionAccount == nil{
+                        alertItem = TrackerAlertContext.accountIsEmpty
+                        showAlert.toggle()
+                        return
+                    }
                     
                     // MARK: Steps after passing all checks:
                     
@@ -145,6 +164,12 @@ struct AddTransactionView: View {
                 transaction.transactionCurrency = currencies.first!
                 transaction.transactionCategory = categories.first!
             }
+            .alert(isPresented: $showAlert) {
+                Alert(title: alertItem!.alertTitle,
+                      message: alertItem!.alertMessage,
+                      dismissButton: alertItem!.alertDismissButton)
+            }
+
             .navigationTitle("Add transaction")
         }
         

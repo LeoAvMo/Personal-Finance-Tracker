@@ -11,7 +11,7 @@ struct SelectAccountView: View {
     @Binding var selectedAccount: Account?
     @State private var accounts: [Account] = MockData.mockAccounts  //Turn this to environment variable
     @State private var columnLayout = Array(repeating: GridItem(), count: 2)
-    var mockAccount: Account = MockData.mockAccount
+    
     
     var body: some View {
         NavigationStack{

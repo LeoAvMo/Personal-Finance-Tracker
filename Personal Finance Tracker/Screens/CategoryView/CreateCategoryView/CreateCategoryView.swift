@@ -13,7 +13,7 @@ struct CreateCategoryView: View {
     @State private var placeholderCategory: Category = .init(id: UUID(), name: "", color: .pink, iconName: "dollarsign")
     @State private var editSetting: EditSettings = .color
     @State private var showAlert: Bool = false
-    @State private var categoryAlertItem: CategoryAlertItem?
+    @State private var categoryAlertItem: TrackerAlertItem?
     @Binding var isPresented: Bool
     
     
@@ -67,7 +67,7 @@ struct CreateCategoryView: View {
         .overlay(GeneralDismissButton(isShowingDetail: $isPresented), alignment: .topLeading)
         .overlay(Button {
             if placeholderCategory.name.isEmpty {
-                categoryAlertItem = AlertContext.categoryNameIsRequired
+                categoryAlertItem = TrackerAlertContext.categoryNameIsRequired
                 showAlert.toggle()
             } else {
                 isPresented.toggle()
