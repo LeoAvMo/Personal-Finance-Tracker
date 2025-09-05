@@ -27,7 +27,7 @@ struct TransactionsView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing){
                     NavigationLink{
-                        AddTransactionView()
+                        AddTransactionView(transactions: $allTransactions)
                     } label: {
                         Image(systemName: "plus")
                             .font(.headline)

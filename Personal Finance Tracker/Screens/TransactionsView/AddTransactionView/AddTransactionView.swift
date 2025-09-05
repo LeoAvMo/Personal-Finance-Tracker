@@ -27,7 +27,7 @@ struct AddTransactionView: View {
     @State private var currencies: [Currency] = MockData.mockCurrencies
     @State private var categories: [Category] = MockData.mockCategories
     @State private var accounts: [Account] = MockData.mockAccounts
-    
+    @Binding var transactions: [Transaction]
     // Used for create Category view toggle
     @State private var isShowingCreateCategoryView: Bool = false
     
@@ -98,8 +98,7 @@ struct AddTransactionView: View {
                 Button{
                     
                     // MARK: Error cheking
-                    
-                    
+
                     if transaction.transactionLabel.isEmpty{
                         alertItem = TrackerAlertContext.transactionLabelIsEmpty
                         showAlert.toggle()
@@ -136,15 +135,31 @@ struct AddTransactionView: View {
                     
                     // MARK: Steps after passing all checks:
                     
-                    // Turn amount to negative in case of .expense
+                    // Check if currencies match
+                    if transaction.transactionAccount?.currency.code != transaction.transactionCurrency?.code {
+                        
+                        // TEMPORARY: CREATE AN ALERT FOR CREATING A TRANSACTION WITH DIFFERENT CURRENCY FROM THE TARGET ACCOUNT
+                        alertItem = TrackerAlertContext.currencyIsEmpty
+                        showAlert.toggle()
+                        return
+                        // SOLUTION: OPEN A MENU OF TO SELECT THE CURRENCY VALUE
+                        
+                    }
                     
-                    // Add it to the target account
+                    // Turn amount to negative in case of .expense
+                    switch transactionType {
+                        case .income:
+                            transaction.transactionAccount?.balance += transaction.transactionAmount
+                        case .expense:
+                            transaction.transactionAccount?.balance += -transaction.transactionAmount
+                    }
                     
                     // Add it to the list of transactions the user has
+                    transactions.append(transaction)
                     
                     // Return to Transactions View
-                    
                    print(transaction)
+                    
                 } label: {
                     Text("Add Transaction")
                         .frame(maxWidth: .infinity, maxHeight: 50)
@@ -177,7 +192,7 @@ struct AddTransactionView: View {
 }
 
 #Preview {
-    AddTransactionView()
+    AddTransactionView(transactions: .constant(MockData.mockTransactions))
 }
 
 struct CategorySelectorView: View {
