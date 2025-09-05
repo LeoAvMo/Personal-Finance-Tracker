@@ -95,6 +95,36 @@ struct AddTransactionView: View {
                 }
                 
                 Button{
+                    
+                    // MARK: Error cheking
+                    
+                    //Transaction label is empty
+                    if transaction.transactionLabel.isEmpty{
+                        print("Transaction not added")
+                    }
+                    
+                    // Transaction type is not selected
+                    
+                    //Currency is nil
+                    
+                    // amount is less or equal to zero
+                    
+                    // Date is nil
+                    
+                    // Category is nil
+                    
+                    // Account is nil
+                    
+                    // MARK: Steps after passing all checks:
+                    
+                    // Turn amount to negative in case of .expense
+                    
+                    // Add it to the target account
+                    
+                    // Add it to the list of transactions the user has
+                    
+                    // Return to Transactions View
+                    
                    print(transaction)
                 } label: {
                     Text("Add Transaction")
