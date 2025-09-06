@@ -15,7 +15,8 @@ struct CreateCategoryView: View {
     @State private var showAlert: Bool = false
     @State private var categoryAlertItem: TrackerAlertItem?
     @Binding var isPresented: Bool
-    
+    // Turn this to environment
+    @Binding var allCategories: [Category]
     
     enum EditSettings : String, CaseIterable, Identifiable {
         case color, icon
@@ -70,6 +71,7 @@ struct CreateCategoryView: View {
                 categoryAlertItem = TrackerAlertContext.categoryNameIsRequired
                 showAlert.toggle()
             } else {
+                allCategories.append(placeholderCategory)
                 isPresented.toggle()
             }
         } label: {AcceptButton()}, alignment: .topTrailing)
@@ -77,7 +79,7 @@ struct CreateCategoryView: View {
 }
 
 #Preview {
-    CreateCategoryView(isPresented: .constant(true))
+    CreateCategoryView(isPresented: .constant(true), allCategories: .constant(MockData.mockCategories))
 }
 
 struct BigCategoryIconView: View {

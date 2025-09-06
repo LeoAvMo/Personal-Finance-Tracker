@@ -20,7 +20,7 @@ struct AddTransactionView: View {
                                                  transactionDate: Date(),
                                                  transactionCategory: nil,
                                                  transactionAccount: nil)
-    @State private var transactionType: TransactionType = .income
+    @State private var transactionType: TransactionType?
     @State private var alertItem: TrackerAlertItem?
     @State private var showAlert: Bool = false
     // Turn these to ENVIRONMENT variables for all of the user's data
@@ -37,6 +37,8 @@ struct AddTransactionView: View {
                 return .green
             case .expense:
                 return .red
+            case .none:
+                return .gray
         }
     }
     
@@ -151,7 +153,16 @@ struct AddTransactionView: View {
                         case .income:
                             transaction.transactionAccount?.balance += transaction.transactionAmount
                         case .expense:
+                            if transaction.transactionAmount > transaction.transactionAccount!.balance {
+                                alertItem = TrackerAlertContext.currencyIsEmpty
+                                showAlert.toggle()
+                                return
+                            }
                             transaction.transactionAccount?.balance += -transaction.transactionAmount
+                        case .none:
+                            alertItem = TrackerAlertContext.invalidAmount
+                            showAlert.toggle()
+                            return
                     }
                     
                     // Add it to the list of transactions the user has
@@ -173,12 +184,8 @@ struct AddTransactionView: View {
             }
             .background(.background)
             .sheet(isPresented: $isShowingCreateCategoryView, content: {
-                CreateCategoryView(isPresented: $isShowingCreateCategoryView)
+                CreateCategoryView(isPresented: $isShowingCreateCategoryView, allCategories: $categories)
             })
-            .onAppear {
-                transaction.transactionCurrency = currencies.first!
-                transaction.transactionCategory = categories.first!
-            }
             .alert(isPresented: $showAlert) {
                 Alert(title: alertItem!.alertTitle,
                       message: alertItem!.alertMessage,
