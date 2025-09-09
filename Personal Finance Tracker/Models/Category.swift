@@ -6,10 +6,20 @@
 //
 
 import SwiftUI
+import SwiftData
 
-struct Category: Identifiable, Hashable, Equatable {
-    var id: UUID
+@Model
+class Category {
     var name: String
     var color: Color
     var iconName: String
+
+    @Relationship(deleteRule: .nullify)
+    var transactions: [Transaction] = []
+    
+    init(name: String = "", color: Color = .pink, iconName: String = "dollarsign") {
+        self.name = name
+        self.color = color
+        self.iconName = iconName
+    }
 }

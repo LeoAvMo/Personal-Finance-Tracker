@@ -53,6 +53,7 @@ struct SelectAccountView: View {
             }
             .padding(.horizontal)
             .navigationBarTitle("Select Account")
+            .background(.background)
         }
                 
     }

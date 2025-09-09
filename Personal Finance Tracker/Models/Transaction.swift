@@ -5,14 +5,24 @@
 //  Created by Leo A.Molina on 02/09/25.
 //
 
-import Foundation
+import SwiftUI
+import SwiftData
 
-struct Transaction: Identifiable, Hashable, Equatable {
-    var id: UUID = UUID()
-    var transactionLabel: String
-    var transactionCurrency: Currency?
-    var transactionAmount: Double
-    var transactionDate: Date
-    var transactionCategory: Category?
-    var transactionAccount: Account?
+@Model
+class Transaction {
+    var label: String
+    var amount: Double
+    var date: Date
+    var category: Category?
+    var targetAccount: Account
+    var currency: Currency
+    
+    init(label: String = "", amount: Double = 0, date: Date = .now, category: Category? = nil, targetAccount: Account, currency: Currency) {
+        self.label = label
+        self.amount = amount
+        self.date = date
+        self.category = category
+        self.targetAccount = targetAccount
+        self.currency = currency
+    }
 }

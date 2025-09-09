@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/**
 struct MockData {
     
     static let mockCategory: Category = Category(id: UUID(), name: "Expenses", color: .green, iconName: "dollarsign")
@@ -100,3 +101,4 @@ struct MockData {
                                                            transactionAccount: MockData.mockAccount)
     ]
 }
+*/

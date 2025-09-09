@@ -23,6 +23,7 @@ struct AddTransactionView: View {
     @State private var transactionType: TransactionType?
     @State private var alertItem: TrackerAlertItem?
     @State private var showAlert: Bool = false
+    @State private var showSelectAccountView = false
     // Turn these to ENVIRONMENT variables for all of the user's data
     @State private var currencies: [Currency] = MockData.mockCurrencies
     @State private var categories: [Category] = MockData.mockCategories
@@ -84,8 +85,8 @@ struct AddTransactionView: View {
                     CategorySelectorView(categories: categories, selectedCategory: $transaction.transactionCategory, isShowingCreateCategoryView: $isShowingCreateCategoryView)
                     
                     // Target account
-                    NavigationLink {
-                        SelectAccountView(selectedAccount: $transaction.transactionAccount)
+                    Button {
+                        showSelectAccountView.toggle()
                     } label: {
                         HStack{
                             Text("Account")
@@ -115,7 +116,7 @@ struct AddTransactionView: View {
                     }
                     
                     // amount is less or equal to zero, not a number or is infinite
-                    if transaction.transactionAmount <= 0 || transaction.transactionAmount.isNaN || transaction.transactionAmount.isInfinite {
+                    if transaction.transactionAmount <= 0 || transaction.transactionAmount.isNaN {
                         alertItem = TrackerAlertContext.invalidAmount
                         showAlert.toggle()
                         return
@@ -183,6 +184,9 @@ struct AddTransactionView: View {
                 .padding(.bottom, 25)
             }
             .background(.background)
+            .sheet(isPresented: $showSelectAccountView, content: {
+                SelectAccountView(selectedAccount: $transaction.transactionAccount)
+            })
             .sheet(isPresented: $isShowingCreateCategoryView, content: {
                 CreateCategoryView(isPresented: $isShowingCreateCategoryView, allCategories: $categories)
             })
