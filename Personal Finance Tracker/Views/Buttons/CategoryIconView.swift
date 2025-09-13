@@ -53,7 +53,7 @@ struct CategoryIconView: View {
 }
 
 #Preview {
-    CategoryIconView(category: Category(id: UUID(), name: "Expenses", color: .green, iconName: "dollarsign"), showLabel: true, isSelected: true)
+    CategoryIconView(category: Category())
 }
 
 /*

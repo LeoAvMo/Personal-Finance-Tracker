@@ -12,7 +12,7 @@ struct AccountCapsuleView: View {
     
     var body: some View {
         HStack {
-            Image(systemName: account.isCash ? "dollarsign.circle" : "creditcard.fill")
+            Image(systemName: account.type == .cash ? "dollarsign.circle" : "creditcard.fill")
                 .resizable()
                 .scaledToFit()
                 .foregroundStyle(account.color)
