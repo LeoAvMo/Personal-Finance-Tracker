@@ -18,18 +18,17 @@ enum AccountType: String, Codable {
 class Account {
     var name: String
     var balance: Double
-    var color: Color
+    var colorHex: String
+    var color: Color { Color(colorHex) }
     var type: AccountType
     var currency: Currency
     var maxCredit: Double?   // only used if AccountType is .credit
-
-    @Relationship(deleteRule: .cascade, inverse: \Transaction.targetAccount)
-    var transactions: [Transaction] = []
-
-    init(name: String = "Account", balance: Double = 0, color: Color = .green, type: AccountType = .cash, maxCredit: Double? = nil, currency: Currency) {
+    var user: PFTUser?
+    
+    init(name: String = "Account", balance: Double = 0, colorHex: String = "#000000", type: AccountType = .cash, maxCredit: Double? = nil, currency: Currency = Currency()) {
         self.name = name
         self.balance = balance
-        self.color = color
+        self.colorHex = colorHex
         self.type = type
         self.maxCredit = maxCredit
         self.currency = currency

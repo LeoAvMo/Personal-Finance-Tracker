@@ -6,19 +6,20 @@
 //
 
 import SwiftUI
-
+import SwiftData
 struct TransactionsView: View {
     
-    @State private var allTransactions: [Transaction] = MockData.mockTransactions   // Turn this into environment variable
+    @Environment(\.modelContext) private var modelContext
+    @Bindable var user: PFTUser
     
     var body: some View {
-        NavigationStack{
+        NavigationSplitView{
             List{
                 Section(header: Text("Total transactions")){
                     
                 }
                 Section(header: Text("Transactions")){
-                    ForEach(allTransactions, id: \.self){ transaction in
+                    ForEach(user.transactions){ transaction in
                         IndividualTransactionView(transaction: transaction)
                     }
                 }

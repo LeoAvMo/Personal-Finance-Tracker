@@ -14,15 +14,9 @@ class Currency {
     var code: String
     var flag: String
     var value: Double
+    var user: PFTUser?
 
-    
-    @Relationship(deleteRule: .nullify, inverse: \Account.currency)
-    var accounts: [Account] = []
-
-    @Relationship(deleteRule: .nullify, inverse: \Transaction.currency)
-    var transactions: [Transaction] = []
-
-    init(name: String, code: String, flag: String, value: Double) {
+    init(name: String = "US Dollar", code: String = "USD", flag: String = "🇺🇸", value: Double = 1.0) {
         self.name = name
         self.code = code
         self.flag = flag

@@ -11,15 +11,14 @@ import SwiftData
 @Model
 class Category {
     var name: String
-    var color: Color
+    var colorHex: String
+    var color: Color { Color(colorHex) }
     var iconName: String
-
-    @Relationship(deleteRule: .nullify)
-    var transactions: [Transaction] = []
+    var user: PFTUser?
     
-    init(name: String = "", color: Color = .pink, iconName: String = "dollarsign") {
+    init(name: String = "", colorHex: String = "#000000", iconName: String = "dollarsign") {
         self.name = name
-        self.color = color
+        self.colorHex = colorHex
         self.iconName = iconName
     }
 }

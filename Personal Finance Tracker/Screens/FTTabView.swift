@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct FTTabView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Bindable var user: PFTUser
     var body: some View {
         TabView {
             Tab("Transactions", systemImage: "dollarsign") {
-                TransactionsView()
+                TransactionsView(user: user)
             }
             
             Tab("Accounts", systemImage: "person.badge.key") {

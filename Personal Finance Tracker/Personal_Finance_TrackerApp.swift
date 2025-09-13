@@ -3,7 +3,7 @@
 //  Personal Finance Tracker
 //
 //  Created by Leo A.Molina on 16/08/25.
-//
+///Users/leoavmo/Documents/Coding/Swift/FinanceTrackerTest/FinanceTrackerTest/LoadUserView.swift
 
 import SwiftUI
 import SwiftData
@@ -12,7 +12,7 @@ import SwiftData
 struct Personal_Finance_TrackerApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            PFTUser.self, Account.self, Transaction.self, Category.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -25,7 +25,7 @@ struct Personal_Finance_TrackerApp: App {
 
     var body: some Scene {
         WindowGroup {
-            FTTabView()
+            LoadUserView()
         }
         .modelContainer(sharedModelContainer)
     }
