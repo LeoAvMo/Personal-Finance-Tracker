@@ -8,7 +8,6 @@
 import SwiftUI
 import SwiftData
 struct TransactionsView: View {
-    
     @Environment(\.modelContext) private var modelContext
     @Bindable var user: PFTUser
     
@@ -47,24 +46,24 @@ struct TransactionsView: View {
 }
 
 struct IndividualTransactionView: View {
-    var transaction: Transaction?
+    var transaction: Transaction
     
     var body: some View {
         HStack{
-            let isIncome = transaction?.transactionAmount ?? 0 > 0
-            CategoryIconView(category: transaction?.transactionCategory ?? MockData.mockCategory, showLabel: true, isSelected: false)
+            let isIncome = transaction.amount > 0
+            CategoryIconView(category: transaction.category ?? Category(), showLabel: true, isSelected: false)
             VStack(alignment: .leading){
-                Text(transaction?.transactionLabel ?? "Transaction")
+                Text(transaction.label)
                     .font(.title2)
-                Text(transaction?.transactionDate ?? Date(), format: .dateTime.day().month().year())
+                Text(transaction.date, format: .dateTime.day().month().year())
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Divider()
-                Text(transaction?.transactionAccount?.name ?? "Account")
+                Text(transaction.targetAccount.name)
                     .font(.body)
                     .foregroundStyle(.primary)
                 HStack{
-                    Text(transaction?.transactionAmount ?? 0.0, format: .currency(code: transaction?.transactionCurrency?.code ?? "USD"))
+                    Text(transaction.amount , format: .currency(code: transaction.currency.code))
                         .bold()
                         .fontWeight(.semibold)
                         .foregroundStyle(isIncome ? .green : .red)
@@ -72,7 +71,6 @@ struct IndividualTransactionView: View {
                         .fontWeight(.semibold)
                         .foregroundStyle(isIncome ? .green : .red)
                 }
-
             }
             .padding(.leading)
         }
