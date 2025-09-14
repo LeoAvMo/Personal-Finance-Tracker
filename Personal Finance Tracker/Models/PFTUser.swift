@@ -5,6 +5,9 @@
 //  Created by Leo A.Molina on 11/09/25.
 //
 
+/*
+ 
+
 import SwiftUI
 import SwiftData
 
@@ -28,3 +31,5 @@ class PFTUser {
         self.username = username
     }
 }
+
+*/

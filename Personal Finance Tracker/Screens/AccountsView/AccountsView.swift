@@ -12,12 +12,13 @@ import SwiftData
 
 struct AccountsView: View {
     @Environment(\.modelContext) private var modelContext
-    @Bindable var user: PFTUser
+    @Query(sort: \Account.name) var accounts: [Account]
+    @Query(sort: \Currency.name) var currencies: [Currency]
     @State private var selectedCurrency: Currency = Currency()
     
     private var formattedBalance: String {
         var total: Double = 0.0
-        for account in user.accounts {
+        for account in accounts {
             if account.balance > 0 {
                 total += account.balance
             }
@@ -32,7 +33,7 @@ struct AccountsView: View {
                 
                 Section (header: Text("Total balance")) {
                     Picker(selection: $selectedCurrency, label: Text("Picker")) {
-                        ForEach(user.currencies) { currency in
+                        ForEach(currencies) { currency in
                             Text(currency.code + currency.flag).tag(currency)
                         }
                     }
@@ -50,7 +51,7 @@ struct AccountsView: View {
                 
 
                 Section(header: Text("Cash")) {
-                    ForEach(user.accounts) { account in
+                    ForEach(accounts) { account in
                         if account.type == .cash {
                             AccountCapsuleView(account: account)
                         }
@@ -58,7 +59,7 @@ struct AccountsView: View {
                 }
                 
                 Section(header: Text("Cards")) {
-                    ForEach(user.accounts){ account in
+                    ForEach(accounts){ account in
                         if account.type != .cash {
                             AccountCapsuleView(account: account)
                         }
@@ -66,16 +67,37 @@ struct AccountsView: View {
                 }
             }
             .onAppear{
-                if let selectedCurrency = user.currencies.first {
+                if let selectedCurrency = currencies.first {
                     self.selectedCurrency = selectedCurrency
                 }
             }
             .navigationTitle("Accounts")
+            .toolbar {
+                Menu ("Add", systemImage: "plus"){
+                    Button("Add Account",systemImage: "creditcard.fill", action: addAccount)
+                    Button("Add Currency",systemImage: "eurosign", action: addCurrency)
+                }
+                
+            }
+        }
+    }
+    
+    private func addAccount() {
+        withAnimation {
+            let account = Account()
+            modelContext.insert(account)
+        }
+    }
+    
+    private func addCurrency() {
+        withAnimation {
+            let currency = Currency()
+            modelContext.insert(currency)
         }
     }
 }
 
 #Preview {
-    AccountsView(user: PFTUser())
-        .modelContainer(for: PFTUser.self, inMemory: true)
+    AccountsView()
+        .modelContainer(for: [Account.self, Currency.self], inMemory: true)
 }

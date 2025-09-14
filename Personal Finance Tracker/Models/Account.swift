@@ -23,9 +23,9 @@ class Account: Hashable, Equatable {
     var type: AccountType
     var currency: Currency
     var maxCredit: Double?   // only used if AccountType is .credit
-    var user: PFTUser?
     
-    init(name: String = "Account", balance: Double = 0, colorHex: String = "#000000", type: AccountType = .cash, maxCredit: Double? = nil, currency: Currency = Currency()) {
+    
+    init(name: String = "", balance: Double = 0, colorHex: String = "#000000", type: AccountType = .cash, maxCredit: Double? = nil, currency: Currency = Currency()) {
         self.name = name
         self.balance = balance
         self.colorHex = colorHex

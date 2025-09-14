@@ -14,7 +14,7 @@ class Currency: Hashable, Equatable{
     var code: String
     var flag: String
     var value: Double
-    var user: PFTUser?
+    
 
     init(name: String = "US Dollar", code: String = "USD", flag: String = "🇺🇸", value: Double = 1.0) {
         self.name = name

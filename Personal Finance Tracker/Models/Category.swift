@@ -14,7 +14,7 @@ class Category: Hashable, Equatable {
     var colorHex: String
     var color: Color { Color(colorHex) }
     var iconName: String
-    var user: PFTUser?
+    
     
     init(name: String = "", colorHex: String = "#000000", iconName: String = "dollarsign") {
         self.name = name

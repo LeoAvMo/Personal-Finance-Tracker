@@ -11,28 +11,16 @@ import SwiftData
 
 struct TransactionListingView: View {
     @Environment(\.modelContext) var modelContext
-    @Query private var transactions: [Transaction]
+    @Query(sort: \Transaction.date, order: .reverse) var transactions: [Transaction]
     
-    // TransactionListingView.swift
-
-    init(user: PFTUser, sortDescriptor: SortDescriptor<Transaction>, searchString: String) {
-        // Get the user's unique identifier to use in the predicate.
-        let username = user.username
-        
-        if searchString.isEmpty {
-            // Predicate 1: Filter transactions where the user's ID matches.
-            let predicate = #Predicate<Transaction> { transaction in
-                transaction.user?.username == username
+    init(sort: SortDescriptor<Transaction>, searchString: String) {
+        _transactions = Query(filter: #Predicate {
+            if searchString.isEmpty {
+                return true
+            } else {
+                return $0.label.localizedStandardContains(searchString)
             }
-            _transactions = Query(filter: predicate, sort: [sortDescriptor])
-        } else {
-            // Predicate 2: Filter by user's ID AND the search string.
-            let predicate = #Predicate<Transaction> { transaction in
-                transaction.user?.username == username &&
-                transaction.label.localizedStandardContains(searchString)
-            }
-            _transactions = Query(filter: predicate, sort: [sortDescriptor])
-        }
+        }, sort: [sort])
     }
     
     var body: some View {

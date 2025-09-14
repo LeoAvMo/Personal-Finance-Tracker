@@ -5,22 +5,22 @@
 //  Created by Leo A.Molina on 29/07/25.
 //
 
-// TODO: CREATE ADD TRANSACTION FUNCTION
+// TODO: Fix navigation destination
 
 import SwiftUI
 import SwiftData
 
 struct TransactionsView: View {
     @Environment(\.modelContext) private var modelContext
-    @Bindable var user: PFTUser
-    
+    @State private var path: [Transaction] = [Transaction]()
     @State private var sortOrder = SortDescriptor(\Transaction.date, order: .reverse)
     @State private var searchString = ""
     
     var body: some View {
-        NavigationStack{
-            TransactionListingView(user: user, sortDescriptor: sortOrder, searchString: searchString)
+        NavigationStack(path: $path){
+            TransactionListingView(sort: sortOrder, searchString: searchString)
             .navigationTitle("Transactions")
+            //.navigationDestination(for: Transaction.self, destination: AddTransactionView.init)
             .searchable(text: $searchString, prompt: "Search Transaction")
             .toolbar {
                 Menu("Sort", systemImage: "arrow.up.arrow.down") {
@@ -41,18 +41,17 @@ struct TransactionsView: View {
     // MARK: Functions
     private func addTransaction() {
         withAnimation {
-            let account = user.accounts.first ?? Account()
-            let currency = account.currency
-            let transaction = Transaction(targetAccount: account, currency: currency)
-            user.transactions.append(transaction)
+            let transaction = Transaction(label: "")
+            modelContext.insert(transaction)
+            path = [transaction]
         }
     }
 }
 
 
 #Preview {
-    TransactionsView(user: PFTUser())
-        .modelContainer(for: [PFTUser.self, Transaction.self], inMemory: true)
+    TransactionsView()
+        .modelContainer(for: [Transaction.self, Currency.self, Account.self, Category.self], inMemory: true)
 }
 
 struct IndividualTransactionView: View {
@@ -61,7 +60,7 @@ struct IndividualTransactionView: View {
     var body: some View {
         HStack{
             let isIncome = transaction.amount > 0
-            CategoryIconView(category: transaction.category ?? Category(), showLabel: true, isSelected: false)
+            CategoryIconView(category: transaction.category, showLabel: true, isSelected: false)
             VStack(alignment: .leading){
                 Text(transaction.label)
                     .font(.title2)

@@ -10,15 +10,15 @@ import SwiftData
 
 struct FTTabView: View {
     @Environment(\.modelContext) private var modelContext
-    @Bindable var user: PFTUser
+    
     var body: some View {
         TabView {
             Tab("Transactions", systemImage: "dollarsign") {
-                TransactionsView(user: user)
+                TransactionsView()
             }
             
             Tab("Accounts", systemImage: "person.badge.key") {
-                AccountsView(user: user)
+                AccountsView()
             }
             
             Tab("Credit", systemImage: "creditcard"){
@@ -35,6 +35,6 @@ struct FTTabView: View {
 }
 
 #Preview {
-    FTTabView(user: PFTUser())
-        .modelContainer(for: PFTUser.self, inMemory: true)
+    FTTabView()
+        
 }

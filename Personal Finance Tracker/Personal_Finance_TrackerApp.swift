@@ -12,7 +12,7 @@ import SwiftData
 struct Personal_Finance_TrackerApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            PFTUser.self, Account.self, Transaction.self, Category.self
+            Account.self, Transaction.self, Category.self, Currency.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -25,7 +25,7 @@ struct Personal_Finance_TrackerApp: App {
 
     var body: some Scene {
         WindowGroup {
-            LoadUserView()
+            FTTabView()
         }
         .modelContainer(sharedModelContainer)
     }
