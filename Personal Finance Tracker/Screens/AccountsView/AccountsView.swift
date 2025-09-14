@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct AccountsView: View {
-    @State private var selectedCurrency: String = "MXN"
-    @State private var cash: Double = 1000
-    @State private var totalBalance: Double = 0
-    @State private var mockData = MockData()
+    @Environment(\.modelContext) private var modelContext
+    @Bindable var user: PFTUser
+    
     var body: some View {
         
         NavigationStack {

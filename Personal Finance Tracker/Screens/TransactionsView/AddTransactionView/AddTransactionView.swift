@@ -13,22 +13,14 @@ enum TransactionType : String, CaseIterable, Identifiable {
 }
 
 struct AddTransactionView: View {
-    //Private
-    @State private var transaction = Transaction(transactionLabel: "",
-                                                 transactionCurrency: nil,
-                                                 transactionAmount: 0.0,
-                                                 transactionDate: Date(),
-                                                 transactionCategory: nil,
-                                                 transactionAccount: nil)
+    @Environment(\.modelContext) private var modelContext
+    @Bindable var user: PFTUser
+    @Bindable var trnasaction: Transaction
+    
     @State private var transactionType: TransactionType?
     @State private var alertItem: TrackerAlertItem?
     @State private var showAlert: Bool = false
-    @State private var showSelectAccountView = false
-    // Turn these to ENVIRONMENT variables for all of the user's data
-    @State private var currencies: [Currency] = MockData.mockCurrencies
-    @State private var categories: [Category] = MockData.mockCategories
-    @State private var accounts: [Account] = MockData.mockAccounts
-    @Binding var transactions: [Transaction]
+    
     // Used for create Category view toggle
     @State private var isShowingCreateCategoryView: Bool = false
     
@@ -50,7 +42,7 @@ struct AddTransactionView: View {
                 Form{
                     
                     // Transaction name
-                    TextField("Label", text: $transaction.transactionLabel)
+                    TextField("Label", text:)
                     
                     // Transaction type. Select if transaction is an income or an expense
                     Picker(selection: $transactionType, label: Text("Transaction Type")) {
@@ -81,10 +73,10 @@ struct AddTransactionView: View {
                     // Transaction date
                     DatePicker(selection: $transaction.transactionDate, displayedComponents: .date, label: { Text("Date") })
                     
-                    // Transaction category
+                    // TODO: Turn to picker
                     CategorySelectorView(categories: categories, selectedCategory: $transaction.transactionCategory, isShowingCreateCategoryView: $isShowingCreateCategoryView)
                     
-                    // Target account
+                    // TODO: Turn to picker
                     Button {
                         showSelectAccountView.toggle()
                     } label: {
@@ -203,7 +195,7 @@ struct AddTransactionView: View {
 }
 
 #Preview {
-    AddTransactionView(transactions: .constant(MockData.mockTransactions))
+    AddTransactionView()
 }
 
 struct CategorySelectorView: View {

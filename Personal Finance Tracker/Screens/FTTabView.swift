@@ -35,5 +35,6 @@ struct FTTabView: View {
 }
 
 #Preview {
-    FTTabView()
+    FTTabView(user: PFTUser())
+        .modelContainer(for: PFTUser.self, inMemory: true)
 }

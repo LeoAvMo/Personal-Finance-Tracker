@@ -7,11 +7,13 @@
 
 import SwiftUI
 
+/*
 struct SelectAccountView: View {
-    @Binding var selectedAccount: Account?
-    @State private var accounts: [Account] = MockData.mockAccounts  //Turn this to environment variable
-    @State private var columnLayout = Array(repeating: GridItem(), count: 2)
+    @Environment(\.modelContext) private var modelContext
+    @Bindable var user: PFTUser
     
+    @State private var columnLayout = Array(repeating: GridItem(), count: 2)
+    @State private var selectedAccount: PFTAccount?
     
     var body: some View {
         NavigationStack{
@@ -23,12 +25,12 @@ struct SelectAccountView: View {
                         .font(.title2)
                     
                     LazyVGrid(columns: columnLayout){
-                        ForEach(accounts, id: \.self){ account in
-                            if account.isCash {
+                        ForEach(user.accounts){ account in
+                            if account.type == .cash {
                                 Button{
                                     selectedAccount = account
                                 } label: {
-                                    AccountCardView(account: account, isSelected: selectedAccount?.id == account.id)
+                                    AccountCardView(account: account, isSelected: selectedAccount?.id == account)
                                 }
                             }
                         }
@@ -39,8 +41,8 @@ struct SelectAccountView: View {
                         .font(.title2)
                     
                     LazyVGrid(columns: columnLayout){
-                        ForEach(accounts, id: \.self){ account in
-                            if !account.isCash {
+                        ForEach(user.accounts){ account in
+                            if !account.type == .cash {
                                 Button{
                                     selectedAccount = account
                                 } label: {
@@ -107,3 +109,4 @@ struct AccountCardView: View {
         }
     }
 }
+*/

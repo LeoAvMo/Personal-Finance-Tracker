@@ -35,14 +35,13 @@ struct TransactionsView: View {
                     }
                 }
             }
-            
         }
-        
     }
 }
 
 #Preview {
-    TransactionsView()
+    TransactionsView(user: PFTUser())
+        .modelContainer(for: PFTUser.self, inMemory: true)
 }
 
 struct IndividualTransactionView: View {
