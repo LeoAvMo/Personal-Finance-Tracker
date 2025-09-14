@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
+
+// TODO: Add toolbar to create accounts and currencies
 
 struct AccountsView: View {
     @Environment(\.modelContext) private var modelContext
     @Bindable var user: PFTUser
+    @State private var selectedCurrency = Currency()
     
     var body: some View {
         
@@ -17,40 +21,46 @@ struct AccountsView: View {
             Form{
                 
                 Section (header: Text("Total balance")) {
-                    Picker(selection: .constant(1), label: Text("Picker")) {
-                        Text("MXN 🇲🇽").tag(1)
-                        Text("USD 🇺🇸").tag(2)
-                        Text("EUR 🇪🇺").tag(3)
+                    Picker(selection: $selectedCurrency, label: Text("Picker")) {
+                        ForEach(user.currencies, id: \.self) { currency in
+                            Text(currency.code + currency.flag).tag(currency)
+                        }
                     }
                     .pickerStyle(.segmented)
+                    
+                    let formattedBalance = String(format: "$%.2f %@", user.balance, selectedCurrency.code)
+                    
                     HStack{
                         Spacer()
-                        Text("$\(totalBalance, specifier: "%.2f") \(selectedCurrency)")
+                        Text(formattedBalance)
                             .font(.largeTitle)
                             .bold()
                         Spacer()
                     }
                     
                 }
+                
 
                 Section(header: Text("Cash")) {
-                    ForEach(MockData.mockAccounts) { acc in
-                        if acc.isCash{
-                            AccountCapsuleView(account: acc)
+                    ForEach(user.accounts) { account in
+                        if account.type == .cash {
+                            AccountCapsuleView(account: account)
                         }
                     }
                 }
                 
                 Section(header: Text("Cards")) {
-                    ForEach(MockData.mockAccounts){ acc in
-                        if !acc.isCash{
-                            AccountCapsuleView(account: acc)
+                    ForEach(user.accounts){ account in
+                        if account.type != .cash {
+                            AccountCapsuleView(account: account)
                         }
                     }
                 }
             }
             .onAppear{
-                totalBalance = cash + MockData.mockAccounts.reduce(0){ $0 + $1.balance}
+                if let selectedCurrency = user.currencies.first {
+                    self.selectedCurrency = selectedCurrency
+                }
             }
             .navigationTitle("Accounts")
         }
@@ -59,32 +69,6 @@ struct AccountsView: View {
 }
 
 #Preview {
-    AccountsView()
+    AccountsView(user: PFTUser())
+        .modelContainer(for: PFTUser.self, inMemory: true)
 }
-
-struct CashCapsuleView: View {
-    public var cash: Double
-    public var selectedCurrency: String
-    var body: some View {
-        HStack {
-            Image(systemName: "dollarsign.ring")
-                .resizable()
-                .scaledToFit()
-                .foregroundStyle(Color("cashColor"))
-                .frame(width: 35, height: 35)
-            VStack(alignment: .leading){
-                Text("Balance:")
-                    .foregroundStyle(Color("cashColor"))
-                    .fontWeight(.semibold)
-            }
-            Spacer()
-            Text(cash, format: .currency(code: selectedCurrency))
-                .fontWeight(.semibold)
-                .foregroundStyle(.primary)
-        }
-    }
-}
-
-
-
-

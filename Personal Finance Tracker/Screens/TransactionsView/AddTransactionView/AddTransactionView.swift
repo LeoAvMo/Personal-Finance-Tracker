@@ -5,6 +5,7 @@
 //  Created by Leo A.Molina on 15/08/25.
 //
 
+/*
 import SwiftUI
 
 enum TransactionType : String, CaseIterable, Identifiable {
@@ -225,3 +226,4 @@ struct CategorySelectorView: View {
     }
 }
 
+*/

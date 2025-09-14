@@ -18,7 +18,7 @@ struct FTTabView: View {
             }
             
             Tab("Accounts", systemImage: "person.badge.key") {
-                AccountsView()
+                AccountsView(user: user)
             }
             
             Tab("Credit", systemImage: "creditcard"){

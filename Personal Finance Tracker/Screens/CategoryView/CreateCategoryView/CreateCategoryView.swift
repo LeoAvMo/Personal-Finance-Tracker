@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-
+/*
 struct CreateCategoryView: View {
     @State private var placeholderCategory: Category = .init(id: UUID(), name: "", color: .pink, iconName: "dollarsign")
     @State private var editSetting: EditSettings = .color
@@ -184,3 +184,4 @@ struct IconSelectorView: View {
     }
 }
 
+*/

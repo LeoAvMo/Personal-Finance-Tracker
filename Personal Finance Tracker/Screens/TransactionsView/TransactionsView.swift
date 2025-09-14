@@ -5,14 +5,17 @@
 //  Created by Leo A.Molina on 29/07/25.
 //
 
+// TODO: CREATE ADD TRANSACTION FUNCTION
+
 import SwiftUI
 import SwiftData
+
 struct TransactionsView: View {
     @Environment(\.modelContext) private var modelContext
     @Bindable var user: PFTUser
     
     var body: some View {
-        NavigationSplitView{
+        NavigationStack{
             List{
                 Section(header: Text("Total transactions")){
                     
@@ -25,19 +28,12 @@ struct TransactionsView: View {
             }
             .navigationTitle("Transactions")
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing){
-                    NavigationLink{
-                        AddTransactionView(transactions: $allTransactions)
-                    } label: {
-                        Image(systemName: "plus")
-                            .font(.headline)
-                            .foregroundStyle(.accent)
-                    }
-                }
+                
             }
         }
     }
 }
+
 
 #Preview {
     TransactionsView(user: PFTUser())

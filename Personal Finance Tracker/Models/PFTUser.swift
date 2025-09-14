@@ -11,6 +11,7 @@ import SwiftData
 @Model
 class PFTUser {
     var username: String
+    var balance: Double
     
     @Relationship(deleteRule: .cascade, inverse: \Transaction.user)
     var transactions = [Transaction]()
@@ -24,7 +25,8 @@ class PFTUser {
     @Relationship(deleteRule: .cascade, inverse: \Category.user)
     var categories = [Category]()
     
-    init(username: String = "User") {
+    init(username: String = "User", balance: Double = 0) {
         self.username = username
+        self.balance = balance
     }
 }
