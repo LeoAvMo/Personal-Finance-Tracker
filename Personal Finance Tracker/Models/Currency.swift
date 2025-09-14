@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 @Model
-class Currency {
+class Currency: Hashable, Equatable{
     var name: String
     var code: String
     var flag: String

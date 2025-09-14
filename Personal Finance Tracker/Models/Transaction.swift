@@ -18,7 +18,7 @@ class Transaction {
     var currency: Currency
     var user: PFTUser?
     
-    init(label: String = "Transaction", amount: Double = 0, date: Date = .now, category: Category? = nil, targetAccount: Account = Account(), currency: Currency) {
+    init(label: String = "Transaction", amount: Double = 0, date: Date = .now, category: Category? = nil, targetAccount: Account = Account(), currency: Currency = Currency()) {
         self.label = label
         self.amount = amount
         self.date = date

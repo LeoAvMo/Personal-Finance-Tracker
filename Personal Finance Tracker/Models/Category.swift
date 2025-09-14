@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 @Model
-class Category {
+class Category: Hashable, Equatable {
     var name: String
     var colorHex: String
     var color: Color { Color(colorHex) }

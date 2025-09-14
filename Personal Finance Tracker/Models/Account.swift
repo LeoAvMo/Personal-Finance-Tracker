@@ -15,7 +15,7 @@ enum AccountType: String, Codable {
 }
 
 @Model
-class Account {
+class Account: Hashable, Equatable {
     var name: String
     var balance: Double
     var colorHex: String

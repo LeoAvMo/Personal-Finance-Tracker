@@ -13,7 +13,17 @@ import SwiftData
 struct AccountsView: View {
     @Environment(\.modelContext) private var modelContext
     @Bindable var user: PFTUser
-    @State private var selectedCurrency = Currency()
+    @State private var selectedCurrency: Currency = Currency()
+    
+    private var formattedBalance: String {
+        var total: Double = 0.0
+        for account in user.accounts {
+            if account.balance > 0 {
+                total += account.balance
+            }
+        }
+        return String(format: "$%.2f %@", total, selectedCurrency.code)
+    }
     
     var body: some View {
         
@@ -22,13 +32,11 @@ struct AccountsView: View {
                 
                 Section (header: Text("Total balance")) {
                     Picker(selection: $selectedCurrency, label: Text("Picker")) {
-                        ForEach(user.currencies, id: \.self) { currency in
+                        ForEach(user.currencies) { currency in
                             Text(currency.code + currency.flag).tag(currency)
                         }
                     }
                     .pickerStyle(.segmented)
-                    
-                    let formattedBalance = String(format: "$%.2f %@", user.balance, selectedCurrency.code)
                     
                     HStack{
                         Spacer()
@@ -64,7 +72,6 @@ struct AccountsView: View {
             }
             .navigationTitle("Accounts")
         }
-        
     }
 }
 
