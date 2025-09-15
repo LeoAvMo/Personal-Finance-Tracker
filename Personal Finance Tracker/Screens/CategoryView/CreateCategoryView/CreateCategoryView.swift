@@ -6,17 +6,21 @@
 //
 
 import SwiftUI
+import SwiftData
 
 
-/*
 struct CreateCategoryView: View {
-    @State private var placeholderCategory: Category = .init(id: UUID(), name: "", color: .pink, iconName: "dollarsign")
+    @Environment(\.modelContext) private var modelContext
+    
+    @State private var name: String = ""
+    @State private var iconName: String = "dollarsign"
+    @State private var color: Color = .pink
+    
     @State private var editSetting: EditSettings = .color
     @State private var showAlert: Bool = false
     @State private var categoryAlertItem: TrackerAlertItem?
-    @Binding var isPresented: Bool
+    
     // Turn this to environment
-    @Binding var allCategories: [Category]
     
     enum EditSettings : String, CaseIterable, Identifiable {
         case color, icon
@@ -28,10 +32,10 @@ struct CreateCategoryView: View {
             VStack(alignment: .center){
                 
                 // Category Circle
-                BigCategoryIconView(placeholderCategory: $placeholderCategory)
+                BigCategoryIconView(color: $color, iconName: $iconName)
                 
                 // Category Name Text Field
-                TextField("Name", text: $placeholderCategory.name)
+                TextField("Name", text: $name)
                     .font(.largeTitle)
                     .fontWeight(.semibold)
                     .multilineTextAlignment(.center)
@@ -49,13 +53,11 @@ struct CreateCategoryView: View {
                 ScrollView(showsIndicators: false) {
                     switch editSetting {
                         case .color:
-                            ColorSelectorView(placeholderCategory: $placeholderCategory)
-                            
+                            ColorSelectorView(color: $color)
                         case .icon:
-                            IconSelectorView(placeholderCategory: $placeholderCategory)
+                            IconSelectorView(iconName: $iconName)
                     }
                 }
-                
             }
             .alert(isPresented: $showAlert) {
                 Alert(title: categoryAlertItem!.alertTitle,
@@ -65,57 +67,61 @@ struct CreateCategoryView: View {
             .navigationTitle("Create Category")
         }
         .background(.background)
-        .overlay(GeneralDismissButton(isShowingDetail: $isPresented), alignment: .topLeading)
-        .overlay(Button {
-            if placeholderCategory.name.isEmpty {
-                categoryAlertItem = TrackerAlertContext.categoryNameIsRequired
-                showAlert.toggle()
-            } else {
-                allCategories.append(placeholderCategory)
-                isPresented.toggle()
-            }
-        } label: {AcceptButton()}, alignment: .topTrailing)
+        .toolbar {
+            Button("Create Category",systemImage: "plus", action: addCategory)
+        }
+    }
+    private func addCategory() {
+        if name.isEmpty {
+            categoryAlertItem = TrackerAlertContext.categoryNameIsRequired
+            showAlert.toggle()
+            return
+        }
+        withAnimation {
+            let category = Category(name: name, colorHex: color.toHex() ?? "#FFFFFF", iconName: iconName)
+            modelContext.insert(category)
+        }
     }
 }
 
 #Preview {
-    CreateCategoryView(isPresented: .constant(true), allCategories: .constant(MockData.mockCategories))
+    CreateCategoryView()
+        .modelContainer(for: Category.self, inMemory: true)
 }
 
 struct BigCategoryIconView: View {
-    @Binding var placeholderCategory: Category
+    @Binding var color: Color
+    @Binding var iconName: String
     
     var body: some View {
         ZStack{
-                Circle()
-                    .foregroundStyle(placeholderCategory.color)
-                    .transition(.opacity)
-                    .frame(width: 250, height: 250)
-                    .glassEffect()
-                    .animation(.easeInOut(duration: 0.3), value: placeholderCategory.color)
+            Circle()
+                .foregroundStyle(color)
+                .transition(.opacity)
+                .frame(width: 250, height: 250)
+                .glassEffect()
+                .animation(.easeInOut(duration: 0.3), value: color)
 
-                    Image(systemName: placeholderCategory.iconName)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 140, height: 140)
-                        .foregroundStyle(.white)
-                        
+            Image(systemName: iconName)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 140, height: 140)
+                .foregroundStyle(.white)
         }
-    
     }
 }
 
 struct ColorSelectorView: View {
-    @Binding var placeholderCategory: Category
+    @Binding var color: Color
     @State private var columnLayout = Array(repeating: GridItem(), count: 4)
-    
+
     var body: some View {
         ZStack{
             Capsule()
                 .foregroundStyle(rainbow)
                 .glassEffect(.regular)
             VStack{
-                ColorPicker("Custom Color", selection: $placeholderCategory.color)
+                ColorPicker("Custom Color", selection: $color)
                     .font(.title)
                     .padding(.horizontal)
                     .frame(maxWidth: .infinity)
@@ -129,10 +135,10 @@ struct ColorSelectorView: View {
         LazyVGrid(columns: columnLayout) {
             ForEach(allColors.indices, id: \.self){ index in
                 Button{
-                    placeholderCategory.color = allColors[index]
+                    color = allColors[index]
                 } label:{
                     ZStack{
-                        if placeholderCategory.color == allColors[index] {
+                        if color == allColors[index] {
                             Circle()
                                 .aspectRatio(1.0, contentMode: ContentMode.fit)
                                 .foregroundStyle(allColors[index])
@@ -153,15 +159,15 @@ struct ColorSelectorView: View {
 }
 
 struct IconSelectorView: View {
+    @Binding var iconName: String
     @Environment(\.colorScheme) var colorScheme
     @State private var columnLayout = Array(repeating: GridItem(), count: 4)
-    @Binding var placeholderCategory: Category
     
     var body: some View {
         LazyVGrid(columns: columnLayout) {
             ForEach(icons.indices, id: \.self){ index in
                 Button {
-                    placeholderCategory.iconName = icons[index]
+                    iconName = icons[index]
                 } label: {
                     ZStack{
                         Image(systemName: icons[index])
@@ -172,7 +178,7 @@ struct IconSelectorView: View {
                 }
                 .overlay(
                     ZStack{
-                        Image(systemName: placeholderCategory.iconName == icons[index] ? "checkmark.circle.fill" : "")
+                        Image(systemName: iconName == icons[index] ? "checkmark.circle.fill" : "")
                             .frame(width: 20, height: 20)
                             .foregroundStyle(.accent)
                     }
@@ -184,4 +190,4 @@ struct IconSelectorView: View {
     }
 }
 
-*/
+

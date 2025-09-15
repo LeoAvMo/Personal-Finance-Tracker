@@ -22,10 +22,14 @@ struct EditTransactionView: View {
     @Query(sort: \Account.name) private var accounts: [Account]
     @Query(sort: \Currency.name) private var currencies: [Currency]
     @Query(sort: \Category.name) private var categories: [Category]
-    @State private var transactionType: TransactionType?
+    @State private var transactionType: TransactionType = .expense
     
     // Used for create Category view toggle
     @State private var isShowingCreateCategoryView: Bool = false
+    
+    init(transaction: Transaction) {
+        self.transaction = transaction
+    }
     
     // MARK: - Body
     var body: some View {
@@ -35,7 +39,12 @@ struct EditTransactionView: View {
                 transactionDetailsSection
                 
                 Section("Category") {
-                    CategorySelectorView(categories: categories, selectedCategory: $transaction.category, isShowingCreateCategoryView: $isShowingCreateCategoryView)
+                    if categories.isEmpty {
+                        ContentUnavailableView("No Categories Found", systemImage: "star")
+                    } else {
+                        CategorySelectorView(categories: categories, selectedCategory: $transaction.category)
+                    }
+                    
                 }
                 
                 accountSelectorSection
@@ -68,7 +77,7 @@ struct EditTransactionView: View {
             HStack{
                 Text("Amount")
                 Spacer()
-                TextField("$", value: $transaction.amount, format: .currency(code: transaction.currency.code))
+                TextField("$", value: $transaction.amount, format: .currency(code: transaction.currency?.code ?? "USD"))
                     .keyboardType(.decimalPad)
                     .multilineTextAlignment(.trailing)
                     .fontWeight(.semibold)
@@ -82,13 +91,20 @@ struct EditTransactionView: View {
     /// A computed property that uses a Picker to select an account.
     private var accountSelectorSection: some View {
         Section("Account") {
-            Picker("Select Account", selection: $transaction.targetAccount) {
-                ForEach(accounts) { account in
-                    // Use .tag() to associate the model object with each option
-                    Text(account.name).tag(account)
+            if accounts.isEmpty {
+                ContentUnavailableView("No Accounts Found", systemImage: "creditcard")
+            } else {
+                List {
+                    ForEach(accounts) { account in
+                        Button {
+                            transaction.targetAccount = account
+                        } label: {
+                            AccountCapsuleView(account: account).tag(account)
+                        }
+                        // Use .tag() to associate the model object with each option
+                    }
                 }
             }
-            .pickerStyle(.menu)
         }
     }
     
@@ -99,8 +115,6 @@ struct EditTransactionView: View {
                 return .green
             case .expense:
                 return .red
-            case .none:
-                return .gray
         }
     }
 }
@@ -114,8 +128,7 @@ struct EditTransactionView: View {
 // MARK: - Subviews
 struct CategorySelectorView: View {
     var categories: [Category]
-    @Binding var selectedCategory: Category
-    @Binding var isShowingCreateCategoryView: Bool
+    @Binding var selectedCategory: Category?
     
     var body: some View {
         VStack(alignment: .leading){

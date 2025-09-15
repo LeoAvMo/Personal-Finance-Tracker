@@ -8,17 +8,17 @@
 import SwiftUI
 
 struct CategoryIconView: View {
-    var category: Category
+    var category: Category?
     var showLabel: Bool = true
     var isSelected: Bool = true
     
     var body: some View {
         var displayedName: String {
-            if category.name.count > 8 {
-                return category.name.summarizeString(length: 5)
+            if category?.name.count ?? 9 > 8 {
+                return category?.name.summarizeString(length: 5) ?? "Unknown"
             }
             else {
-                return category.name
+                return category?.name ?? "Unknown"
             }
         }
         VStack{
@@ -26,7 +26,7 @@ struct CategoryIconView: View {
                 if isSelected {
                     Circle()
                         .frame(width: 58, height: 58)
-                        .foregroundStyle(category.color)
+                        .foregroundStyle(category?.color ?? .pink)
                     Circle()
                         .frame(width: 54, height: 54)
                         .foregroundStyle(.background)
@@ -34,8 +34,8 @@ struct CategoryIconView: View {
                 
                 Circle()
                     .frame(width: 50, height: 50)
-                    .foregroundStyle(category.color)
-                Image(systemName: category.iconName)
+                    .foregroundStyle(category?.color ?? .pink)
+                Image(systemName: category?.iconName ?? "dollarsign")
                     .foregroundColor(.white)
                     .font(.title)
                 
@@ -45,7 +45,7 @@ struct CategoryIconView: View {
                 // Put "..." string and only 5 characters for categories with a larger name of 8 chars
                 Text(displayedName)
                     .font(.caption)
-                    .foregroundStyle(category.color)
+                    .foregroundStyle(category?.color ?? .pink)
             }
         }
             

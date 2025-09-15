@@ -25,7 +25,6 @@ struct AddButton: View {
                     .font(.title)
             }
             .glassEffect(.regular.interactive())
-            //.overlay(CheckmarkIconView(),alignment: .topTrailing)
             if showLabel {
                 // Put "..." string and only 5 characters for categories with a larger name of 8 chars
                 Text("Add")

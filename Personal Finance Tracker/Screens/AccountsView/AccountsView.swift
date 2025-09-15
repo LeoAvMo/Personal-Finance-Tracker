@@ -8,12 +8,12 @@
 import SwiftUI
 import SwiftData
 
-// TODO: Add toolbar to create accounts and currencies
-
+// TODO: Create screen to force user to create ONE currency and ONE account.
 struct AccountsView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Account.name) var accounts: [Account]
     @Query(sort: \Currency.name) var currencies: [Currency]
+    
     @State private var selectedCurrency: Currency = Currency()
     
     private var formattedBalance: String {
@@ -32,12 +32,12 @@ struct AccountsView: View {
             Form{
                 
                 Section (header: Text("Total balance")) {
-                    Picker(selection: $selectedCurrency, label: Text("Picker")) {
+                    Picker(selection: $selectedCurrency, label: Text("Currency:")) {
                         ForEach(currencies) { currency in
-                            Text(currency.code + currency.flag).tag(currency)
+                            Text(currency.code + " " + currency.flag).tag(currency)
                         }
                     }
-                    .pickerStyle(.segmented)
+                    .pickerStyle(.menu)
                     
                     HStack{
                         Spacer()
@@ -49,7 +49,7 @@ struct AccountsView: View {
                     
                 }
                 
-
+                
                 Section(header: Text("Cash")) {
                     ForEach(accounts) { account in
                         if account.type == .cash {
@@ -57,6 +57,7 @@ struct AccountsView: View {
                         }
                     }
                 }
+                
                 
                 Section(header: Text("Cards")) {
                     ForEach(accounts){ account in

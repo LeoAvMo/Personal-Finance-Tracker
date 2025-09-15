@@ -12,11 +12,20 @@ import SwiftData
 class Category: Hashable, Equatable {
     var name: String
     var colorHex: String
-    var color: Color { Color(colorHex) }
+    var color: Color {
+            get {
+                
+                Color(hex: colorHex) ?? .white
+            }
+            set {
+                
+                colorHex = newValue.toHex() ?? "#FFFFFF"
+            }
+        }
     var iconName: String
     
     
-    init(name: String = "", colorHex: String = "#000000", iconName: String = "dollarsign") {
+    init(name: String = "", colorHex: String = "#FFFFFF", iconName: String = "dollarsign") {
         self.name = name
         self.colorHex = colorHex
         self.iconName = iconName

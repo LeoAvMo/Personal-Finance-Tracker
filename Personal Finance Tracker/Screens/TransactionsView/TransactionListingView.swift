@@ -12,6 +12,8 @@ import SwiftData
 struct TransactionListingView: View {
     @Environment(\.modelContext) var modelContext
     @Query(sort: \Transaction.date, order: .reverse) var transactions: [Transaction]
+    @Query(sort: \Category.name) private var categories: [Category]
+    @State private var selectedCategory: Category?
     
     init(sort: SortDescriptor<Transaction>, searchString: String) {
         _transactions = Query(filter: #Predicate {
@@ -25,6 +27,10 @@ struct TransactionListingView: View {
     
     var body: some View {
         List {
+            Section(header: Text("Categories")){
+                CategorySelectorView(categories: categories, selectedCategory: $selectedCategory)
+            }
+            
             Section(header: Text("Transactions")) {
                 if transactions.isEmpty {
                     ContentUnavailableView("No Transactions Found", systemImage: "magnifyingglass")

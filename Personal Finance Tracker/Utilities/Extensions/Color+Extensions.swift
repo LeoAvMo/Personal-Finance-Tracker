@@ -1,0 +1,58 @@
+//
+//  Color+Extensions.swift
+//  Personal Finance Tracker
+//
+//  Created by Leo A.Molina on 14/09/25.
+//
+
+// Color+Extensions.swift
+
+import SwiftUI
+
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
+
+extension Color {
+    /// Initializes a Color from a hex string.
+    init?(hex: String) {
+        var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
+        hexSanitized = hexSanitized.replacingOccurrences(of: "#", with: "")
+
+        var rgb: UInt64 = 0
+
+        guard Scanner(string: hexSanitized).scanHexInt64(&rgb) else { return nil }
+
+        let red = Double((rgb & 0xFF0000) >> 16) / 255.0
+        let green = Double((rgb & 0x00FF00) >> 8) / 255.0
+        let blue = Double(rgb & 0x0000FF) / 255.0
+
+        self.init(red: red, green: green, blue: blue)
+    }
+
+    /// Converts the Color to a hex string.
+    func toHex() -> String? {
+        #if canImport(UIKit)
+        let components = UIColor(self).cgColor.components
+        #else
+        let components = NSColor(self).cgColor.components
+        #endif
+        
+        guard let components = components, components.count >= 3 else {
+            return nil
+        }
+
+        let r = Float(components[0])
+        let g = Float(components[1])
+        let b = Float(components[2])
+
+        return String(
+            format: "#%02lX%02lX%02lX",
+            lroundf(r * 255),
+            lroundf(g * 255),
+            lroundf(b * 255)
+        )
+    }
+}

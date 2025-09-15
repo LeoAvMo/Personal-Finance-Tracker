@@ -13,12 +13,14 @@ class Transaction {
     var label: String
     var amount: Double
     var date: Date
-    var category: Category
-    var targetAccount: Account
-    var currency: Currency
     
     
-    init(label: String = "", amount: Double = 0, date: Date = .now, category: Category = Category(), targetAccount: Account = Account(), currency: Currency = Currency()) {
+    var category: Category?
+    var targetAccount: Account?
+    var currency: Currency?
+    
+    
+    init(label: String = "", amount: Double = 0, date: Date = .now, category: Category? = nil, targetAccount: Account? = nil, currency: Currency? = nil) {
         self.label = label
         self.amount = amount
         self.date = date

@@ -28,6 +28,7 @@ struct AccountCapsuleView: View {
             Spacer()
             Text(account.balance, format: .currency(code: account.currency.code))
                 .fontWeight(.semibold)
+            // TODO: Make red in case acccount.balance is equal or less than 0
                 .foregroundStyle(.primary)
         }
     }
