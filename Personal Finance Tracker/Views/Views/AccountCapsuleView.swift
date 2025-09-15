@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AccountCapsuleView: View {
     public var account: Account
+    public var isSelected: Bool = false
     
     var body: some View {
         HStack {
@@ -28,8 +29,13 @@ struct AccountCapsuleView: View {
             Spacer()
             Text(account.balance, format: .currency(code: account.currency.code))
                 .fontWeight(.semibold)
-            // TODO: Make red in case acccount.balance is equal or less than 0
                 .foregroundStyle(.primary)
+        if isSelected {
+                Image(systemName: "checkmark.circle.fill")
+                    .foregroundStyle(.accent)
+                    .font(.title)
+            }
         }
+        
     }
 }

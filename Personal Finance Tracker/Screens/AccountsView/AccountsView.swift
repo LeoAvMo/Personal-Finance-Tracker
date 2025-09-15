@@ -53,7 +53,7 @@ struct AccountsView: View {
                 Section(header: Text("Cash")) {
                     ForEach(accounts) { account in
                         if account.type == .cash {
-                            AccountCapsuleView(account: account)
+                            AccountCapsuleView(account: account, isSelected: false)
                         }
                     }
                 }
@@ -62,7 +62,7 @@ struct AccountsView: View {
                 Section(header: Text("Cards")) {
                     ForEach(accounts){ account in
                         if account.type != .cash {
-                            AccountCapsuleView(account: account)
+                            AccountCapsuleView(account: account, isSelected: false)
                         }
                     }
                 }

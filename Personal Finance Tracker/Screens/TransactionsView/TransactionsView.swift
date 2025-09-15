@@ -29,11 +29,6 @@ struct TransactionsView: View {
             } else {
                 TransactionListingView(sort: sortOrder, searchString: searchString)
                 .navigationTitle("Transactions")
-                // TODO: FIX THIS
-                .navigationDestination(for: Transaction.self) { transaction in
-                    EditTransactionView(transaction: transaction)
-                    
-                }
                 .searchable(text: $searchString, prompt: "Search Transaction")
                 .toolbar {
                     Menu("Sort", systemImage: "arrow.up.arrow.down") {
@@ -46,7 +41,15 @@ struct TransactionsView: View {
                         }
                         .pickerStyle(.inline)
                     }
-                    Button("Add Transaction",systemImage: "plus", action: addTransaction)
+                    NavigationLink{
+                        AddTransactionView()
+                    } label: {
+                        Button("Add Transaction",systemImage: "plus"){
+                            
+                        }
+                        
+                    }
+                    
                 }
             }
             

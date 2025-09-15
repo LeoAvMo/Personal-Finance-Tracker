@@ -5,7 +5,6 @@
 //  Created by Leo A.Molina on 15/08/25.
 //
 
-
 // AddTransactionView.swift
 
 import SwiftUI
@@ -16,20 +15,21 @@ enum TransactionType : String, CaseIterable, Identifiable {
     var id: Self { self }
 }
 
-struct EditTransactionView: View {
+struct AddTransactionView: View {
     @Environment(\.modelContext) private var modelContext
-    @Bindable var transaction: Transaction
+    
+    @State private var label: String = ""
+    @State private var amount: Double = 0
+    @State private var transactionType: TransactionType = .expense
+    @State private var currency: Currency?
+    @State private var account: Account?
+    @State private var category: Category?
+    @State private var date: Date = Date()
+    
     @Query(sort: \Account.name) private var accounts: [Account]
     @Query(sort: \Currency.name) private var currencies: [Currency]
     @Query(sort: \Category.name) private var categories: [Category]
-    @State private var transactionType: TransactionType = .expense
     
-    // Used for create Category view toggle
-    @State private var isShowingCreateCategoryView: Bool = false
-    
-    init(transaction: Transaction) {
-        self.transaction = transaction
-    }
     
     // MARK: - Body
     var body: some View {
@@ -42,7 +42,7 @@ struct EditTransactionView: View {
                     if categories.isEmpty {
                         ContentUnavailableView("No Categories Found", systemImage: "star")
                     } else {
-                        CategorySelectorView(categories: categories, selectedCategory: $transaction.category)
+                        CategorySelectorView(categories: categories, selectedCategory: $category)
                     }
                     
                 }
@@ -51,7 +51,13 @@ struct EditTransactionView: View {
             }
             .background(.background)
             .navigationTitle("Transaction")
+            .toolbar {
+                Button("Add transaction", systemImage: "checkmark", action: addTransaction)
+                    .foregroundStyle(.accent)
+            }
         }
+        
+        
     }
     
     // MARK: - Computed Properties for Form Sections
@@ -59,7 +65,7 @@ struct EditTransactionView: View {
     /// A computed property for the main transaction details.
     private var transactionDetailsSection: some View {
         Section("Details") {
-            TextField("Label", text: $transaction.label)
+            TextField("Label", text: $label)
             
             Picker(selection: $transactionType, label: Text("Transaction Type")) {
                 Text("Income 📈").tag(TransactionType.income)
@@ -67,7 +73,7 @@ struct EditTransactionView: View {
             }
             .pickerStyle(.menu)
             
-            Picker(selection: $transaction.currency, label: Text("Currency")) {
+            Picker(selection: $currency, label: Text("Currency")) {
                 ForEach(currencies) { currency in
                     Text(currency.code + currency.flag).tag(currency)
                 }
@@ -77,14 +83,14 @@ struct EditTransactionView: View {
             HStack{
                 Text("Amount")
                 Spacer()
-                TextField("$", value: $transaction.amount, format: .currency(code: transaction.currency?.code ?? "USD"))
+                TextField("$", value: $amount, format: .currency(code: currency?.code ?? "USD"))
                     .keyboardType(.decimalPad)
                     .multilineTextAlignment(.trailing)
                     .fontWeight(.semibold)
                     .foregroundStyle(amountColor)
             }
             
-            DatePicker(selection: $transaction.date, displayedComponents: .date, label: { Text("Date") })
+            DatePicker(selection: $date, displayedComponents: .date, label: { Text("Date") })
         }
     }
     
@@ -94,14 +100,15 @@ struct EditTransactionView: View {
             if accounts.isEmpty {
                 ContentUnavailableView("No Accounts Found", systemImage: "creditcard")
             } else {
-                List {
-                    ForEach(accounts) { account in
-                        Button {
-                            transaction.targetAccount = account
-                        } label: {
-                            AccountCapsuleView(account: account).tag(account)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack {
+                        ForEach(accounts) { acc in
+                            Button {
+                                account = acc
+                            } label: {
+                                AccountCapsuleView(account: acc)
+                            }
                         }
-                        // Use .tag() to associate the model object with each option
                     }
                 }
             }
@@ -117,11 +124,17 @@ struct EditTransactionView: View {
                 return .red
         }
     }
+    
+    func addTransaction() {
+        let transaction = Transaction(label: label, amount: amount,  date: date, category: category, targetAccount: account, currency: currency)
+        modelContext.insert(transaction)
+    }
+    
 }
 
 // MARK: - Preview
 #Preview {
-    EditTransactionView(transaction: Transaction())
+    AddTransactionView()
         .modelContainer(for: [Transaction.self, Currency.self , Category.self, Account.self], inMemory: true)
 }
 
