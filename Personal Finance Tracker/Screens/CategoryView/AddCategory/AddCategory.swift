@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 
-struct CreateCategoryView: View {
+struct AddCategory: View {
     @Environment(\.modelContext) private var modelContext
     
     @State private var name: String = ""
@@ -86,7 +86,7 @@ struct CreateCategoryView: View {
 }
 
 #Preview {
-    CreateCategoryView()
+    AddCategory()
         .modelContainer(for: Category.self, inMemory: true)
 }
 

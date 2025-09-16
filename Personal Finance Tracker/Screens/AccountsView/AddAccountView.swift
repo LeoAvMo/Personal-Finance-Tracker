@@ -64,7 +64,7 @@ struct AddAccountView: View {
             }
             .navigationTitle(Text("Add Account"))
             .toolbar{
-                Button("Create Category",systemImage: "checkmark", action: addAccount)
+                Button("Create Account",systemImage: "checkmark", action: addAccount)
             }
         }
     }

@@ -25,7 +25,7 @@ struct TransactionsView: View {
     var body: some View {
         NavigationStack(path: $path){
             if categories.isEmpty {
-                CreateCategoryView()
+                AddCategory()
             } else {
                 TransactionListingView(sort: sortOrder, searchString: searchString)
                 .navigationTitle("Transactions")

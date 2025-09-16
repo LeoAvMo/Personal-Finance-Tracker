@@ -14,7 +14,6 @@ class Category: Hashable, Equatable {
     var colorHex: String
     var color: Color {
             get {
-                
                 Color(hex: colorHex) ?? .white
             }
             set {
