@@ -107,6 +107,7 @@ struct AccountCurrencySetupView: View {
             
             
             Image(systemName: "arrow.right")
+                .symbolEffect(.wiggle.byLayer, options: .repeat(.periodic(delay: 3)))
                 .foregroundStyle(Color.accentColor)
                 .bold()
                 .font(.title3)
