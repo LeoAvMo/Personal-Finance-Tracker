@@ -10,6 +10,7 @@ import SwiftData
 
 struct AddCurrencyView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
     @State private var name: String = ""
     @State private var code: String = ""
     @State private var flag: String = ""
@@ -55,6 +56,7 @@ struct AddCurrencyView: View {
         withAnimation {
             let currency = Currency(name: name, code: code, flag: flag, value: value)
             modelContext.insert(currency)
+            dismiss()
         }
     }
 }

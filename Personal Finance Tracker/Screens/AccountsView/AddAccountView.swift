@@ -10,6 +10,7 @@ import SwiftData
 
 struct AddAccountView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) var dismiss
     @Query private var currencies: [Currency]
     
     @State private var name: String = ""
@@ -74,6 +75,7 @@ struct AddAccountView: View {
         withAnimation {
             let account = Account(name: name, balance: balance, colorHex: color.toHex() ?? "#FFFFFF", type: accountType, maxCredit: maxCredit ?? 0, currency: currency ?? Currency())
             modelContext.insert(account)
+            dismiss()
         }
     }
 }
