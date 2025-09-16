@@ -5,10 +5,12 @@
 //  Created by Leo A.Molina on 15/08/25.
 //
 
-// AddTransactionView.swift
+
 
 import SwiftUI
 import SwiftData
+
+//TODO: Check why the navigation is not working and returning when adding new trsansaction
 
 enum TransactionType : String, CaseIterable, Identifiable {
     case income, expense

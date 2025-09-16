@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct AddCurrency: View {
+struct AddCurrencyView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var name: String = ""
     @State private var code: String = ""
@@ -60,6 +60,6 @@ struct AddCurrency: View {
 }
 
 #Preview {
-    AddCurrency()
+    AddCurrencyView()
         .modelContainer(for: Currency.self, inMemory: true)
 }

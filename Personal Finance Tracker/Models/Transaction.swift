@@ -14,7 +14,6 @@ class Transaction {
     var amount: Double
     var date: Date
     
-    
     var category: Category?
     var targetAccount: Account?
     var currency: Currency?

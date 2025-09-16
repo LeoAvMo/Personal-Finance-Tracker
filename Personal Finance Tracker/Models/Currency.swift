@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 
+// TODO: make code UNIQUE
 @Model
 class Currency: Hashable, Equatable{
     var name: String

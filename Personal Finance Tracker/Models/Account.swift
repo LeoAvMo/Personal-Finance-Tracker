@@ -16,6 +16,7 @@ enum AccountType: String, Codable, CaseIterable, Identifiable {
     var id: Self { self }
 }
 
+// TODO: Make name unique
 @Model
 class Account: Hashable, Equatable {
     var name: String

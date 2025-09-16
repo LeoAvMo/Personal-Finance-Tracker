@@ -9,6 +9,10 @@ import SwiftUI
 import SwiftData
 
 // TODO: Create screen to force user to create ONE currency and ONE account.
+// TODO: Make add account and add currency view return to this view once it is created.
+// TODO: Present another view if there are no currencies or accounts
+// TODO: Do not duplicate currency when creating an account
+
 struct AccountsView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Account.name) var accounts: [Account]
@@ -75,8 +79,16 @@ struct AccountsView: View {
             .navigationTitle("Accounts")
             .toolbar {
                 Menu ("Add", systemImage: "plus"){
-                    Button("Add Account",systemImage: "creditcard.fill", action: addAccount)
-                    Button("Add Currency",systemImage: "eurosign", action: addCurrency)
+                    NavigationLink{
+                        AddAccountView()
+                    } label: {
+                        Button("Add Account", systemImage: "creditcard"){ }
+                    }
+                    NavigationLink{
+                        AddCurrencyView()
+                    } label: {
+                        Button("Add Currency", systemImage: "eurosign"){ }
+                    }
                 }
                 
             }

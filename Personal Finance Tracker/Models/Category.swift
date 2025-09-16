@@ -8,6 +8,8 @@
 import SwiftUI
 import SwiftData
 
+//TODO: Make category name unique
+
 @Model
 class Category: Hashable, Equatable {
     var name: String
