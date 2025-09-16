@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct AddAccountView: View {
     @Environment(\.modelContext) private var modelContext
+    @Query private var currencies: [Currency]
     
     @State private var name: String = ""
     @State private var balance: Double = 0
@@ -19,14 +21,64 @@ struct AddAccountView: View {
     var body: some View {
         NavigationStack{
             Form {
+                TextField("Name", text: $name)
+                Picker(selection: $currency, label: Text("Currency")) {
+                    ForEach(currencies){currency in
+                        Text(currency.code + currency.flag).tag(currency)
+                    }
+                }
+                HStack{
+                    Text("Balance")
+                    Spacer()
+                    TextField("$", value: $balance, format: .currency(code: currency?.code ?? "USD"))
+                        .keyboardType(.decimalPad)
+                        .multilineTextAlignment(.trailing)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.primary)
+                }
                 
+                Picker(selection: $accountType, label: Text("Account type")){
+                    ForEach(AccountType.allCases) { type in
+                        Text(type.rawValue.capitalized).tag(type)
+                    }
+                }
+                .pickerStyle(.segmented)
+                
+                if accountType == .credit {
+                    withAnimation {
+                        HStack{
+                            Text("Credit")
+                            Spacer()
+                            TextField("$", value: $maxCredit, format: .currency(code: currency?.code ?? "USD"))
+                                .keyboardType(.decimalPad)
+                                .multilineTextAlignment(.trailing)
+                                .fontWeight(.semibold)
+                                .foregroundStyle(.primary)
+                        }
+                    }
+                }
+                ColorPicker("Account Ccolor", selection: $color)
+            }
+            .onAppear {
+                currency = currencies.first
             }
             .navigationTitle(Text("Add Account"))
+            .toolbar{
+                Button("Create Category",systemImage: "checkmark", action: addAccount)
+            }
         }
-        
+    }
+    
+    // TODO: Add alerts and checks for null cases.
+    private func addAccount() {
+        withAnimation {
+            let account = Account(name: name, balance: balance, colorHex: color.toHex() ?? "#FFFFFF", type: accountType, maxCredit: maxCredit ?? 0, currency: currency ?? Currency())
+            modelContext.insert(account)
+        }
     }
 }
 
 #Preview {
     AddAccountView()
+        .modelContainer(for: [Account.self, Currency.self], inMemory: true)
 }

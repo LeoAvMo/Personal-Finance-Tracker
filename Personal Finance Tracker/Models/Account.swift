@@ -8,10 +8,12 @@
 import SwiftUI
 import SwiftData
 
-enum AccountType: String, Codable {
+enum AccountType: String, Codable, CaseIterable, Identifiable {
     case cash
     case debit
     case credit
+    
+    var id: Self { self }
 }
 
 @Model

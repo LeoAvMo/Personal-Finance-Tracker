@@ -64,12 +64,13 @@ struct CreateCategoryView: View {
                       message: categoryAlertItem!.alertMessage,
                       dismissButton: categoryAlertItem!.alertDismissButton)
             }
+            .toolbar {
+                Button("Create Category",systemImage: "checkmark", action: addCategory)
+            }
             .navigationTitle("Create Category")
         }
         .background(.background)
-        .toolbar {
-            Button("Create Category",systemImage: "plus", action: addCategory)
-        }
+        
     }
     private func addCategory() {
         if name.isEmpty {
