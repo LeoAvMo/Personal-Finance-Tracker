@@ -126,6 +126,7 @@ struct AddTransactionView: View {
     }
     
     func addTransaction() {
+        // TODO: Add checks and alerts for transaction
         let transaction = Transaction(label: label, amount: amount,  date: date, category: category, targetAccount: account, currency: currency)
         modelContext.insert(transaction)
     }
