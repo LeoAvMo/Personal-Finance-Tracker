@@ -17,50 +17,16 @@ struct AccountCurrencySetupView: View {
     @State private var showAddAccount: Bool = false
     @State private var showAlert: Bool = false
     
-        
+    
     var body: some View {
+        
+        
         
         NavigationStack{
             VStack(spacing: 20) {
-                HStack (spacing: 20){
-                    VStack{
-                        ZStack{
-                            Circle()
-                                .stroke(.accent, lineWidth: 3)
-                                .fill(currencies.isEmpty ? Color.gray.opacity(0) : Color.accentColor)
-                                .frame(height: 50)
-                            Image(systemName: "dollarsign")
-                                .foregroundStyle(currencies.isEmpty ? Color.accentColor : .white)
-                                .bold()
-                                .font(.title3)
-                        }
-                        Text("Add Currency")
-                            .font(.caption)
-                            .foregroundStyle(Color.accentColor)
-                    }
-                    
-                    Image(systemName: "arrow.right")
-                        .foregroundStyle(Color.accentColor)
-                        .bold()
-                        .font(.title3)
-                        .padding(.bottom, 18)
-                    
-                    VStack{
-                        ZStack{
-                            Circle()
-                                .stroke(.accent, lineWidth: 3)
-                                .fill(accounts.isEmpty ? Color.gray.opacity(0) : Color.accentColor)
-                                .frame(height: 50)
-                            Image(systemName: "creditcard.fill")
-                                .foregroundStyle(accounts.isEmpty ? Color.accentColor : .white)
-                                .bold()
-                                .font(.title3)
-                        }
-                        Text("Add Account")
-                            .font(.caption)
-                            .foregroundStyle(Color.accentColor)
-                    }
-                }
+                
+                CurrenciesAccountIndicator
+                
                 Spacer()
                 Image(systemName: "list.bullet.clipboard.fill")
                     .font(.system(size: 70))
@@ -111,6 +77,61 @@ struct AccountCurrencySetupView: View {
             }
             .sheet(isPresented: $showAddAccount){
                 AddAccountView()
+            }
+        }
+    }
+    
+    private var CurrenciesAccountIndicator: some View {
+        HStack (spacing: 20){
+            VStack{
+                ZStack{
+                    Circle()
+                        .stroke(.accent, lineWidth: 3)
+                        .fill(currencies.isEmpty ? Color.gray.opacity(0) : Color.accentColor)
+                        .frame(height: 50)
+                    Image(systemName: "dollarsign")
+                        .foregroundStyle(currencies.isEmpty ? Color.accentColor : .white)
+                        .bold()
+                        .font(.title3)
+                    
+                }
+                    Text("Add Currency")
+                        .font(.caption)
+                        .foregroundStyle(Color.accentColor)
+            }
+            .overlay(alignment: .topTrailing){
+                Image(systemName: "checkmark.circle.fill")
+                    .foregroundStyle(!currencies.isEmpty ? Color.accentColor : Color.gray.opacity(0))
+                    .offset(x: 3, y: -7)
+            }
+            
+            
+            Image(systemName: "arrow.right")
+                .foregroundStyle(Color.accentColor)
+                .bold()
+                .font(.title3)
+                .padding(.bottom, 18)
+            
+            VStack{
+                ZStack{
+                    Circle()
+                        .stroke(.accent, lineWidth: 3)
+                        .fill(accounts.isEmpty ? Color.gray.opacity(0) : Color.accentColor)
+                        .frame(height: 50)
+                    Image(systemName: "creditcard.fill")
+                        .foregroundStyle(accounts.isEmpty ? Color.accentColor : .white)
+                        .bold()
+                        .font(.title3)
+                    
+                }
+                    Text("Add Account")
+                        .font(.caption)
+                        .foregroundStyle(Color.accentColor)
+            }
+            .overlay(alignment: .topTrailing){
+                Image(systemName: "checkmark.circle.fill")
+                    .foregroundStyle(!accounts.isEmpty ? Color.accentColor : Color.gray.opacity(0))
+                    .offset(x: 3, y: -7)
             }
         }
     }

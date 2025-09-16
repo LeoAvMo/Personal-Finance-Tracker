@@ -8,7 +8,6 @@
 import SwiftUI
 import SwiftData
 
-// TODO: Create screen to force user to create ONE currency and ONE account.
 // TODO: Make add account and add currency view return to this view once it is created.
 // TODO: Present another view if there are no currencies or accounts
 // TODO: Do not duplicate currency when creating an account

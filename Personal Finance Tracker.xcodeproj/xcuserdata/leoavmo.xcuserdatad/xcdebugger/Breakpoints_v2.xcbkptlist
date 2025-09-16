@@ -14,10 +14,40 @@
             filePath = "Personal Finance Tracker/Screens/AccountsView/AccountsView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "18"
-            endingLineNumber = "18"
+            startingLineNumber = "17"
+            endingLineNumber = "17"
             landmarkName = "AccountsView"
             landmarkType = "14">
+            <Locations>
+               <Location
+                  uuid = "C9F93A40-C254-4E8B-A8FD-D9153B53938E - 6178282d6bc4a2ad"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Personal_Finance_Tracker.AccountsView.init(_accounts: _SwiftData_SwiftUI.Query&lt;Personal_Finance_Tracker.Account, Swift.Array&lt;Personal_Finance_Tracker.Account&gt;&gt;, _currencies: _SwiftData_SwiftUI.Query&lt;Personal_Finance_Tracker.Currency, Swift.Array&lt;Personal_Finance_Tracker.Currency&gt;&gt;) -&gt; Personal_Finance_Tracker.AccountsView"
+                  moduleName = "Personal Finance Tracker.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/leoavmo/Documents/Coding/Personal%20Finance%20Tracker/Personal%20Finance%20Tracker/Screens/AccountsView/AccountsView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "21"
+                  endingLineNumber = "21">
+               </Location>
+               <Location
+                  uuid = "C9F93A40-C254-4E8B-A8FD-D9153B53938E - 6178282d6bc4a24c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Personal_Finance_Tracker.AccountsView.init(_accounts: _SwiftData_SwiftUI.Query&lt;Personal_Finance_Tracker.Account, Swift.Array&lt;Personal_Finance_Tracker.Account&gt;&gt;, _currencies: _SwiftData_SwiftUI.Query&lt;Personal_Finance_Tracker.Currency, Swift.Array&lt;Personal_Finance_Tracker.Currency&gt;&gt;) -&gt; Personal_Finance_Tracker.AccountsView"
+                  moduleName = "Personal Finance Tracker.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/leoavmo/Documents/Coding/Personal%20Finance%20Tracker/Personal%20Finance%20Tracker/Screens/AccountsView/AccountsView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
