@@ -32,65 +32,69 @@ struct AccountsView: View {
     
     var body: some View {
         
+        
         NavigationStack {
-            Form{
-                
-                Section (header: Text("Total balance")) {
-                    Picker(selection: $selectedCurrency, label: Text("Currency:")) {
-                        ForEach(currencies) { currency in
-                            Text(currency.code + " " + currency.flag).tag(currency)
-                        }
-                    }
-                    .pickerStyle(.menu)
+            if accounts.isEmpty || currencies.isEmpty {
+                AccountCurrencySetupView()
+            } else {
+                Form{
                     
-                    HStack{
-                        Spacer()
-                        Text(formattedBalance)
-                            .font(.largeTitle)
-                            .bold()
-                        Spacer()
+                    Section (header: Text("Total balance")) {
+                        Picker(selection: $selectedCurrency, label: Text("Currency:")) {
+                            ForEach(currencies) { currency in
+                                Text(currency.code + " " + currency.flag).tag(currency)
+                            }
+                        }
+                        .pickerStyle(.menu)
+                        
+                        HStack{
+                            Spacer()
+                            Text(formattedBalance)
+                                .font(.largeTitle)
+                                .bold()
+                            Spacer()
+                        }
+                        
                     }
                     
-                }
-                
-                
-                Section(header: Text("Cash")) {
-                    ForEach(accounts) { account in
-                        if account.type == .cash {
-                            AccountCapsuleView(account: account, isSelected: false)
+                    
+                    Section(header: Text("Cash")) {
+                        ForEach(accounts) { account in
+                            if account.type == .cash {
+                                AccountCapsuleView(account: account, isSelected: false)
+                            }
+                        }
+                    }
+                    
+                    
+                    Section(header: Text("Cards")) {
+                        ForEach(accounts){ account in
+                            if account.type != .cash {
+                                AccountCapsuleView(account: account, isSelected: false)
+                            }
                         }
                     }
                 }
-                
-                
-                Section(header: Text("Cards")) {
-                    ForEach(accounts){ account in
-                        if account.type != .cash {
-                            AccountCapsuleView(account: account, isSelected: false)
+                .onAppear{
+                    if let selectedCurrency = currencies.first {
+                        self.selectedCurrency = selectedCurrency
+                    }
+                }
+                .navigationTitle("Accounts")
+                .toolbar {
+                    Menu ("Add", systemImage: "plus"){
+                        NavigationLink{
+                            AddAccountView()
+                        } label: {
+                            Button("Add Account", systemImage: "creditcard"){ }
+                        }
+                        NavigationLink{
+                            AddCurrencyView()
+                        } label: {
+                            Button("Add Currency", systemImage: "eurosign"){ }
                         }
                     }
                 }
-            }
-            .onAppear{
-                if let selectedCurrency = currencies.first {
-                    self.selectedCurrency = selectedCurrency
-                }
-            }
-            .navigationTitle("Accounts")
-            .toolbar {
-                Menu ("Add", systemImage: "plus"){
-                    NavigationLink{
-                        AddAccountView()
-                    } label: {
-                        Button("Add Account", systemImage: "creditcard"){ }
-                    }
-                    NavigationLink{
-                        AddCurrencyView()
-                    } label: {
-                        Button("Add Currency", systemImage: "eurosign"){ }
-                    }
-                }
-                
             }
         }
     }
