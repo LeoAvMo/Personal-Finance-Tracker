@@ -25,7 +25,7 @@ struct AddCurrencyView: View {
                 // TODO: limit to 3 chars
                 TextField("Currency ISO Code. Ex: USD", text: $code)
                 
-                // TODO: limit to 1 char.
+                
                 EmojiTextFieldView(emojiText: $flag)
                 VStack {
                     HStack{

@@ -21,6 +21,24 @@ struct TrackerAlertContext {
                                                                              alertMessage: Text("Category name is required."),
                                                                              alertDismissButton: .default(Text("OK")))
     
+    // MARK: AddCurrencyView Alerts
+    
+    static let currencyHasNoName: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create currency"),
+                                                                      alertMessage: Text("Currency should be named before adding. Please enter a name."),
+                                                                      alertDismissButton: .default(Text("OK")))
+    
+    static let currencyISDCodeIsIncorrect: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create currency"),
+                                                                      alertMessage: Text("Enter a proper ISD code for the currency."),
+                                                                      alertDismissButton: .default(Text("OK")))
+    
+    static let currencyHasNoFlag: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create currency"),
+                                                                      alertMessage: Text("Enter an emoji for the currency's flag."),
+                                                                      alertDismissButton: .default(Text("OK")))
+    
+    static let currencyAmountIsNotValid: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create currency"),
+                                                                      alertMessage: Text("Give a proper amount to the currency. Amount should be more than 0 based in your main currency."),
+                                                                      alertDismissButton: .default(Text("OK")))
+    
     // MARK: AddTransactionView Alerts
     
     //Transaction label is empty
