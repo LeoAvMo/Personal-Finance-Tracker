@@ -1,0 +1,21 @@
+//
+//  Character+Extensions.swift
+//  Personal Finance Tracker
+//
+//  Created by Leo A.Molina on 16/09/25.
+//
+
+import SwiftUI
+
+extension Character {
+    /// A simple check to see if a character is an emoji.
+    var isEmoji: Bool {
+        // The first scalar is the base character, we can check that
+        guard let firstScalar = self.unicodeScalars.first else {
+            return false
+        }
+        
+        // Check if the scalar is in a recognized emoji range and has the emoji presentation property
+        return firstScalar.properties.isEmoji && firstScalar.properties.isEmojiPresentation
+    }
+}
