@@ -7,6 +7,8 @@
 
 import SwiftUI
 import SwiftData
+import Combine
+import RegexBuilder
 
 struct AddCurrencyView: View {
     @Environment(\.modelContext) private var modelContext
@@ -14,8 +16,11 @@ struct AddCurrencyView: View {
     @State private var name: String = ""
     @State private var code: String = ""
     @State private var flag: String = ""
-    @State private var value: Double = 1
-
+    @State private var value: Double?
+    
+    @State private var showAlert: Bool = false
+    @State private var alertItem: TrackerAlertItem?
+    
     var body: some View {
         NavigationStack{
             
@@ -24,7 +29,7 @@ struct AddCurrencyView: View {
                 
                 // TODO: limit to 3 chars
                 TextField("Currency ISO Code. Ex: USD", text: $code)
-                
+                    .onReceive(Just(code)) { _ in limitText(textLimit: 3) }
                 
                 EmojiTextFieldView(emojiText: $flag)
                 VStack {
@@ -51,17 +56,61 @@ struct AddCurrencyView: View {
             .toolbar {
                 Button("Create Currency", systemImage: "checkmark", action: addCurrency)
             }
+            .alert(isPresented: $showAlert) {
+                Alert(title: alertItem!.alertTitle,
+                      message: alertItem!.alertMessage,
+                      dismissButton: alertItem!.alertDismissButton)
+            }
         }
+    
     }
     
     private func addCurrency() {
         // TODO: Add checks to not add when there are nil values, empty strings or value set to 0.
+        
+        code = code.uppercased()
+        
+        // Check if currency name is correct
+        if name.isEmpty {
+            alertItem = TrackerAlertContext.categoryNameIsRequired
+            showAlert.toggle()
+            return
+        }
+        
+        // Check with regex that ISO code is only 3 chars and from a-z and A-Z
+        if !isValidISOCode(ISOCode: code) {
+            alertItem = TrackerAlertContext.currencyISOCodeIsIncorrect
+            showAlert.toggle( )
+            return
+        }
+    
+        // Check if flag is an emoji with a single char
+        if !flag.isSingleEmoji {
+            alertItem = TrackerAlertContext.currencyHasNoFlag
+            showAlert.toggle()
+            return
+        }
+        
+        if value ?? 0 <= 0 || value == nil || value!.isNaN || value!.isInfinite {
+            alertItem = TrackerAlertContext.currencyAmountIsNotValid
+            showAlert.toggle()
+            return
+        }
+        
         withAnimation {
-            let currency = Currency(name: name, code: code, flag: flag, value: value)
+            let currency = Currency(name: name, code: code, flag: flag, value: value ?? 1)
             modelContext.insert(currency)
             dismiss()
         }
     }
+    
+    //Function to keep text length in limits
+    private func limitText(textLimit : Int) {
+        if code.count > textLimit {
+            code = String(code.prefix(textLimit))
+        }
+    }
+    
 }
 
 #Preview {

@@ -11,7 +11,7 @@ import SwiftData
 // TODO: Make add account and add currency view return to this view once it is created.
 // TODO: Present another view if there are no currencies or accounts
 // TODO: Do not duplicate currency when creating an account
-
+// TODO: CHECK ACCOUNT CAPSULE VIEW AND WHY IT'S NOT DISPLAYING CORRECTLY THE COLOR 
 struct AccountsView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Account.name) var accounts: [Account]

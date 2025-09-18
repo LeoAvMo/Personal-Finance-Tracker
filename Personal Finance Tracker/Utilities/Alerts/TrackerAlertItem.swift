@@ -27,8 +27,8 @@ struct TrackerAlertContext {
                                                                       alertMessage: Text("Currency should be named before adding. Please enter a name."),
                                                                       alertDismissButton: .default(Text("OK")))
     
-    static let currencyISDCodeIsIncorrect: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create currency"),
-                                                                      alertMessage: Text("Enter a proper ISD code for the currency."),
+    static let currencyISOCodeIsIncorrect: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create currency"),
+                                                                      alertMessage: Text("Enter a proper ISO code for the currency."),
                                                                       alertDismissButton: .default(Text("OK")))
     
     static let currencyHasNoFlag: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create currency"),
