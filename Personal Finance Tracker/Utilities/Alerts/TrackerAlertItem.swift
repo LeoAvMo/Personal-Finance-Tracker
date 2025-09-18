@@ -24,7 +24,7 @@ struct TrackerAlertContext {
     // MARK: AddCurrencyView Alerts
     
     static let currencyHasNoName: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create currency"),
-                                                                      alertMessage: Text("Currency should be named before adding. Please enter a name."),
+                                                                      alertMessage: Text("Currencies should be named before adding. Please enter a name."),
                                                                       alertDismissButton: .default(Text("OK")))
     
     static let currencyISOCodeIsIncorrect: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create currency"),
@@ -37,6 +37,28 @@ struct TrackerAlertContext {
     
     static let currencyAmountIsNotValid: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create currency"),
                                                                       alertMessage: Text("Give a proper amount to the currency. Amount should be more than 0 based in your main currency."),
+                                                                      alertDismissButton: .default(Text("OK")))
+    
+    // MARK: AddAccountView Alerts
+    
+    static let accountHasNoName: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create account"),
+                                                                      alertMessage: Text("Accounts should be named before adding. Please enter a name."),
+                                                                      alertDismissButton: .default(Text("OK")))
+    
+    static let invalidAccountCurrency: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create account"),
+                                                                      alertMessage: Text("Select a currency for the account."),
+                                                                      alertDismissButton: .default(Text("OK")))
+                                                                         
+    static let invalidBalance: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create account"),
+                                                                      alertMessage: Text("Add an initial balance to the account of the corresponding currency."),
+                                                                      alertDismissButton: .default(Text("OK")))
+    
+    static let invalidMaxCredit: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create account"),
+                                                                      alertMessage: Text("Add the max credit for the credit card account of the proper currency."),
+                                                                      alertDismissButton: .default(Text("OK")))
+    
+    static let invalidColor: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create account"),
+                                                                      alertMessage: Text("There was an issue adding the color for the account. Please try again."),
                                                                       alertDismissButton: .default(Text("OK")))
     
     // MARK: AddTransactionView Alerts

@@ -8,7 +8,9 @@
 import SwiftUI
 import SwiftData
 import Combine
-import RegexBuilder
+
+// TODO: Make return button continue to next field in the form
+// TODO: Remove autocorrect to emojitextfield and currency text field
 
 struct AddCurrencyView: View {
     @Environment(\.modelContext) private var modelContext

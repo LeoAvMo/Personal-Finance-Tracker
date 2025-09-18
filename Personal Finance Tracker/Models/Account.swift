@@ -13,6 +13,7 @@ enum AccountType: String, Codable, CaseIterable, Identifiable {
     case debit
     case credit
     
+    
     var id: Self { self }
 }
 
@@ -22,7 +23,14 @@ class Account: Hashable, Equatable {
     var name: String
     var balance: Double
     var colorHex: String
-    var color: Color { Color(colorHex) }
+    var color: Color {
+        get {
+            Color(hex: colorHex) ?? .white
+        }
+        set {
+            colorHex = newValue.toHex() ?? "#FFFFFF"
+        }
+    }
     var type: AccountType
     var currency: Currency
     var maxCredit: Double?   // only used if AccountType is .credit
