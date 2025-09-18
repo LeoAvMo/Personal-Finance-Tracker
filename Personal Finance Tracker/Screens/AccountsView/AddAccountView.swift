@@ -8,6 +8,9 @@
 import SwiftUI
 import SwiftData
 
+
+// TODO: Create better navigation in the form for better UX
+
 struct AddAccountView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
@@ -71,6 +74,11 @@ struct AddAccountView: View {
             .onAppear {
                 currency = currencies.first
             }
+            .alert(isPresented: $showAlert) {
+                Alert(title: alertItem!.alertTitle,
+                      message: alertItem!.alertMessage,
+                      dismissButton: alertItem!.alertDismissButton)
+            }
             .navigationTitle(Text("Add Account"))
             .toolbar{
                 Button("Create Account",systemImage: "checkmark", action: addAccount)
@@ -81,22 +89,48 @@ struct AddAccountView: View {
     // TODO: Add alerts and checks for null cases.
     private func addAccount() {
         
-        switch accountType {
-            case .cash:
-                maxCredit = nil
-            case .debit:
-                maxCredit = nil
-            case .credit:
-                maxCredit = maxCredit
-        }
+        // Making color to hex string to save it
+        let colorHex = color.toHex()
         
         if name.isEmpty {
-            
+            alertItem = TrackerAlertContext.accountHasNoName
+            showAlert.toggle()
+            return
+        }
+        
+        if currency == nil {
+            alertItem = TrackerAlertContext.invalidAccountCurrency
+            showAlert.toggle()
+            return
+        }
+        
+        if balance ?? 0 <= 0 || balance == nil || balance!.isNaN || balance!.isInfinite {
+            alertItem = TrackerAlertContext.invalidAccountBalance
+            showAlert.toggle()
+            return
+        }
+        
+        if accountType == .credit && (maxCredit ?? 0) <= 0 || maxCredit == nil || maxCredit!.isNaN || maxCredit!.isInfinite {
+            alertItem = TrackerAlertContext.invalidAccountMaxCredit
+            showAlert.toggle()
+            return
+        }
+        
+        if colorHex == nil || colorHex!.isEmpty || colorHex!.count != 7 || !colorHex!.hasPrefix("#") {
+            alertItem = TrackerAlertContext.invalidAccountColor
+            showAlert.toggle()
             return
         }
         
         withAnimation {
-            let account = Account(name: name, balance: balance ?? 0, colorHex: color.toHex() ?? "#FFFFFF", type: accountType, maxCredit: maxCredit ?? 0, currency: currency ?? Currency())
+            let account = Account(
+                name: name,
+                balance: balance ?? 0,
+                colorHex: colorHex ?? "#FFFFFF",
+                type: accountType,
+                currency: currency ?? Currency(),
+                maxCredit: accountType == .credit ? maxCredit : nil
+            )
             modelContext.insert(account)
             dismiss()
         }

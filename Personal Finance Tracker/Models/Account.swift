@@ -36,12 +36,12 @@ class Account: Hashable, Equatable {
     var maxCredit: Double?   // only used if AccountType is .credit
     
     
-    init(name: String = "", balance: Double = 0, colorHex: String = "#FFFFFF", type: AccountType = .cash, maxCredit: Double? = nil, currency: Currency = Currency()) {
+    init(name: String = "", balance: Double = 0, colorHex: String = "#FFFFFF", type: AccountType = .cash, currency: Currency = Currency(), maxCredit: Double? = nil) {
         self.name = name
         self.balance = balance
         self.colorHex = colorHex
         self.type = type
-        self.maxCredit = maxCredit
         self.currency = currency
+        self.maxCredit = maxCredit
     }
 }

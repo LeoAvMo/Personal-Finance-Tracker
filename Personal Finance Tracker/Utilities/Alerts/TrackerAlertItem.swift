@@ -35,7 +35,7 @@ struct TrackerAlertContext {
                                                                       alertMessage: Text("Enter an emoji for the currency's flag."),
                                                                       alertDismissButton: .default(Text("OK")))
     
-    static let currencyAmountIsNotValid: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create currency"),
+    static let currencyValueIsNotValid: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create currency"),
                                                                       alertMessage: Text("Give a proper amount to the currency. Amount should be more than 0 based in your main currency."),
                                                                       alertDismissButton: .default(Text("OK")))
     
@@ -49,15 +49,15 @@ struct TrackerAlertContext {
                                                                       alertMessage: Text("Select a currency for the account."),
                                                                       alertDismissButton: .default(Text("OK")))
                                                                          
-    static let invalidBalance: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create account"),
+    static let invalidAccountBalance: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create account"),
                                                                       alertMessage: Text("Add an initial balance to the account of the corresponding currency."),
                                                                       alertDismissButton: .default(Text("OK")))
     
-    static let invalidMaxCredit: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create account"),
+    static let invalidAccountMaxCredit: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create account"),
                                                                       alertMessage: Text("Add the max credit for the credit card account of the proper currency."),
                                                                       alertDismissButton: .default(Text("OK")))
     
-    static let invalidColor: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create account"),
+    static let invalidAccountColor: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not create account"),
                                                                       alertMessage: Text("There was an issue adding the color for the account. Please try again."),
                                                                       alertDismissButton: .default(Text("OK")))
     

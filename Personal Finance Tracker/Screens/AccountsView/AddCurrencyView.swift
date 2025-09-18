@@ -94,13 +94,18 @@ struct AddCurrencyView: View {
         }
         
         if value ?? 0 <= 0 || value == nil || value!.isNaN || value!.isInfinite {
-            alertItem = TrackerAlertContext.currencyAmountIsNotValid
+            alertItem = TrackerAlertContext.currencyValueIsNotValid
             showAlert.toggle()
             return
         }
         
+        
+        
         withAnimation {
-            let currency = Currency(name: name, code: code, flag: flag, value: value ?? 1)
+            let currency = Currency(name: name,
+                                    code: code,
+                                    flag: flag,
+                                    value: value ?? 1)
             modelContext.insert(currency)
             dismiss()
         }
