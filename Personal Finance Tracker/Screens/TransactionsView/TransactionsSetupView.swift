@@ -8,6 +8,9 @@
 import SwiftUI
 import SwiftData
 
+
+// TODO: Add an OOPS! view when there are no currencies or accounts in the user profile
+
 struct TransactionsSetupView: View {
     @Environment(\.modelContext) var modelContext
     
@@ -16,6 +19,8 @@ struct TransactionsSetupView: View {
     @Query private var accounts: [Account]
     
     @State private var showAddCategory: Bool = false
+    @State private var showAlert: Bool = false
+    @State private var alertItem: TrackerAlertItem?
     
     var categoriesIsEmpty: Bool {
         accounts.isEmpty
@@ -23,13 +28,14 @@ struct TransactionsSetupView: View {
     
     var body: some View {
         NavigationStack {
+            
             VStack(spacing: 20) {
                 Image(systemName: "star.circle.fill")
                     .font(.system(size: 70))
                     .foregroundStyle(.accent)
                     .symbolEffect(.drawOn.individually, options: .nonRepeating)
                 
-                Text("Add a Category!")
+                Text("Before you start...")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                 
@@ -41,7 +47,7 @@ struct TransactionsSetupView: View {
                 
                 Button {
                     if !categoriesIsEmpty {
-                        // alert
+                        alertItem = TrackerAlertContext.categoryAlreadyCreated
                         // toggle alert
                         return
                     }
@@ -56,10 +62,15 @@ struct TransactionsSetupView: View {
                 .padding(.top)
                 
             }
-            .navigationTitle(Text("Adding Categories"))
+            .navigationTitle(Text("Add a Category"))
             .navigationBarTitleDisplayMode(.inline)
             .sheet(isPresented: $showAddCategory) {
                 AddCategoryView()
+            }
+            .alert(isPresented: $showAlert) {
+                Alert(title: alertItem!.alertTitle,
+                      message: alertItem!.alertMessage,
+                      dismissButton: alertItem!.alertDismissButton)
             }
         }
     }

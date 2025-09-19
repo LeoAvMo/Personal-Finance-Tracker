@@ -98,5 +98,14 @@ struct TrackerAlertContext {
                                                                      alertMessage: Text("Add a valid currency to create an account."),
                                                                      alertDismissButton: .default(Text("OK")))
     
+    // MARK: TransactionsSetup View alerts
+    
+    static let categoryAlreadyCreated: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not add category"),
+                                                                     alertMessage: Text("It looks like there is already a category. Please try again later."),
+                                                                     alertDismissButton: .default(Text("OK")))
+    
+    static let categoryNameAlreadyCreated: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not add category"),
+                                                                               alertMessage: Text("There is already a category with that name. Try naming it a different way."),
+                                                                               alertDismissButton: .default(Text("OK")))
 }
     
