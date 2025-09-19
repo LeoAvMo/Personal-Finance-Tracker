@@ -12,7 +12,7 @@ import SwiftData
 enum AccountFields: Hashable{
     case name, currency, balance
 }
-// TODO: Create better navigation in the form for better UX
+
 
 struct AddAccountView: View {
     @Environment(\.modelContext) private var modelContext

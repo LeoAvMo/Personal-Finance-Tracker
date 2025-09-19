@@ -19,6 +19,8 @@ struct AccountCurrencySetupView: View {
     @State private var showAlert: Bool = false
     @State private var alertItem: TrackerAlertItem?
     
+    var currenciesIsEmpty: Bool { currencies.isEmpty }
+    
     var body: some View {
         
         NavigationStack{
@@ -43,23 +45,23 @@ struct AccountCurrencySetupView: View {
                 
                 // Button to open the CreateCategoryView sheet
                 Button {
-                    if !currencies.isEmpty{
+                    if !currenciesIsEmpty{
                         alertItem = TrackerAlertContext.currencyAlreadyCreated
                         showAlert.toggle()
                         return
                     }
                     showAddCurrency.toggle()
                 } label: {
-                    Label("Create a Currency", systemImage: "plus.circle.fill")
+                    Label(currenciesIsEmpty ? "Create a Currency" : "Currency Added", systemImage: currenciesIsEmpty ? "plus.circle.fill" : "checkmark.circle.fill")
                 }
-                .buttonStyle(.borderedProminent)
-                .foregroundStyle(.white)
+                .tint(currenciesIsEmpty ? .accentColor : .green)
+                .buttonStyle(.glass)
                 .padding(.top)
                 
                 
                 // Button to open a placeholder AddAccountView sheet
                 Button {
-                    if currencies.isEmpty{
+                    if currenciesIsEmpty{
                         alertItem = TrackerAlertContext.currencyNotCreated
                         showAlert.toggle()
                         return
@@ -68,7 +70,8 @@ struct AccountCurrencySetupView: View {
                 } label: {
                     Label("Create an Account", systemImage: "plus.circle.fill")
                 }
-                .buttonStyle(.bordered)
+                .tint(accounts.isEmpty ? .accent : .green)
+                .buttonStyle(.glass)
                 Spacer()
             }
             .navigationTitle("Setup")

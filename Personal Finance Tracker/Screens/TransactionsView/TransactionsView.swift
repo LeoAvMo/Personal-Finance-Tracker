@@ -24,7 +24,7 @@ struct TransactionsView: View {
     @State private var selectedCategory: Category?
     var body: some View {
         NavigationStack(path: $path){
-            if categories.isEmpty {
+            if categories.isEmpty || accounts.isEmpty || currencies.isEmpty {
                 AddCategoryView()
             } else {
                 TransactionListingView(sort: sortOrder, searchString: searchString)

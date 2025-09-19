@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 import Combine
 
-// TODO: Tint checkmark button from toolbar to accentColor and checkmark .white
+
 
 enum CurrencyFields: Hashable {
     case name, code, flag, value
