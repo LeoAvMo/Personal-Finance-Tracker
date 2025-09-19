@@ -15,6 +15,8 @@ struct TransactionsSetupView: View {
     @Query private var currencies: [Currency]
     @Query private var accounts: [Account]
     
+    @State private var showAddCategory: Bool = false
+    
     var categoriesIsEmpty: Bool {
         accounts.isEmpty
     }
@@ -38,10 +40,13 @@ struct TransactionsSetupView: View {
                     .padding(.horizontal)
                 
                 Button {
-                    if !categoriesIsEmpty{
-                        
+                    if !categoriesIsEmpty {
+                        // alert
+                        // toggle alert
                         return
                     }
+                    
+                    showAddCategory.toggle()
                     
                 } label: {
                     Label(categoriesIsEmpty ? "Create a Category" : "Category Added", systemImage: categoriesIsEmpty ? "plus.circle.fill" : "checkmark.circle.fill")
@@ -53,6 +58,9 @@ struct TransactionsSetupView: View {
             }
             .navigationTitle(Text("Adding Categories"))
             .navigationBarTitleDisplayMode(.inline)
+            .sheet(isPresented: $showAddCategory) {
+                AddCategoryView()
+            }
         }
     }
 }
