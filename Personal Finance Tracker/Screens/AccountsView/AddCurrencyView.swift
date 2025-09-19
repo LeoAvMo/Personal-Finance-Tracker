@@ -79,7 +79,9 @@ struct AddCurrencyView: View {
             }
             .navigationTitle(Text("Add Currency"))
             .toolbar {
-                Button("Create Currency", systemImage: "checkmark", action: addCurrency)
+                ToolbarItem(placement: .confirmationAction){
+                    Button("Create Currency", systemImage: "checkmark", action: addCurrency)
+                }
             }
             .alert(isPresented: $showAlert) {
                 Alert(title: alertItem!.alertTitle,
@@ -91,7 +93,6 @@ struct AddCurrencyView: View {
     }
     
     private func addCurrency() {
-        // TODO: Add checks to not add when there are nil values, empty strings or value set to 0.
         
         code = code.uppercased()
         
@@ -121,8 +122,6 @@ struct AddCurrencyView: View {
             showAlert.toggle()
             return
         }
-        
-        
         
         withAnimation {
             let currency = Currency(name: name,
