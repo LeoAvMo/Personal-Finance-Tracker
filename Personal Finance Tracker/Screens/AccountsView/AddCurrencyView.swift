@@ -10,7 +10,6 @@ import SwiftData
 import Combine
 
 // TODO: Make return button continue to next field in the form
-// TODO: Remove autocorrect to emojitextfield and currency text field
 
 struct AddCurrencyView: View {
     @Environment(\.modelContext) private var modelContext
@@ -29,11 +28,14 @@ struct AddCurrencyView: View {
             Form {
                 TextField("Name", text: $name)
                 
-                // TODO: limit to 3 chars
                 TextField("Currency ISO Code. Ex: USD", text: $code)
                     .onReceive(Just(code)) { _ in limitText(textLimit: 3) }
+                    .textInputAutocapitalization(.characters)
+                    .autocorrectionDisabled()
                 
                 EmojiTextFieldView(emojiText: $flag)
+                    .autocorrectionDisabled()
+                
                 VStack {
                     HStack{
                         Text("Value")
