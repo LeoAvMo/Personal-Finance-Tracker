@@ -9,6 +9,9 @@ import SwiftUI
 import SwiftData
 
 
+enum AccountFields: Hashable{
+    case name, currency, balance
+}
 // TODO: Create better navigation in the form for better UX
 
 struct AddAccountView: View {
@@ -26,17 +29,26 @@ struct AddAccountView: View {
     @State private var alertItem: TrackerAlertItem?
     @State private var showAlert: Bool = false
     
+    @FocusState private var focusedField: AccountFields?
+    
     var body: some View {
         NavigationStack{
             Form {
                 TextField("Name", text: $name)
                     .autocapitalization(.words)
-                    
+                    .focused($focusedField, equals: .name)
+                    .onSubmit {
+                        focusedField = .currency
+                    }
                 
                 Picker(selection: $currency, label: Text("Currency")) {
                     ForEach(currencies){currency in
                         Text(currency.code + currency.flag).tag(currency)
                     }
+                }
+                .focused($focusedField, equals: .currency)
+                .onSubmit {
+                    focusedField = .balance
                 }
                 
                 HStack{
@@ -47,6 +59,9 @@ struct AddAccountView: View {
                         .multilineTextAlignment(.trailing)
                         .fontWeight(.semibold)
                         .foregroundStyle(.primary)
+                        .onSubmit {
+                            focusedField = nil
+                        }
                 }
                 
                 Picker(selection: $accountType, label: Text("Account type")){
@@ -66,6 +81,9 @@ struct AddAccountView: View {
                                 .multilineTextAlignment(.trailing)
                                 .fontWeight(.semibold)
                                 .foregroundStyle(.primary)
+                                .onSubmit {
+                                    focusedField = nil
+                                }
                         }
                     }
                 }
@@ -81,7 +99,9 @@ struct AddAccountView: View {
             }
             .navigationTitle(Text("Add Account"))
             .toolbar{
-                Button("Create Account",systemImage: "checkmark", action: addAccount)
+                ToolbarItem(placement: .confirmationAction){
+                    Button("Create Account",systemImage: "checkmark", action: addAccount)
+                }
             }
         }
     }

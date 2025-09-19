@@ -17,7 +17,7 @@ class Currency: Hashable, Equatable{
     var value: Double
     
 
-    init(name: String = "US Dollar", code: String = "USD", flag: String = "🇺🇸", value: Double = 1.0) {
+    init(name: String = "Currency", code: String = "", flag: String = "🏳️", value: Double = 1.0) {
         self.name = name
         self.code = code
         self.flag = flag
