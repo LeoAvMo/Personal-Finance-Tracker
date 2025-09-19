@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 
+
 struct AccountCurrencySetupView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Account.name) var accounts: [Account]

@@ -9,7 +9,11 @@ import SwiftUI
 import SwiftData
 import Combine
 
-// TODO: Make return button continue to next field in the form
+// TODO: Tint checkmark button from toolbar to accentColor and checkmark .white
+
+enum CurrencyFields: Hashable {
+    case name, code, flag, value
+}
 
 struct AddCurrencyView: View {
     @Environment(\.modelContext) private var modelContext
@@ -22,19 +26,31 @@ struct AddCurrencyView: View {
     @State private var showAlert: Bool = false
     @State private var alertItem: TrackerAlertItem?
     
+    @FocusState private var focusedField: CurrencyFields?
     var body: some View {
         NavigationStack{
             
             Form {
                 TextField("Name", text: $name)
+                    .focused($focusedField, equals: .name)
+                    .onSubmit {
+                        focusedField = .code
+                    }
                 
                 TextField("Currency ISO Code. Ex: USD", text: $code)
                     .onReceive(Just(code)) { _ in limitText(textLimit: 3) }
                     .textInputAutocapitalization(.characters)
                     .autocorrectionDisabled()
-                
+                    .focused($focusedField, equals: .code)
+                    .onSubmit {
+                        focusedField = .flag
+                    }
                 EmojiTextFieldView(emojiText: $flag)
                     .autocorrectionDisabled()
+                    .focused($focusedField, equals: .flag)
+                    .onSubmit {
+                        focusedField = .value
+                    }
                 
                 VStack {
                     HStack{
@@ -44,6 +60,11 @@ struct AddCurrencyView: View {
                             .multilineTextAlignment(.trailing)
                             .fontWeight(.semibold)
                             .foregroundStyle(.primary)
+                            .focused($focusedField, equals: .value)
+                            .onSubmit {
+                                focusedField = nil
+                            }
+
                     }
                     .padding(.bottom)
                     VStack{
