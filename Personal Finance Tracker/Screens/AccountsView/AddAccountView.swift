@@ -69,7 +69,7 @@ struct AddAccountView: View {
                         Text(type.rawValue.capitalized).tag(type)
                     }
                 }
-                .pickerStyle(.segmented)
+                .pickerStyle(.menu)
                 
                 if accountType == .credit {
                     withAnimation {
@@ -130,7 +130,10 @@ struct AddAccountView: View {
             return
         }
         
-        if accountType == .credit && (maxCredit ?? 0) <= 0 || maxCredit == nil || maxCredit!.isNaN || maxCredit!.isInfinite {
+        if (accountType == .credit && (maxCredit ?? 0 <= 0)) ||
+            (accountType == .credit && maxCredit == nil) ||
+            (accountType == .credit && maxCredit!.isNaN) ||
+            (accountType == . credit && maxCredit!.isInfinite) {
             alertItem = TrackerAlertContext.invalidAccountMaxCredit
             showAlert.toggle()
             return

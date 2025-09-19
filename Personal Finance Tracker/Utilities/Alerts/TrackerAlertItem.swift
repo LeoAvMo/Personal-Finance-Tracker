@@ -88,5 +88,15 @@ struct TrackerAlertContext {
                                                                      alertMessage: Text("Please select a target account for the transaction."),
                                                                      alertDismissButton: .default(Text("OK")))
     
+    // MARK: AccountCurrencySetupView Alerts
+    
+    static let currencyAlreadyCreated: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("You already added a currency"),
+                                                                     alertMessage: Text("To continue, please add an account. You can edit the currency and the account later once you added them."),
+                                                                     alertDismissButton: .default(Text("OK")))
+    
+    static let currencyNotCreated: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not add account"),
+                                                                     alertMessage: Text("Add a valid currency to create an account."),
+                                                                     alertDismissButton: .default(Text("OK")))
+    
 }
     

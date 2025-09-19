@@ -17,11 +17,9 @@ struct AccountCurrencySetupView: View {
     @State private var showAddCurrency: Bool = false
     @State private var showAddAccount: Bool = false
     @State private var showAlert: Bool = false
-    
+    @State private var alertItem: TrackerAlertItem?
     
     var body: some View {
-        
-        
         
         NavigationStack{
             VStack(spacing: 20) {
@@ -46,7 +44,8 @@ struct AccountCurrencySetupView: View {
                 // Button to open the CreateCategoryView sheet
                 Button {
                     if !currencies.isEmpty{
-                        // Add alert
+                        alertItem = TrackerAlertContext.currencyAlreadyCreated
+                        showAlert.toggle()
                         return
                     }
                     showAddCurrency.toggle()
@@ -61,7 +60,8 @@ struct AccountCurrencySetupView: View {
                 // Button to open a placeholder AddAccountView sheet
                 Button {
                     if currencies.isEmpty{
-                        //TODO: Add alert
+                        alertItem = TrackerAlertContext.currencyNotCreated
+                        showAlert.toggle()
                         return
                     }
                     showAddAccount.toggle()
@@ -73,6 +73,11 @@ struct AccountCurrencySetupView: View {
             }
             .navigationTitle("Setup")
             .navigationBarTitleDisplayMode(.inline)
+            .alert(isPresented: $showAlert) {
+                Alert(title: alertItem!.alertTitle,
+                      message: alertItem!.alertMessage,
+                      dismissButton: alertItem!.alertDismissButton)
+            }
             .sheet(isPresented: $showAddCurrency){
                 AddCurrencyView()
             }
