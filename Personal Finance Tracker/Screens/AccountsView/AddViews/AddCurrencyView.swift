@@ -15,6 +15,7 @@ enum CurrencyFields: Hashable {
     case name, code, flag, value
 }
 
+
 struct AddCurrencyView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss

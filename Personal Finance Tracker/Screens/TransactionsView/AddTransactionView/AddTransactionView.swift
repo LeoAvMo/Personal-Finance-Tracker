@@ -5,12 +5,10 @@
 //  Created by Leo A.Molina on 15/08/25.
 //
 
-
-
 import SwiftUI
 import SwiftData
 
-//TODO: Check why the navigation is not working and returning when adding new trsansaction
+// TODO: add alerts in case of fields not selected
 
 enum TransactionType : String, CaseIterable, Identifiable {
     case income, expense
@@ -19,9 +17,10 @@ enum TransactionType : String, CaseIterable, Identifiable {
 
 struct AddTransactionView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) var dismiss
     
     @State private var label: String = ""
-    @State private var amount: Double = 0
+    @State private var amount: Double?
     @State private var transactionType: TransactionType = .expense
     @State private var currency: Currency?
     @State private var account: Account?
@@ -31,7 +30,6 @@ struct AddTransactionView: View {
     @Query(sort: \Account.name) private var accounts: [Account]
     @Query(sort: \Currency.name) private var currencies: [Currency]
     @Query(sort: \Category.name) private var categories: [Category]
-    
     
     // MARK: - Body
     var body: some View {
@@ -48,18 +46,21 @@ struct AddTransactionView: View {
                     }
                     
                 }
-                
                 accountSelectorSection
             }
             .background(.background)
             .navigationTitle("Transaction")
             .toolbar {
-                Button("Add transaction", systemImage: "checkmark", action: addTransaction)
-                    .foregroundStyle(.accent)
+                ToolbarItem(placement: .confirmationAction){
+                    Button("Create Currency", systemImage: "checkmark", action: addTransaction)
+                }
+            }
+            .onAppear {
+                currency = currencies.first
+                account = accounts.first
+                category = categories.first
             }
         }
-        
-        
     }
     
     // MARK: - Computed Properties for Form Sections
@@ -102,14 +103,12 @@ struct AddTransactionView: View {
             if accounts.isEmpty {
                 ContentUnavailableView("No Accounts Found", systemImage: "creditcard")
             } else {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack {
-                        ForEach(accounts) { acc in
-                            Button {
-                                account = acc
-                            } label: {
-                                AccountCapsuleView(account: acc)
-                            }
+                List {
+                    ForEach(accounts) { acc in
+                        Button {
+                            account = acc
+                        } label: {
+                            AccountCapsuleView(account: acc)
                         }
                     }
                 }
@@ -129,8 +128,30 @@ struct AddTransactionView: View {
     
     func addTransaction() {
         // TODO: Add checks and alerts for transaction
-        let transaction = Transaction(label: label, amount: amount,  date: date, category: category, targetAccount: account, currency: currency)
+        
+        // MARK: Alerts
+        
+        // Name is empty
+        
+        // Currency is nil
+        
+        // Amount is nil, nan, infinite, or less than 0
+        
+        // Categories is nil
+        
+        // Account is nil
+        
+        // MARK: Things to do after validating
+        
+        // Make target account balance decrease or increase depending if user selected transaction or expense
+        
+        // add alert account balance will be less than 0 after decreasing.
+        
+        // Put transaction into the list
+        let transaction = Transaction(label: label, amount: amount ?? 0,  date: date, category: category, targetAccount: account, currency: currency)
         modelContext.insert(transaction)
+        
+        dismiss()
     }
     
 }

@@ -5,8 +5,9 @@
 //  Created by Leo A.Molina on 29/07/25.
 //
 
-// TODO: Block screen to create ONE category and create ONE account and ONE currency.
-// TODO: Create a way to block the add transactions screen if there are no accounts or currencies (Already done for categories)
+// TODO: Check why the navigation is not working and returning when adding new trsansaction
+
+// TODO: Add edit settings for transactions and deletions
 
 import SwiftUI
 import SwiftData
