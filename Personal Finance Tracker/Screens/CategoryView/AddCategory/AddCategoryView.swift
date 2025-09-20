@@ -11,6 +11,7 @@ import SwiftData
 
 struct AddCategoryView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
     
     @State private var name: String = ""
     @State private var iconName: String = "dollarsign"
@@ -29,7 +30,7 @@ struct AddCategoryView: View {
     
     var body: some View {
         NavigationStack{
-            VStack(alignment: .center){
+            ScrollView{
                 
                 // Category Circle
                 BigCategoryIconView(color: $color, iconName: $iconName)
@@ -65,9 +66,12 @@ struct AddCategoryView: View {
                       dismissButton: categoryAlertItem!.alertDismissButton)
             }
             .toolbar {
-                Button("Create Category",systemImage: "checkmark", action: addCategory)
+                ToolbarItem(placement: .confirmationAction){
+                    Button("Create Currency", systemImage: "checkmark", action: addCategory)
+                }
             }
             .navigationTitle("Create Category")
+            .navigationBarTitleDisplayMode(.inline)
         }
         .background(.background)
         
@@ -81,6 +85,7 @@ struct AddCategoryView: View {
         withAnimation {
             let category = Category(name: name, colorHex: color.toHex() ?? "#FFFFFF", iconName: iconName)
             modelContext.insert(category)
+            dismiss()
         }
     }
 }
@@ -99,14 +104,14 @@ struct BigCategoryIconView: View {
             Circle()
                 .foregroundStyle(color)
                 .transition(.opacity)
-                .frame(width: 250, height: 250)
+                .frame(width: 200, height: 200)
                 .glassEffect()
                 .animation(.easeInOut(duration: 0.3), value: color)
 
             Image(systemName: iconName)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 140, height: 140)
+                .frame(width: 120, height: 120)
                 .foregroundStyle(.white)
         }
     }

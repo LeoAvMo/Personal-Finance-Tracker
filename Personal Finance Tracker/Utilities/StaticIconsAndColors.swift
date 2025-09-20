@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: Colors
 
 // All built-in SwiftUI Colors
-let allColors: [Color] = [.pink, .red, .orange, .yellow, .green, .mint, .teal,.cyan, .blue, .indigo, .purple, .gray]
+let allColors: [Color] = [.pink, .red, .orange, .yellow, .green, .mint, .teal,.cyan, .blue, .purple, .brown, .gray]
 
 // Rainbow Gradient
 let rainbow = LinearGradient(colors: [.red, .orange, .yellow, .green, .blue, .indigo, .purple], startPoint: .topLeading, endPoint: .bottomTrailing)
