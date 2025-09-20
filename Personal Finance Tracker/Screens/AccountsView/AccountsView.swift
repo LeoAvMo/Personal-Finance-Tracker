@@ -30,8 +30,6 @@ struct AccountsView: View {
     }
     
     var body: some View {
-        
-        
         NavigationStack {
             if accounts.isEmpty || currencies.isEmpty {
                 AccountCurrencySetupView()
