@@ -8,7 +8,9 @@
 import SwiftUI
 import SwiftData
 
-// TODO: Add legend saying that currency will be set to the selected account's currency
+
+// TODO: Add focus states
+// TODO: .onAppear, make focus state label
 
 enum TransactionType : String, CaseIterable, Identifiable {
     case income, expense
@@ -81,15 +83,24 @@ struct AddTransactionView: View {
             }
             .pickerStyle(.menu)
             
-            HStack{
-                Text("Amount")
-                Spacer()
-                TextField("$", value: $amount, format: .currency(code: account?.currency.code ?? ""))
-                    .keyboardType(.decimalPad)
-                    .multilineTextAlignment(.trailing)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(amountColor)
+            VStack(alignment: .leading){
+                HStack{
+                    Text("Amount")
+                    TextField("$", value: $amount, format: .currency(code: account?.currency.code ?? ""))
+                        .keyboardType(.decimalPad)
+                        .multilineTextAlignment(.trailing)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(amountColor)
+                }
+                .padding(.bottom, 4)
+                
+                Text("Currency is set depending on the target account's curency.")
+                    .font(.caption)
+                    .fontWeight(.light)
+                    .foregroundStyle(.secondary)
+                    
             }
+            
             
             DatePicker(selection: $date, displayedComponents: .date, label: { Text("Date") })
         }

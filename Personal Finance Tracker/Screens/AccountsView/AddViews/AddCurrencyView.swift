@@ -65,9 +65,8 @@ struct AddCurrencyView: View {
                             .onSubmit {
                                 focusedField = nil
                             }
-
                     }
-                    .padding(.bottom)
+                    .padding(.bottom, 4)
                     VStack{
                         Text("Tip: Make sure that the value of the currency is based in your most used currency. For example, if you use the US dollar as your base currency, you should set the value of the currency to 1.")
                             .font(.footnote)
