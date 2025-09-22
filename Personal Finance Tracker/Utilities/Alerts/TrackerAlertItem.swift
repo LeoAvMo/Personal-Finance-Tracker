@@ -88,6 +88,11 @@ struct TrackerAlertContext {
                                                                      alertMessage: Text("Please select a target account for the transaction."),
                                                                      alertDismissButton: .default(Text("OK")))
     
+    // Insufficient Funds
+    static let nonSufficientFunds: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Non-Sufficient Funds"),
+                                                                     alertMessage: Text("There are not enough funds in the selected account for this transaction. Please, select another account"),
+                                                                     alertDismissButton: .default(Text("OK")))
+    
     // MARK: AccountCurrencySetupView Alerts
     
     static let currencyAlreadyCreated: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("You already added a currency"),

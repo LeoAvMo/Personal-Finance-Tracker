@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 // TODO: Add edit account, edit currency and add empty views when there is no cash or cards.
+// TODO: Make it possible so you can transfer money between accounts
 
 struct AccountsView: View {
     @Environment(\.modelContext) private var modelContext
