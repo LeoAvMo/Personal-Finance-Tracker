@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-// TODO: add alerts in case of fields not selected
+// TODO: Add legend saying that currency will be set to the selected account's currency
 
 enum TransactionType : String, CaseIterable, Identifiable {
     case income, expense
@@ -22,7 +22,6 @@ struct AddTransactionView: View {
     @State private var label: String = ""
     @State private var amount: Double?
     @State private var transactionType: TransactionType = .expense
-    @State private var currency: Currency?
     @State private var account: Account?
     @State private var category: Category?
     @State private var date: Date = Date()
@@ -30,11 +29,7 @@ struct AddTransactionView: View {
     @State private var alertItem: TrackerAlertItem?
     @State private var showAlert: Bool = false
     
-    @State private var showCurrencyAlert: Bool = false
-    @State private var currencyMismatch: Double = 0
-    
     @Query(sort: \Account.name) private var accounts: [Account]
-    @Query(sort: \Currency.name) private var currencies: [Currency]
     @Query(sort: \Category.name) private var categories: [Category]
     
     // MARK: - Body
@@ -66,21 +61,7 @@ struct AddTransactionView: View {
                       message: alertItem!.alertMessage,
                       dismissButton: alertItem!.alertDismissButton)
             }
-            .alert(isPresented: $showCurrencyAlert) {
-                let code = currency?.code ?? "USD"
-                let formatted = currencyMismatch.formatted(.currency(code: code))
-                return Alert(
-                    title: Text("Currency Mismatch"),
-                    message: Text("The selected currency does not match the selected account's currency. The amount will be converted at the current exchange rate. Do you wish to continue with the following amount?\n\n\(formatted)"),
-                    primaryButton: .default(Text("Continue"), action: {
-                        // Continue with converted amount
-                    }),
-                    secondaryButton: .cancel(Text("Cancel"), action: { showCurrencyAlert.toggle() })
-                )
-            }
-            
             .onAppear {
-                currency = currencies.first
                 account = accounts.first
                 category = categories.first
             }
@@ -100,17 +81,10 @@ struct AddTransactionView: View {
             }
             .pickerStyle(.menu)
             
-            Picker(selection: $currency, label: Text("Currency")) {
-                ForEach(currencies) { currency in
-                    Text(currency.code + currency.flag).tag(currency)
-                }
-            }
-            .pickerStyle(.menu)
-            
             HStack{
                 Text("Amount")
                 Spacer()
-                TextField("$", value: $amount, format: .currency(code: currency?.code ?? "USD"))
+                TextField("$", value: $amount, format: .currency(code: account?.currency.code ?? ""))
                     .keyboardType(.decimalPad)
                     .multilineTextAlignment(.trailing)
                     .fontWeight(.semibold)
@@ -151,20 +125,12 @@ struct AddTransactionView: View {
     }
     
     func addTransaction() {
-        // TODO: Add checks and alerts for transaction
         
         // MARK: Alerts
         
         // Name is empty
         if label.isEmpty {
             alertItem = TrackerAlertContext.transactionLabelIsEmpty
-            showAlert.toggle()
-            return
-        }
-        
-        // Currency is nil
-        if currency == nil {
-            alertItem = TrackerAlertContext.currencyIsEmpty
             showAlert.toggle()
             return
         }
@@ -190,31 +156,6 @@ struct AddTransactionView: View {
             return
         }
         
-        // Currency doesn't match with the selected account's currency.
-        if currency != account!.currency {
-            // alert that shows the conversion with a cancel, accept or the value.
-            currencyMismatch = abs(currency!.value * amount! / account!.currency.value)
-            showCurrencyAlert.toggle()
-            
-            // MARK: Validations
-            if transactionType == .expense && ((account!.balance - amount!) < 0) {
-                alertItem = TrackerAlertContext.nonSufficientFunds
-                showAlert.toggle()
-            }
-            
-            if transactionType == .expense {
-                account!.balance -= amount!
-            } else {
-                account!.balance += amount!
-            }
-            
-            let transaction = Transaction(label: label, amount: transactionType == .expense ? -amount! : amount!,  date: date, category: category, targetAccount: account, currency: currency)
-            modelContext.insert(transaction)
-            
-            dismiss()
-            return
-        }
-        
         // Add alert account balance will be less than 0 after decreasing.
         if transactionType == .expense && ((account!.balance - amount!) < 0) {
             alertItem = TrackerAlertContext.nonSufficientFunds
@@ -231,7 +172,7 @@ struct AddTransactionView: View {
         }
         
         // Put transaction into the list
-        let transaction = Transaction(label: label, amount: transactionType == .expense ? -amount! : amount!,  date: date, category: category, targetAccount: account, currency: currency)
+        let transaction = Transaction(label: label, amount: transactionType == .expense ? -amount! : amount!,  date: date, category: category, targetAccount: account, currency: account!.currency)
         modelContext.insert(transaction)
         
         dismiss()

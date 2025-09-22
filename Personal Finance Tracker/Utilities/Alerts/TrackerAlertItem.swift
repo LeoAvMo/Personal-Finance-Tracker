@@ -93,6 +93,11 @@ struct TrackerAlertContext {
                                                                      alertMessage: Text("There are not enough funds in the selected account for this transaction. Please, select another account"),
                                                                      alertDismissButton: .default(Text("OK")))
     
+    // Currencies don't match
+    static let currenciesDoNotMatch: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could Not Add Transaction"),
+                                                                     alertMessage: Text("The selected currency and the selected account's currency do not match. Try selecting an account with the same currency."),
+                                                                     alertDismissButton: .default(Text("OK")))
+    
     // MARK: AccountCurrencySetupView Alerts
     
     static let currencyAlreadyCreated: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("You already added a currency"),
