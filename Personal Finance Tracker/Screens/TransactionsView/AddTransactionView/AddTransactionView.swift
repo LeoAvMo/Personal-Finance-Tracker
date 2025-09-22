@@ -123,7 +123,7 @@ struct AddTransactionView: View {
                         Button {
                             account = acc
                         } label: {
-                            AccountCapsuleView(account: acc)
+                            AccountDescriptionListView(account: acc, transactionAmount: amount, transactionType: transactionType, isSelected: account == acc)
                         }
                     }
                 }

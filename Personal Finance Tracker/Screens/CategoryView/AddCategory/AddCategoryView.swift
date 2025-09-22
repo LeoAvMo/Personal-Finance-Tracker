@@ -123,6 +123,7 @@ struct ColorSelectorView: View {
     @State private var columnLayout = Array(repeating: GridItem(), count: 4)
 
     var body: some View {
+        /*
         ZStack{
             Capsule()
                 .foregroundStyle(rainbow)
@@ -138,7 +139,7 @@ struct ColorSelectorView: View {
         }
         .padding(.vertical, 5)
         .padding(.horizontal)
-        
+        */
         LazyVGrid(columns: columnLayout) {
             ForEach(allColors.indices, id: \.self){ index in
                 Button{
