@@ -91,6 +91,7 @@ struct AddAccountView: View {
             }
             .onAppear {
                 currency = currencies.first
+                focusedField = .name
             }
             .alert(isPresented: $showAlert) {
                 Alert(title: alertItem!.alertTitle,

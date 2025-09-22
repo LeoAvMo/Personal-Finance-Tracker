@@ -78,6 +78,9 @@ struct AddCurrencyView: View {
                 
             }
             .navigationTitle(Text("Add Currency"))
+            .onAppear{
+                focusedField = .name
+            }
             .toolbar {
                 ToolbarItem(placement: .confirmationAction){
                     Button("Create Currency", systemImage: "checkmark", action: addCurrency)

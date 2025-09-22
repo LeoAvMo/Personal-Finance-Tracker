@@ -8,15 +8,14 @@
 import SwiftUI
 import SwiftData
 
-
-// TODO: Add focus states
-// TODO: .onAppear, make focus state label
-
 enum TransactionType : String, CaseIterable, Identifiable {
     case income, expense
     var id: Self { self }
 }
 
+enum TransactionFields: Hashable {
+    case label, amount
+}
 struct AddTransactionView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
@@ -33,6 +32,8 @@ struct AddTransactionView: View {
     
     @Query(sort: \Account.name) private var accounts: [Account]
     @Query(sort: \Category.name) private var categories: [Category]
+    
+    @FocusState private var focusedField: TransactionFields?
     
     // MARK: - Body
     var body: some View {
@@ -64,6 +65,7 @@ struct AddTransactionView: View {
                       dismissButton: alertItem!.alertDismissButton)
             }
             .onAppear {
+                focusedField = .label
                 account = accounts.first
                 category = categories.first
             }
@@ -76,6 +78,10 @@ struct AddTransactionView: View {
     private var transactionDetailsSection: some View {
         Section("Details") {
             TextField("Label", text: $label)
+                .focused($focusedField, equals: .label)
+                .onSubmit {
+                    focusedField = .amount
+                }
             
             Picker(selection: $transactionType, label: Text("Transaction Type")) {
                 Text("Income 📈").tag(TransactionType.income)
