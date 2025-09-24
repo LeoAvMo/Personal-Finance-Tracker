@@ -28,6 +28,7 @@ struct CategoryView: View {
                             .foregroundStyle(category.color)
                     }
                 }
+                .onDelete(perform: deleteCategory)
             }
             .toolbar {
                 NavigationLink{
@@ -37,6 +38,13 @@ struct CategoryView: View {
                 }
             }
             .navigationTitle(Text("Categories"))
+        }
+    }
+    
+    func deleteCategory(_ indexSet: IndexSet) {
+        for index in indexSet {
+            let category = categories[index]
+            modelContext.delete(category)
         }
     }
 }
