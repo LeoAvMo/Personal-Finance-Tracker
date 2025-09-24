@@ -36,5 +36,5 @@ struct FTTabView: View {
 
 #Preview {
     FTTabView()
-        
+        .modelContainer(for: [Transaction.self, Category.self, Account.self, Currency.self], inMemory: true)
 }

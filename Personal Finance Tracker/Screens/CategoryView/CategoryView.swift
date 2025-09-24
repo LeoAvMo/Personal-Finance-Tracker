@@ -83,16 +83,13 @@ struct CategoryView: View {
     func deleteCategory(_ indexSet: IndexSet) {
         
         for index in indexSet {
-            withAnimation{
-                let category = categories[index]
-                for transaction in transactions {
-                    if transaction.category == category {
-                        modelContext.delete(transaction)
-                    }
+            let category = categories[index]
+            for transaction in transactions {
+                if transaction.category == category {
+                    modelContext.delete(transaction)
                 }
-                modelContext.delete(category)
             }
-            
+            modelContext.delete(category)
         }
     }
 }
