@@ -16,6 +16,8 @@ struct TransactionListingView: View {
     
     @State private var selectedCategory: Category?
     
+    @State private var showAlert: Bool = false
+    
     init(sort: SortDescriptor<Transaction>, searchString: String) {
         _transactions = Query(filter: #Predicate {
             if searchString.isEmpty {
@@ -47,6 +49,8 @@ struct TransactionListingView: View {
     
     func deleteTransactions(_ indexSet: IndexSet) {
         for index in indexSet {
+            showAlert = true
+            // Add alert that the transaction will be undone.
             let transaction = transactions[index]
             modelContext.delete(transaction)
         }
