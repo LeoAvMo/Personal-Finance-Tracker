@@ -204,24 +204,3 @@ struct AddTransactionView: View {
 }
 
 // MARK: - Subviews
-struct CategorySelectorView: View {
-    var categories: [Category]
-    @Binding var selectedCategory: Category?
-    
-    var body: some View {
-        VStack(alignment: .leading){
-            ScrollView(.horizontal, showsIndicators: false){
-                HStack {
-                    ForEach(categories, id: \.self) { category in
-                        Button {
-                            selectedCategory = category
-                        } label: {
-                            // Assuming CategoryIconView exists from your project
-                            CategoryIconView(category: category, showLabel: true, isSelected: category == selectedCategory)
-                        }
-                    }
-                }
-            }
-        }
-    }
-}

@@ -37,9 +37,6 @@ struct TransactionListingView: View {
                     ContentUnavailableView("No Transactions Found", systemImage: "magnifyingglass")
                 } else {
                     ForEach(transactions) { transaction in
-                        // The file you provided didn't include this view,
-                        // but your original project did. Assuming it exists.
-                        // If not, replace with: Text(transaction.label)
                         IndividualTransactionView(transaction: transaction)
                     }
                     .onDelete(perform: deleteTransactions)
@@ -52,6 +49,38 @@ struct TransactionListingView: View {
         for index in indexSet {
             let transaction = transactions[index]
             modelContext.delete(transaction)
+        }
+    }
+}
+
+struct IndividualTransactionView: View {
+    var transaction: Transaction
+    
+    var body: some View {
+        HStack{
+            let isIncome = transaction.amount > 0
+            CategoryIconView(category: transaction.category, showLabel: true, isSelected: false)
+            VStack(alignment: .leading){
+                Text(transaction.label)
+                    .font(.title2)
+                Text(transaction.date, format: .dateTime.day().month().year())
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Divider()
+                Text(transaction.targetAccount?.name ?? "No Account")
+                    .font(.body)
+                    .foregroundStyle(.primary)
+                HStack{
+                    Text(transaction.amount , format: .currency(code: transaction.currency?.code ?? "USD"))
+                        .bold()
+                        .fontWeight(.semibold)
+                        .foregroundStyle(isIncome ? .green : .red)
+                    Image(systemName: isIncome ? "chart.line.uptrend.xyaxis" : "chart.line.downtrend.xyaxis")
+                        .fontWeight(.semibold)
+                        .foregroundStyle(isIncome ? .green : .red)
+                }
+            }
+            .padding(.leading)
         }
     }
 }

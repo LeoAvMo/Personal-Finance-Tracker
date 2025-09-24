@@ -10,6 +10,7 @@ import SwiftData
 
 
 // TODO: Make option to move all category transactions to another category or completely delete all transactions when category is erased.
+// TODO: Make .onDelete modifier for list and sorting option.
 struct CategoryView: View {
     @Environment(\.modelContext) private var modelContext
     

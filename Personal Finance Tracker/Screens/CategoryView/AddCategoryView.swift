@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 // TODO: Add another way to add a custom color.
+// TODO: Add more colors
 
 struct AddCategoryView: View {
     @Environment(\.modelContext) private var modelContext

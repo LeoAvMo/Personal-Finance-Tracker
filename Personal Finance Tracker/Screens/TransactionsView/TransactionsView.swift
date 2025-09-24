@@ -53,15 +53,6 @@ struct TransactionsView: View {
             
         }
     }
-    
-    // MARK: Functions
-    private func addTransaction() {
-        withAnimation {
-            let transaction = Transaction(label: "", category: categories.first, targetAccount: accounts.first, currency: currencies.first)
-            modelContext.insert(transaction)
-            path = [transaction]
-        }
-    }
 }
 
 
@@ -70,35 +61,5 @@ struct TransactionsView: View {
         .modelContainer(for: [Transaction.self, Currency.self, Account.self, Category.self], inMemory: true)
 }
 
-struct IndividualTransactionView: View {
-    var transaction: Transaction
-    
-    var body: some View {
-        HStack{
-            let isIncome = transaction.amount > 0
-            CategoryIconView(category: transaction.category, showLabel: true, isSelected: false)
-            VStack(alignment: .leading){
-                Text(transaction.label)
-                    .font(.title2)
-                Text(transaction.date, format: .dateTime.day().month().year())
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                Divider()
-                Text(transaction.targetAccount?.name ?? "No Account")
-                    .font(.body)
-                    .foregroundStyle(.primary)
-                HStack{
-                    Text(transaction.amount , format: .currency(code: transaction.currency?.code ?? "USD"))
-                        .bold()
-                        .fontWeight(.semibold)
-                        .foregroundStyle(isIncome ? .green : .red)
-                    Image(systemName: isIncome ? "chart.line.uptrend.xyaxis" : "chart.line.downtrend.xyaxis")
-                        .fontWeight(.semibold)
-                        .foregroundStyle(isIncome ? .green : .red)
-                }
-            }
-            .padding(.leading)
-        }
-    }
-}
+
 
