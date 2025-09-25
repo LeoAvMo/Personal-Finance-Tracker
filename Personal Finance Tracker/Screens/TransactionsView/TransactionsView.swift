@@ -35,8 +35,11 @@ struct TransactionsView: View {
                     Menu("Sort", systemImage: "arrow.up.arrow.down") {
                         Picker("Sort", selection: $sortOrder) {
                             Text("Most Recent").tag(SortDescriptor(\Transaction.date, order: .reverse))
-                            Text("Oldest").tag(SortDescriptor(\Transaction.date, order: .forward))
-                            Text("Alphabetical").tag(SortDescriptor(\Transaction.label))
+                            // BY CATEGORY
+                            //Text("By Cagegory").tag(SortDescriptor(\Transaction.category.name))
+                            // BY ACCOUNT
+                            //Text("By Account").tag(SortDescriptor(\Transaction.targetAccount.name))
+                            Text("By Name").tag(SortDescriptor(\Transaction.label))
                             Text("Highest to Lowest").tag(SortDescriptor(\Transaction.amount, order: .reverse))
                             Text("Lowest to Highest").tag(SortDescriptor(\Transaction.amount, order: .forward))
                         }

@@ -21,8 +21,10 @@ struct AccountsView: View {
     private var formattedBalance: String {
         var total: Double = 0.0
         for account in accounts {
-            if account.balance > 0 {
+            if account.currency == selectedCurrency {
                 total += account.balance
+            } else {
+                total += account.balance * account.currency.value / selectedCurrency.value
             }
         }
         return String(format: "$%.2f %@", total, selectedCurrency.code)
@@ -34,7 +36,6 @@ struct AccountsView: View {
                 AccountCurrencySetupView()
             } else {
                 Form{
-                    
                     Section (header: Text("Total balance")) {
                         Picker(selection: $selectedCurrency, label: Text("Currency:")) {
                             ForEach(currencies) { currency in
@@ -92,20 +93,6 @@ struct AccountsView: View {
                     }
                 }
             }
-        }
-    }
-    
-    private func addAccount() {
-        withAnimation {
-            let account = Account()
-            modelContext.insert(account)
-        }
-    }
-    
-    private func addCurrency() {
-        withAnimation {
-            let currency = Currency()
-            modelContext.insert(currency)
         }
     }
 }
