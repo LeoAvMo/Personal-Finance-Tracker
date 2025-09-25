@@ -18,6 +18,8 @@ struct TransactionListingView: View {
     
     @State private var showAlert: Bool = false
     @State private var transactionIndex = IndexSet()
+    @State private var alertItem: TrackerAlertItem?
+    @State private var alertType: AlertType = .cancel
     
     init(sort: SortDescriptor<Transaction>, searchString: String) {
         _transactions = Query(filter: #Predicate {
@@ -43,6 +45,7 @@ struct TransactionListingView: View {
                         IndividualTransactionView(transaction: transaction)
                     }
                     .onDelete(perform: { index in
+                        alertType = .delete
                         transactionIndex = index
                         showAlert.toggle()
                     })
@@ -50,16 +53,32 @@ struct TransactionListingView: View {
             }
         }
         .alert(isPresented: $showAlert) {
-            Alert(title: Text("Are you sure you want to delete the transaction?"), message: Text("Deleting a transaction will undo the changes to the balance of the account associated with it. Do you want to continue?"), primaryButton: Alert.Button.cancel(), secondaryButton: Alert.Button.destructive(Text("Delete"), action:{ deleteTransactions(transactionIndex)}))
+            switch alertType {
+                case .cancel: {
+                    Alert(title: alertItem!.alertTitle, message: alertItem!.alertMessage, dismissButton: alertItem!.alertDismissButton)
+                }()
+                case .delete: {
+                    Alert(title: Text("Are you sure you want to delete the transaction?"), message: Text("Deleting a transaction will undo the changes to the balance of the account associated with it. Do you want to continue?"), primaryButton: Alert.Button.cancel(), secondaryButton: Alert.Button.destructive(Text("Delete"), action:{ deleteTransactions(transactionIndex)}))
+                }()
+            }
         }
     }
     
     func deleteTransactions(_ indexSet: IndexSet) {
         for index in indexSet {
             let transaction = transactions[index]
+            
             if transaction.amount >= 0 {
-                // Add alert if the balance will be negative after the change.
+                
+                if (transaction.amount - transaction.targetAccount!.balance) > 0 {
+                    alertType = .cancel
+                    alertItem = TrackerAlertContext.negativeAccountBalance
+                    showAlert.toggle()
+                    return
+                }
+                
                 transaction.targetAccount!.balance -= transaction.amount
+                
             } else {
                 transaction.targetAccount!.balance += -transaction.amount
             }

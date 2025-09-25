@@ -8,9 +8,7 @@
 import SwiftUI
 import SwiftData
 
-enum alertType {
-    case cancel, delete
-}
+
 
 // TODO: Make option to move all category transactions to another category or completely delete all transactions when category is erased.
 
@@ -26,10 +24,6 @@ struct CategoryView: View {
     
     @State private var alertType: AlertType = .cancel
     @State private var categoryIndex = IndexSet()
-    
-    private enum AlertType {
-        case cancel, delete
-    }
     
     var body: some View {
         NavigationStack {

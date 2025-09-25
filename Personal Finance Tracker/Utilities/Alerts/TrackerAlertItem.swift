@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+enum AlertType {
+    case cancel, delete
+}
+
 struct TrackerAlertItem: Identifiable {
     var id: UUID = UUID()
     var alertTitle: Text
@@ -122,5 +126,10 @@ struct TrackerAlertContext {
     static let categoriesCannotBeEmpty: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not delete category"),
                                                                                alertMessage: Text("There must be at least one category."),
                                                                                alertDismissButton: .default(Text("OK")))
+    
+    // MARK: TransactionListingView alerts
+    static let negativeAccountBalance: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not delete transaction"),
+                                                                               alertMessage: Text("Deleting this transaction would result in a negative account balance. Please add funds to your account before trying again."),
+                                                                            alertDismissButton: .default(Text("OK")))
 }
     
