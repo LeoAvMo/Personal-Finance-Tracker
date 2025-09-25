@@ -8,9 +8,6 @@
 import SwiftUI
 import SwiftData
 
-// TODO: Add another way to add a custom color.
-// TODO: Add more colors
-
 struct AddCategoryView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
@@ -124,23 +121,7 @@ struct ColorSelectorView: View {
     @State private var columnLayout = Array(repeating: GridItem(), count: 4)
 
     var body: some View {
-        /*
-        ZStack{
-            Capsule()
-                .foregroundStyle(rainbow)
-                .glassEffect(.regular)
-            VStack{
-                ColorPicker("Custom Color", selection: $color)
-                    .font(.title)
-                    .padding(.horizontal)
-                    .frame(maxWidth: .infinity)
-                    .foregroundStyle(.white)
-            }
-            .padding(.vertical)
-        }
-        .padding(.vertical, 5)
-        .padding(.horizontal)
-        */
+
         LazyVGrid(columns: columnLayout) {
             ForEach(allColors.indices, id: \.self){ index in
                 Button{

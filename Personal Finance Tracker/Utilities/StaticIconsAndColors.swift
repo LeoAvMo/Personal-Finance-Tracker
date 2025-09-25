@@ -10,10 +10,8 @@ import SwiftUI
 // MARK: Colors
 
 // All built-in SwiftUI Colors
-let allColors: [Color] = [.pink, .red, .orange, .yellow, .green, .mint, .teal,.cyan, .blue, .purple, .brown, .gray]
+let allColors: [Color] = [.pink, .red, .orange, .yellow, Color(red: 75/255, green: 150/255, blue: 65/255), .green, .mint, .teal,.cyan, .blue, Color(red: 75/255, green: 95/255, blue: 230/255), .purple, Color(red: 210/255, green: 117/255, blue: 250/255), Color(red: 242/255, green: 121/255, blue: 230/255) , .brown, .gray]
 
-// Rainbow Gradient
-let rainbow = LinearGradient(colors: [.red, .orange, .yellow, .green, .blue, .indigo, .purple], startPoint: .topLeading, endPoint: .bottomTrailing)
 
 // MARK: Symbols
 
@@ -62,6 +60,7 @@ let icons: [String] = [
     // 🔣 Symbols & Misc
     "chevron.left.forwardslash.chevron.right", "ellipsis.curlybraces", "ellipsis"
 ]
+
 
 
 
