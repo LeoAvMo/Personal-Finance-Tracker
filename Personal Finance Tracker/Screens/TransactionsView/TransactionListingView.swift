@@ -17,6 +17,7 @@ struct TransactionListingView: View {
     @State private var selectedCategory: Category?
     
     @State private var showAlert: Bool = false
+    @State private var transactionIndex = IndexSet()
     
     init(sort: SortDescriptor<Transaction>, searchString: String) {
         _transactions = Query(filter: #Predicate {
@@ -41,17 +42,27 @@ struct TransactionListingView: View {
                     ForEach(transactions) { transaction in
                         IndividualTransactionView(transaction: transaction)
                     }
-                    .onDelete(perform: deleteTransactions)
+                    .onDelete(perform: { index in
+                        transactionIndex = index
+                        showAlert.toggle()
+                    })
                 }
             }
+        }
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Are you sure you want to delete the transaction?"), message: Text("Deleting a transaction will undo the changes to the balance of the account associated with it. Do you want to continue?"), primaryButton: Alert.Button.cancel(), secondaryButton: Alert.Button.destructive(Text("Delete"), action:{ deleteTransactions(transactionIndex)}))
         }
     }
     
     func deleteTransactions(_ indexSet: IndexSet) {
         for index in indexSet {
-            showAlert = true
-            // Add alert that the transaction will be undone.
             let transaction = transactions[index]
+            if transaction.amount >= 0 {
+                // Add alert if the balance will be negative after the change.
+                transaction.targetAccount!.balance -= transaction.amount
+            } else {
+                transaction.targetAccount!.balance += -transaction.amount
+            }
             modelContext.delete(transaction)
         }
     }
