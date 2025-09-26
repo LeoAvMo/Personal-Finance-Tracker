@@ -18,6 +18,16 @@ struct SummaryView: View {
     
     @State private var selectedCategory: Category?
     
+    var totalTransactions: Int {
+        var total: Int = 0
+        for transaction in transactions {
+            if transaction.category == selectedCategory {
+                total += 1
+            }
+        }
+        return total
+    }
+    
     var body: some View {
         NavigationStack{
             ScrollView {
@@ -25,7 +35,7 @@ struct SummaryView: View {
                 
                 HStack{
                     VStack(spacing: 0){
-                        Text("2200")    // number of transactions of selected category
+                        Text("\(totalTransactions)")    // number of transactions of selected category
                             .font(.system(size: 60))
                             .bold()
                             .foregroundStyle(selectedCategory?.color ?? .gray)
@@ -44,6 +54,9 @@ struct SummaryView: View {
                     Button("Add Category", systemImage: "plus"){ }
                 }
             }
+        }
+        .onAppear {
+            selectedCategory = categories.first
         }
     }
 }
