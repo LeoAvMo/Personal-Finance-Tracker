@@ -70,7 +70,7 @@ struct AccountsView: View {
                 }
                 .toolbar {
                     NavigationLink(){
-                        // Add a way so the user cannot enter this view unless they have 2 accounts.
+                        // TODO: Add a way so the user cannot enter this view unless they have 2 accounts.
                         TransferFundsView()
                     } label: {
                         Button("Transfer Funds", systemImage: "arrow.left.arrow.right"){ }

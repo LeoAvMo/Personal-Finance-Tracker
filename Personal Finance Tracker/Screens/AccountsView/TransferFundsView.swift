@@ -20,15 +20,54 @@ struct TransferFundsView: View {
     @State private var showAlert: Bool = false
     @State private var alertItem: TrackerAlertItem?
     
+
     var body: some View {
-        NavigationStack{
+        NavigationStack {
             Form {
-                Picker(selection: /*@START_MENU_TOKEN@*/.constant(1)/*@END_MENU_TOKEN@*/, label: /*@START_MENU_TOKEN@*/Text("Picker")/*@END_MENU_TOKEN@*/) {
-                    /*@START_MENU_TOKEN@*/Text("1").tag(1)/*@END_MENU_TOKEN@*/
-                    /*@START_MENU_TOKEN@*/Text("2").tag(2)/*@END_MENU_TOKEN@*/
+                Section(header: Text("Source & Destination")) {
+                    Picker(selection: $sourceAccount, label: Text("Source")) {
+                        ForEach(accounts) { account in
+                            Text(account.name).tag(account)
+                        }
+                    }
+                    
+                    AccountDescriptionListView(account: sourceAccount ?? Account(), transactionAmount: amount ?? 0, transactionType: TransactionType.expense, isSelected: false)
+                    
+                    Picker(selection: $destinationAccount, label: Text("Destination")) {
+                        ForEach(accounts) { account in
+                            Text(account.name).tag(account)
+                        }
+                    }
+                    
+                    AccountDescriptionListView(account: destinationAccount ?? Account(), transactionAmount: amount ?? 0, transactionType: TransactionType.income, isSelected: false)
+                }
+                
+                
+                Section(header: Text("Amount")) {
+                    VStack(alignment: .leading){
+                        HStack{
+                            Text("Amount")
+                            TextField("$", value: $amount, format: .currency(code: destinationAccount?.currency.code ?? ""))
+                                .keyboardType(.decimalPad)
+                                .multilineTextAlignment(.trailing)
+                                .fontWeight(.semibold)
+                                .foregroundStyle(.primary)
+                        }
+                        .padding(.bottom, 4)
+                        
+                        Text("Currency is selected depending on the destination account's curency.")
+                            .font(.caption)
+                            .fontWeight(.light)
+                            .foregroundStyle(.secondary)
+                            
+                    }
                 }
             }
             .navigationTitle(Text("Transfer Funds"))
+            .onAppear {
+                sourceAccount = accounts.first
+                destinationAccount = accounts.last
+            }
         }
     }
 }
