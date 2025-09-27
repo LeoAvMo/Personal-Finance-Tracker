@@ -35,6 +35,12 @@ struct TransferFundsView: View {
                             Text(account.name).tag(account)
                         }
                     }
+                    .onSubmit {
+                        if currenciesAreDifferent {
+                            
+                            // conversionAmount = account.balance * account.currency.value / selectedCurrency.value
+                        }
+                    }
                     
                     AccountDescriptionListView(account: sourceAccount ?? Account(), transactionAmount: amount ?? 0, transactionType: TransactionType.expense, isSelected: false)
                     
