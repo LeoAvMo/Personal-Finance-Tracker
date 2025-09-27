@@ -32,7 +32,7 @@ struct AccountsView: View {
     
     var body: some View {
         NavigationStack {
-            if accounts.isEmpty || currencies.isEmpty {
+            if !accounts.isEmpty || !currencies.isEmpty {
                 AccountCurrencySetupView()
             } else {
                 Form{
@@ -79,6 +79,11 @@ struct AccountsView: View {
                 }
                 .navigationTitle("Accounts")
                 .toolbar {
+                    NavigationLink{
+                        TransferFundsView()
+                    } label: {
+                        Button("Transfer Funds", systemImage: "arrow.left.arrow.right"){ }
+                    }
                     Menu ("Add", systemImage: "plus"){
                         NavigationLink{
                             AddAccountView()
@@ -91,6 +96,7 @@ struct AccountsView: View {
                             Button("Add Currency", systemImage: "eurosign"){ }
                         }
                     }
+                    
                 }
             }
         }
