@@ -18,6 +18,8 @@ struct AccountsView: View {
     
     @State private var selectedCurrency: Currency = Currency()
     
+    @State private var showAlert: Bool = false
+    
     private var formattedBalance: String {
         var total: Double = 0.0
         for account in accounts {
@@ -36,23 +38,8 @@ struct AccountsView: View {
                 AccountCurrencySetupView()
             } else {
                 Form{
-                    Section (header: Text("Total balance")) {
-                        Picker(selection: $selectedCurrency, label: Text("Currency:")) {
-                            ForEach(currencies) { currency in
-                                Text(currency.code + " " + currency.flag).tag(currency)
-                            }
-                        }
-                        .pickerStyle(.menu)
-                        
-                        HStack{
-                            Spacer()
-                            Text(formattedBalance)
-                                .font(.largeTitle)
-                                .bold()
-                            Spacer()
-                        }
-                        
-                    }
+                    
+                    totalBalanceView
                     
                     
                     Section(header: Text("Cash")) {
@@ -78,19 +65,24 @@ struct AccountsView: View {
                     }
                 }
                 .navigationTitle("Accounts")
+                .alert(isPresented: $showAlert) {
+                    Alert(title: Text("No Accounts or Currencies"))
+                }
                 .toolbar {
-                    NavigationLink{
+                    NavigationLink(){
+                        // Add a way so the user cannot enter this view unless they have 2 accounts.
                         TransferFundsView()
                     } label: {
                         Button("Transfer Funds", systemImage: "arrow.left.arrow.right"){ }
                     }
+                    
                     Menu ("Add", systemImage: "plus"){
                         NavigationLink{
                             AddAccountView()
                         } label: {
                             Button("Add Account", systemImage: "creditcard"){ }
                         }
-                        NavigationLink{
+                        NavigationLink {
                             AddCurrencyView()
                         } label: {
                             Button("Add Currency", systemImage: "eurosign"){ }
@@ -99,6 +91,26 @@ struct AccountsView: View {
                     
                 }
             }
+        }
+    }
+    
+    private var totalBalanceView: some View {
+        Section (header: Text("Total balance")) {
+            Picker(selection: $selectedCurrency, label: Text("Currency:")) {
+                ForEach(currencies) { currency in
+                    Text(currency.code + " " + currency.flag).tag(currency)
+                }
+            }
+            .pickerStyle(.menu)
+            
+            HStack{
+                Spacer()
+                Text(formattedBalance)
+                    .font(.largeTitle)
+                    .bold()
+                Spacer()
+            }
+            
         }
     }
 }
