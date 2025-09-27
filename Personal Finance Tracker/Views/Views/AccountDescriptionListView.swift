@@ -14,6 +14,10 @@ struct AccountDescriptionListView: View {
     public var isSelected: Bool
     
     var isAffordable: Bool {
+        if transactionType == .income {
+            return true
+        }
+        
         if transactionAmount ?? -1 > account.balance {
             return false
         }

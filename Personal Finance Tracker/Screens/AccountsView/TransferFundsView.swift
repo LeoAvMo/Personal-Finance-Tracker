@@ -16,11 +16,16 @@ struct TransferFundsView: View {
     @State private var sourceAccount: Account?
     @State private var destinationAccount: Account?
     @State private var amount: Double?
+    @State private var conversionAmount: Double?
     
     @State private var showAlert: Bool = false
     @State private var alertItem: TrackerAlertItem?
     
-
+    
+    var currenciesAreDifferent: Bool {
+        return sourceAccount?.currency != destinationAccount?.currency
+    }
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -59,9 +64,30 @@ struct TransferFundsView: View {
                             .font(.caption)
                             .fontWeight(.light)
                             .foregroundStyle(.secondary)
-                            
                     }
                 }
+                
+                if currenciesAreDifferent {
+                    Section(header: Text("Conversion")) {
+                        HStack{
+                            // Make conversion amount be calculated when this section apepars (Selecting amount)
+                            TextField("$", value: $conversionAmount, format: .currency(code: sourceAccount?.currency.code ?? ""))
+                                .keyboardType(.decimalPad)
+                                .multilineTextAlignment(.trailing)
+                                .fontWeight(.semibold)
+                                .foregroundStyle(.primary)
+                                
+                            Image(systemName: "chevron.right.2")
+                            
+                            TextField("$", value: $amount, format: .currency(code: destinationAccount?.currency.code ?? ""))
+                                .keyboardType(.decimalPad)
+                                .multilineTextAlignment(.trailing)
+                                .fontWeight(.semibold)
+                                .foregroundStyle(.primary)
+                        }
+                    }
+                }
+                
             }
             .navigationTitle(Text("Transfer Funds"))
             .onAppear {
