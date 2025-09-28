@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AccountDescriptionListView: View {
-    @State public var account: Account
+    public var account: Account
     public var transactionAmount: Double?
     public var transactionType: TransactionType
     public var isSelected: Bool

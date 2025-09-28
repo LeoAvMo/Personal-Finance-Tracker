@@ -15,7 +15,7 @@ struct TransferFundsView: View {
     
     @State private var sourceAccount: Account?
     @State private var destinationAccount: Account?
-    @State private var amount: Double?
+    @State private var amount: Double = 0
     @State private var conversionAmount: Double?
     
     @State private var showAlert: Bool = false
@@ -35,14 +35,8 @@ struct TransferFundsView: View {
                             Text(account.name).tag(account)
                         }
                     }
-                    .onSubmit {
-                        if currenciesAreDifferent {
-                            
-                            // conversionAmount = account.balance * account.currency.value / selectedCurrency.value
-                        }
-                    }
                     
-                    AccountDescriptionListView(account: sourceAccount ?? Account(), transactionAmount: amount ?? 0, transactionType: TransactionType.expense, isSelected: false)
+                    AccountDescriptionListView(account: sourceAccount ?? Account(), transactionAmount: amount, transactionType: TransactionType.expense, isSelected: false)
                     
                     Picker(selection: $destinationAccount, label: Text("Destination")) {
                         ForEach(accounts) { account in
@@ -50,7 +44,7 @@ struct TransferFundsView: View {
                         }
                     }
                     
-                    AccountDescriptionListView(account: destinationAccount ?? Account(), transactionAmount: amount ?? 0, transactionType: TransactionType.income, isSelected: false)
+                    AccountDescriptionListView(account: destinationAccount ?? Account(), transactionAmount: amount, transactionType: TransactionType.income, isSelected: false)
                 }
                 
                 
