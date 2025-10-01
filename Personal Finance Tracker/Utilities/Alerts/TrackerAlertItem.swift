@@ -131,5 +131,11 @@ struct TrackerAlertContext {
     static let negativeAccountBalance: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not delete transaction"),
                                                                                alertMessage: Text("Deleting this transaction would result in a negative account balance. Please add funds to your account before trying again."),
                                                                             alertDismissButton: .default(Text("OK")))
+    
+    // MARK: TransferFunds alerts
+    static let negativeAccountBalance: TrackerAlertItem = TrackerAlertItem(alertTitle: Text("Could not transfer funds."),
+                                                                               alertMessage: Text("The accounts should have the same currency to transfer funds. Try again with another account."),
+                                                                            alertDismissButton: .default(Text("OK")))
+    
 }
     
