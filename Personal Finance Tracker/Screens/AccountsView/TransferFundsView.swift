@@ -145,12 +145,12 @@ struct TransferFundsView: View {
             return
         }
         
-        if sourceAccount?.balance ?? 0 < amount {
+        if amount <= 0 || amount.isNaN || amount.isInfinite {
             showAlert = true
             return
         }
         
-        if amount == 0 || amount.isNaN || amount.isInfinite {
+        if sourceAccount?.balance ?? 0 < amount {
             showAlert = true
             return
         }
