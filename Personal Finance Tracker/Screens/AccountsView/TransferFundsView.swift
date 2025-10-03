@@ -130,27 +130,31 @@ struct TransferFundsView: View {
     private func transfer() {
         
         if currenciesAreDifferent {
-            // set alertItem
+            alertItem = TrackerAlertContext.differentCurrencies
             showAlert = true
             return
         }
         
         if sourceAccount == destinationAccount {
+            alertItem = TrackerAlertContext.accountsAreEqual
             showAlert = true
             return
         }
         
         if sourceAccount == nil || destinationAccount == nil {
+            alertItem = TrackerAlertContext.accountsNotPicked
             showAlert = true
             return
         }
         
         if amount <= 0 || amount.isNaN || amount.isInfinite {
+            alertItem = TrackerAlertContext.invalidTransferAmount
             showAlert = true
             return
         }
         
         if sourceAccount?.balance ?? 0 < amount {
+            alertItem = TrackerAlertContext.amountGreaterThanBalance
             showAlert = true
             return
         }
