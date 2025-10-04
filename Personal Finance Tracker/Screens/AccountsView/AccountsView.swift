@@ -8,9 +8,6 @@
 import SwiftUI
 import SwiftData
 
-// TODO: Add edit account, edit currency and add empty views when there is no cash or cards.
-// TODO: Make it possible so you can transfer money between accounts
-
 struct AccountsView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Account.name) var accounts: [Account]
@@ -69,11 +66,12 @@ struct AccountsView: View {
                     Alert(title: Text("No Accounts or Currencies"))
                 }
                 .toolbar {
-                    NavigationLink(){
-                        // TODO: Add a way so the user cannot enter this view unless they have 2 accounts.
-                        TransferFundsView()
-                    } label: {
-                        Button("Transfer Funds", systemImage: "arrow.left.arrow.right"){ }
+                    if accounts.count > 1 {
+                        NavigationLink {
+                            TransferFundsView()
+                        } label: {
+                            Button("Transfer Funds", systemImage: "arrow.left.arrow.right"){ }
+                        }
                     }
                     
                     Menu ("Add", systemImage: "plus"){

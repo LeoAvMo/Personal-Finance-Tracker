@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-// TODO: Add taxes in case of different currencies.
+// TODO: Add taxes in case of different currencies. 
 struct TransferFundsView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
@@ -113,6 +113,11 @@ struct TransferFundsView: View {
                 
                 
                 
+            }
+            .alert(isPresented: $showAlert) {
+                Alert(title: alertItem!.alertTitle,
+                      message: alertItem!.alertMessage,
+                      dismissButton: alertItem!.alertDismissButton)
             }
             .navigationTitle(Text("Transfer Funds"))
             .onAppear {

@@ -107,7 +107,7 @@ struct AddAccountView: View {
         }
     }
     
-    // TODO: Add alerts and checks for null cases.
+
     private func addAccount() {
         
         // Making color to hex string to save it
